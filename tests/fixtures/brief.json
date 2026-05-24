@@ -1,0 +1,8 @@
+{
+  "name": "project-scout",
+  "goal": "Find similar GitHub projects before starting a new CLI/library and produce a prior-art map.",
+  "keywords": ["prior art", "competitive analysis", "github search", "roadmap", "project discovery"],
+  "target_users": ["staff engineers", "technical founders", "product-minded developers"],
+  "tech_stack": ["python", "cli", "github api", "markdown", "json"],
+  "exclusions": ["crawler platform", "stored tokens", "autonomous agent"]
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "name": "ecosyste-ms/repos",
+    "url": "https://github.com/ecosyste-ms/repos",
+    "stars": 2100,
+    "last_update": "2026-04-12T10:30:00Z",
+    "description": "Metadata, dependency and repository intelligence for open source ecosystems.",
+    "topics": ["open-source", "metadata", "repositories", "github"],
+    "license": "AGPL-3.0",
+    "language": "Ruby",
+    "readme_summary": "Indexes repository metadata and provides APIs for understanding open source ecosystems."
+  },
+  {
+    "name": "octobox/octobox",
+    "url": "https://github.com/octobox/octobox",
+    "stars": 4700,
+    "last_update": "2025-12-01T08:00:00Z",
+    "description": "Manage GitHub notifications efficiently.",
+    "topics": ["github", "notifications", "inbox"],
+    "license": "AGPL-3.0",
+    "language": "Ruby",
+    "readme_summary": "A web app for triaging GitHub notifications and inbox workflows."
+  },
+  {
+    "name": "sample/prior-art-cli",
+    "url": "https://github.com/sample/prior-art-cli",
+    "stars": 128,
+    "last_update": "2026-05-01T09:15:00Z",
+    "description": "Python CLI that finds similar projects and writes prior-art Markdown reports.",
+    "topics": ["prior-art", "competitive-analysis", "github-search", "cli", "python"],
+    "license": "MIT",
+    "language": "Python",
+    "readme_summary": "Takes a project brief, compares GitHub repositories, and exports JSON and Markdown."
+  }
+]
