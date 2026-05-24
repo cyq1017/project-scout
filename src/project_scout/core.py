@@ -221,11 +221,12 @@ def _text_fields(candidate: CandidateRepo) -> list[str]:
 
 def _phrase_hits(needles: list[str], haystack: str) -> list[str]:
     normalized = _normalize(haystack)
+    haystack_tokens = _tokens([haystack])
     hits = []
     for needle in needles:
         phrase = _normalize(needle)
         phrase_tokens = _tokens([phrase])
-        if phrase and (phrase in normalized or phrase_tokens & _tokens([haystack])):
+        if phrase and (phrase in normalized or phrase_tokens.issubset(haystack_tokens)):
             hits.append(phrase)
     return sorted(set(hits))
 
@@ -239,7 +240,7 @@ def _ratio(hits: list[str], values: list[str]) -> float:
 def _tokens(values: Iterable[str]) -> set[str]:
     tokens: set[str] = set()
     for value in values:
-        tokens.update(re.findall(r"[a-z0-9]+", value.lower()))
+        tokens.update(_stem_token(token) for token in re.findall(r"[a-z0-9]+", value.lower()))
     return {token for token in tokens if len(token) > 2 and token not in STOPWORDS}
 
 
@@ -250,3 +251,11 @@ def _normalize(value: str) -> str:
 def _permissive_license(license_name: str) -> bool:
     normalized = license_name.lower()
     return any(name in normalized for name in ["mit", "apache", "bsd", "isc", "mpl"])
+
+
+def _stem_token(token: str) -> str:
+    if token == "apis":
+        return "api"
+    if len(token) > 4 and token.endswith("s") and not token.endswith(("is", "ss", "us")):
+        return token[:-1]
+    return token

@@ -49,21 +49,21 @@
       "license": "MIT",
       "language": "Python",
       "readme_summary": "Takes a project brief, compares GitHub repositories, and exports JSON and Markdown.",
-      "similarity_score": 0.88,
+      "similarity_score": 0.76,
       "recommendation": "Fork",
       "evidence": [
         "competitive analysis",
         "github search",
         "prior art",
-        "project discovery",
         "cli",
-        "github api",
         "json",
         "markdown",
         "python",
         "analysis",
         "art",
-        "competitive"
+        "competitive",
+        "github",
+        "prior"
       ],
       "avoid_reasons": []
     },
@@ -82,10 +82,9 @@
       "license": "AGPL-3.0",
       "language": "Ruby",
       "readme_summary": "Indexes repository metadata and provides APIs for understanding open source ecosystems.",
-      "similarity_score": 0.189,
+      "similarity_score": 0.119,
       "recommendation": "Ignore",
       "evidence": [
-        "github search",
         "github api",
         "github"
       ],
@@ -105,11 +104,9 @@
       "license": "AGPL-3.0",
       "language": "Ruby",
       "readme_summary": "A web app for triaging GitHub notifications and inbox workflows.",
-      "similarity_score": 0.189,
+      "similarity_score": 0.069,
       "recommendation": "Ignore",
       "evidence": [
-        "github search",
-        "github api",
         "github"
       ],
       "avoid_reasons": []
@@ -118,10 +115,10 @@
   "overlap_matrix": [
     {
       "candidate": "sample/prior-art-cli",
-      "score": 0.88,
+      "score": 0.76,
       "recommendation": "Fork",
-      "keyword_overlap": 4,
-      "stack_overlap": 5,
+      "keyword_overlap": 3,
+      "stack_overlap": 4,
       "user_overlap": 0,
       "exclusion_overlap": 0,
       "stars": 128,
@@ -129,9 +126,9 @@
     },
     {
       "candidate": "ecosyste-ms/repos",
-      "score": 0.189,
+      "score": 0.119,
       "recommendation": "Ignore",
-      "keyword_overlap": 1,
+      "keyword_overlap": 0,
       "stack_overlap": 1,
       "user_overlap": 0,
       "exclusion_overlap": 0,
@@ -140,10 +137,10 @@
     },
     {
       "candidate": "octobox/octobox",
-      "score": 0.189,
+      "score": 0.069,
       "recommendation": "Ignore",
-      "keyword_overlap": 1,
-      "stack_overlap": 1,
+      "keyword_overlap": 0,
+      "stack_overlap": 0,
       "user_overlap": 0,
       "exclusion_overlap": 0,
       "stars": 4700,
@@ -154,28 +151,27 @@
     {
       "candidate": "sample/prior-art-cli",
       "recommendation": "Fork",
-      "score": 0.88,
+      "score": 0.76,
       "evidence": [
         "competitive analysis",
         "github search",
         "prior art",
-        "project discovery",
         "cli",
-        "github api",
         "json",
         "markdown",
         "python",
         "analysis",
         "art",
-        "competitive"
+        "competitive",
+        "github",
+        "prior"
       ]
     },
     {
       "candidate": "ecosyste-ms/repos",
       "recommendation": "Ignore",
-      "score": 0.189,
+      "score": 0.119,
       "evidence": [
-        "github search",
         "github api",
         "github"
       ]
@@ -183,10 +179,8 @@
     {
       "candidate": "octobox/octobox",
       "recommendation": "Ignore",
-      "score": 0.189,
+      "score": 0.069,
       "evidence": [
-        "github search",
-        "github api",
         "github"
       ]
     }
