@@ -50,6 +50,7 @@ project-scout report \
 ```
 
 GitHub search uses the unauthenticated REST API and does not store tokens. It may hit public rate limits.
+For each GitHub search result, `project-scout` makes a best-effort unauthenticated README request and stores a short deterministic plaintext summary when available.
 
 ## Run Tests
 

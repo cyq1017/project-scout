@@ -34,3 +34,7 @@ project-scout report \
   --out-json project-scout-report.json \
   --out-md docs/research/2026-05-prior-art-map.md
 ```
+
+If `--out-md` is omitted, the CLI writes to `docs/research/YYYY-MM-prior-art-map.md` for the current UTC month.
+
+Live GitHub search uses unauthenticated requests for both repository search and best-effort README summaries. Rate-limit or README failures leave `readme_summary` empty rather than failing the whole report.

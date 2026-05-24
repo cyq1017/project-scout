@@ -22,7 +22,7 @@
 - Add Conductor plugin/adapter boundary.
 - Add configurable scoring weights.
 - Add richer license and activity risk analysis.
-- Add README fetching for GitHub search candidates when rate limits allow.
+- Add README language/section-aware summarization.
 
 ## Non-Goals
 

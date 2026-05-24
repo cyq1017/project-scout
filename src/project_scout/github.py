@@ -1,15 +1,25 @@
 from __future__ import annotations
 
+import base64
 import json
+import re
 from urllib.parse import urlencode
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from project_scout.models import CandidateRepo
 
 GITHUB_SEARCH_URL = "https://api.github.com/search/repositories"
+GITHUB_API_URL = "https://api.github.com"
 
 
-def search_github_repositories(query: str, *, limit: int = 10, timeout: int = 20) -> list[CandidateRepo]:
+def search_github_repositories(
+    query: str,
+    *,
+    limit: int = 10,
+    timeout: int = 20,
+    include_readme: bool = True,
+) -> list[CandidateRepo]:
     params = urlencode({"q": query, "per_page": max(1, min(limit, 50))})
     request = Request(
         f"{GITHUB_SEARCH_URL}?{params}",
@@ -20,7 +30,10 @@ def search_github_repositories(query: str, *, limit: int = 10, timeout: int = 20
     )
     with urlopen(request, timeout=timeout) as response:  # noqa: S310 - fixed GitHub API URL.
         payload = json.loads(response.read().decode("utf-8"))
-    return parse_github_search_response(payload)
+    candidates = parse_github_search_response(payload)
+    if not include_readme:
+        return candidates
+    return [_with_readme_summary(candidate, timeout=timeout) for candidate in candidates]
 
 
 def parse_github_search_response(payload: dict[str, object]) -> list[CandidateRepo]:
@@ -47,3 +60,48 @@ def _repo_from_item(item: dict[str, object]) -> CandidateRepo:
         language=str(item.get("language") or ""),
         readme_summary="",
     )
+
+
+def _with_readme_summary(candidate: CandidateRepo, *, timeout: int) -> CandidateRepo:
+    summary = fetch_readme_summary(candidate.name, timeout=timeout)
+    if not summary:
+        return candidate
+    return CandidateRepo(
+        **{**candidate.to_dict(), "readme_summary": summary},
+    )
+
+
+def fetch_readme_summary(full_name: str, *, timeout: int = 20) -> str:
+    if "/" not in full_name:
+        return ""
+    request = Request(
+        f"{GITHUB_API_URL}/repos/{full_name}/readme",
+        headers={
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "project-scout",
+        },
+    )
+    try:
+        with urlopen(request, timeout=timeout) as response:  # noqa: S310 - fixed GitHub API URL.
+            payload = json.loads(response.read().decode("utf-8"))
+    except (HTTPError, URLError, TimeoutError, json.JSONDecodeError):
+        return ""
+    content = payload.get("content", "")
+    if not isinstance(content, str):
+        return ""
+    try:
+        text = base64.b64decode(content).decode("utf-8", errors="replace")
+    except ValueError:
+        return ""
+    return summarize_readme_text(text)
+
+
+def summarize_readme_text(text: str, *, max_chars: int = 400) -> str:
+    without_code = re.sub(r"```.*?```", " ", text, flags=re.DOTALL)
+    without_images = re.sub(r"!\[[^\]]*]\([^)]*\)", " ", without_code)
+    without_links = re.sub(r"\[([^\]]+)]\([^)]*\)", r"\1", without_images)
+    without_markup = re.sub(r"[#>*_`|~]+", " ", without_links)
+    collapsed = " ".join(without_markup.split())
+    if len(collapsed) <= max_chars:
+        return collapsed
+    return collapsed[: max_chars - 1].rsplit(" ", 1)[0].rstrip(".") + "."

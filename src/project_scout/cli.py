@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import UTC, datetime
 from pathlib import Path
 
 from project_scout.core import build_report, load_brief, load_candidates, load_url_candidates
@@ -40,7 +41,7 @@ def _parser() -> argparse.ArgumentParser:
     report.add_argument("--out-json", default="project-scout-report.json", help="JSON output path.")
     report.add_argument(
         "--out-md",
-        default="docs/research/2026-05-prior-art-map.md",
+        default=None,
         help="Markdown output path.",
     )
     report.add_argument("--generated-at", help="Override generated timestamp for repeatable tests.")
@@ -62,10 +63,16 @@ def _report(args: argparse.Namespace) -> int:
         raise SystemExit("No candidates provided. Use --candidates, --urls, or --github-query.")
 
     report = build_report(brief, candidates, generated_at=args.generated_at)
-    write_report(report, out_json=Path(args.out_json), out_md=Path(args.out_md))
+    out_md = Path(args.out_md or _default_markdown_path())
+    write_report(report, out_json=Path(args.out_json), out_md=out_md)
     print(f"Wrote {args.out_json}")
-    print(f"Wrote {args.out_md}")
+    print(f"Wrote {out_md}")
     return 0
+
+
+def _default_markdown_path() -> str:
+    month = datetime.now(UTC).strftime("%Y-%m")
+    return f"docs/research/{month}-prior-art-map.md"
 
 
 if __name__ == "__main__":
