@@ -1,0 +1,11 @@
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+project-scout-report.json
+docs/research/*-prior-art-map.md
+!docs/research/.gitkeep
