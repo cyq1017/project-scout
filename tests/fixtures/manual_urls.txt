@@ -1,0 +1,2 @@
+https://github.com/sample/prior-art-cli
+https://github.com/ecosyste-ms/repos
