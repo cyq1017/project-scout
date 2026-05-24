@@ -6,6 +6,3 @@ __pycache__/
 .venv/
 dist/
 build/
-project-scout-report.json
-docs/research/*-prior-art-map.md
-!docs/research/.gitkeep

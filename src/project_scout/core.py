@@ -16,6 +16,17 @@ from project_scout.models import (
 )
 
 RECOMMENDATIONS = {"Borrow", "Avoid", "Integrate", "Compete", "Fork", "Ignore"}
+STOPWORDS = {
+    "and",
+    "are",
+    "for",
+    "from",
+    "into",
+    "the",
+    "that",
+    "this",
+    "with",
+}
 
 
 def load_brief(path: str | Path) -> ProjectBrief:
@@ -229,7 +240,7 @@ def _tokens(values: Iterable[str]) -> set[str]:
     tokens: set[str] = set()
     for value in values:
         tokens.update(re.findall(r"[a-z0-9]+", value.lower()))
-    return {token for token in tokens if len(token) > 2}
+    return {token for token in tokens if len(token) > 2 and token not in STOPWORDS}
 
 
 def _normalize(value: str) -> str:

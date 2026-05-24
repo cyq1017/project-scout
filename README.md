@@ -30,6 +30,27 @@ project-scout report \
   --out-md docs/research/2026-05-prior-art-map.md
 ```
 
+## Import Manual URLs
+
+```bash
+project-scout report \
+  --brief tests/fixtures/brief.json \
+  --urls tests/fixtures/manual_urls.txt \
+  --out-json project-scout-report.json \
+  --out-md docs/research/2026-05-prior-art-map.md
+```
+
+## Search GitHub Without Login
+
+```bash
+project-scout report \
+  --brief tests/fixtures/brief.json \
+  --github-query "prior art github search cli python" \
+  --github-limit 10
+```
+
+GitHub search uses the unauthenticated REST API and does not store tokens. It may hit public rate limits.
+
 ## Run Tests
 
 ```bash

@@ -4,14 +4,15 @@
 
 - [x] Initialize standalone Python CLI/library project.
 - [x] Document local-first prior-art discovery scope.
-- [ ] Parse project briefs with name, goal, keywords, target users, stack, and exclusions.
-- [ ] Import candidates from fixture/manual JSON.
-- [ ] Search GitHub repositories without login.
-- [ ] Normalize repository metadata.
-- [ ] Score deterministic similarity and overlap.
-- [ ] Recommend Borrow, Avoid, Integrate, Compete, Fork, or Ignore with evidence.
-- [ ] Emit Markdown and JSON reports.
-- [ ] Cover core behavior with fixture tests.
+- [x] Parse project briefs with name, goal, keywords, target users, stack, and exclusions.
+- [x] Import candidates from fixture/manual JSON.
+- [x] Import candidates from newline-delimited manual URL lists.
+- [x] Search GitHub repositories without login.
+- [x] Normalize repository metadata.
+- [x] Score deterministic similarity and overlap.
+- [x] Recommend Borrow, Avoid, Integrate, Compete, Fork, or Ignore with evidence.
+- [x] Emit Markdown and JSON reports.
+- [x] Cover core behavior with fixture tests.
 
 ## Next
 
@@ -21,7 +22,7 @@
 - Add Conductor plugin/adapter boundary.
 - Add configurable scoring weights.
 - Add richer license and activity risk analysis.
-- Add import support for plain URL lists.
+- Add README fetching for GitHub search candidates when rate limits allow.
 
 ## Non-Goals
 

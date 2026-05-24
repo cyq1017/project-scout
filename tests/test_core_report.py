@@ -19,6 +19,7 @@ def test_build_report_ranks_candidates_and_records_overlap_evidence():
     assert report.candidates[0].similarity_score > report.candidates[1].similarity_score
     assert report.candidates[0].recommendation in {"Borrow", "Integrate", "Fork", "Compete"}
     assert "python" in report.candidates[0].evidence
+    assert all("and" not in candidate.evidence for candidate in report.candidates)
     assert report.overlap_matrix[0]["candidate"] == "sample/prior-art-cli"
     assert report.overlap_matrix[0]["keyword_overlap"] >= 3
 

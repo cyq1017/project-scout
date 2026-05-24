@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -31,6 +32,7 @@ def test_cli_generates_fixture_report(tmp_path):
         check=False,
         text=True,
         capture_output=True,
+        env={**os.environ, "PYTHONPATH": "src"},
     )
 
     assert result.returncode == 0, result.stderr

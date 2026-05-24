@@ -19,6 +19,12 @@ Primary check:
 pytest
 ```
 
+When using the checked-in local `.venv` from a path containing spaces, Python 3.14 may mark editable `.pth` files hidden on macOS. If imports fail only inside that local venv, run:
+
+```bash
+chflags -R nohidden .venv/lib/python*/site-packages
+```
+
 Fixture report generation should use:
 
 ```bash
