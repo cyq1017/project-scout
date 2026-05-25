@@ -1,0 +1,457 @@
+{
+  "brief": {
+    "name": "deepseek-tui-desktop",
+    "goal": "Build a desktop app version of a DeepSeek-focused terminal chat client, preserving keyboard-first workflows while adding desktop packaging, local conversation management, model configuration, and optional plugin hooks.",
+    "keywords": [
+      "deepseek",
+      "tui",
+      "terminal chat",
+      "desktop ai client",
+      "chatgpt tui",
+      "llm chat client",
+      "keyboard first"
+    ],
+    "target_users": [
+      "developers",
+      "power users",
+      "terminal users",
+      "ai coding users"
+    ],
+    "tech_stack": [
+      "python",
+      "textual",
+      "tui",
+      "desktop",
+      "electron",
+      "tauri",
+      "openai compatible api",
+      "deepseek api"
+    ],
+    "exclusions": [
+      "web only",
+      "browser extension",
+      "hosted service",
+      "token storage in cloud",
+      "autonomous agent platform"
+    ]
+  },
+  "generated_at": "2026-05-25T00:00:00Z",
+  "summary": {
+    "candidate_count": 8,
+    "top_recommendation": "Borrow"
+  },
+  "candidates": [
+    {
+      "name": "dwisiswant0/chatgptui",
+      "url": "https://github.com/dwisiswant0/chatgptui",
+      "stars": 94,
+      "last_update": "",
+      "description": "ChatGPT with Textual User Interface mode written in Go.",
+      "topics": [
+        "chatgpt",
+        "tui",
+        "terminal",
+        "chat"
+      ],
+      "license": "",
+      "language": "Go",
+      "readme_summary": "Terminal UI chat client for ChatGPT-style workflows.",
+      "similarity_score": 0.5,
+      "recommendation": "Borrow",
+      "evidence": [
+        "chatgpt tui",
+        "terminal chat",
+        "tui",
+        "textual",
+        "terminal users",
+        "chat",
+        "chatgpt",
+        "terminal",
+        "client",
+        "workflow"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "pythops/tenere",
+      "url": "https://github.com/pythops/tenere",
+      "stars": 666,
+      "last_update": "",
+      "description": "TUI for LLMs.",
+      "topics": [
+        "tui",
+        "llm",
+        "terminal",
+        "chat"
+      ],
+      "license": "",
+      "language": "Rust",
+      "readme_summary": "Keyboard-first terminal interface for chatting with LLMs.",
+      "similarity_score": 0.444,
+      "recommendation": "Compete",
+      "evidence": [
+        "keyboard first",
+        "terminal chat",
+        "tui",
+        "chat",
+        "llm",
+        "terminal",
+        "first",
+        "keyboard"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "Chevey339/kelivo",
+      "url": "https://github.com/Chevey339/kelivo",
+      "stars": 2714,
+      "last_update": "",
+      "description": "A Flutter LLM chat client supporting mobile and desktop.",
+      "topics": [
+        "llm",
+        "chat",
+        "desktop",
+        "flutter",
+        "mobile"
+      ],
+      "license": "",
+      "language": "Dart",
+      "readme_summary": "Cross-platform LLM chat client with desktop support.",
+      "similarity_score": 0.356,
+      "recommendation": "Compete",
+      "evidence": [
+        "desktop ai client",
+        "llm chat client",
+        "desktop",
+        "chat",
+        "llm",
+        "client"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "beefboomb/deepseek-tui-",
+      "url": "https://github.com/beefboomb/deepseek-tui-",
+      "stars": 24,
+      "last_update": "",
+      "description": "deepseek-tui simple installation guide for Windows computers.",
+      "topics": [
+        "deepseek",
+        "tui",
+        "windows"
+      ],
+      "license": "",
+      "language": "",
+      "readme_summary": "Installation-oriented repository for running deepseek-tui on Windows.",
+      "similarity_score": 0.269,
+      "recommendation": "Ignore",
+      "evidence": [
+        "deepseek",
+        "tui"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "esengine/DeepSeek-Reasonix",
+      "url": "https://github.com/esengine/DeepSeek-Reasonix",
+      "stars": 6873,
+      "last_update": "",
+      "description": "DeepSeek-native AI coding agent for your terminal.",
+      "topics": [
+        "deepseek",
+        "terminal",
+        "coding-agent",
+        "ai",
+        "cli"
+      ],
+      "license": "",
+      "language": "TypeScript",
+      "readme_summary": "Terminal coding agent designed around DeepSeek workflows.",
+      "similarity_score": 0.206,
+      "recommendation": "Ignore",
+      "evidence": [
+        "deepseek",
+        "terminal",
+        "workflow"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "usewhale/DeepSeek-Code-Whale",
+      "url": "https://github.com/usewhale/DeepSeek-Code-Whale",
+      "stars": 202,
+      "last_update": "",
+      "description": "Terminal AI coding agent built for DeepSeek with MCP tool integration.",
+      "topics": [
+        "deepseek",
+        "terminal",
+        "mcp",
+        "coding-agent",
+        "ai"
+      ],
+      "license": "",
+      "language": "Go",
+      "readme_summary": "DeepSeek-focused terminal AI coding agent with tool integration.",
+      "similarity_score": 0.206,
+      "recommendation": "Ignore",
+      "evidence": [
+        "deepseek",
+        "terminal",
+        "focused"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "Hmbown/CodeWhale",
+      "url": "https://github.com/Hmbown/CodeWhale",
+      "stars": 34338,
+      "last_update": "",
+      "description": "Coding agent for open source, open weight models.",
+      "topics": [
+        "coding-agent",
+        "llm",
+        "terminal",
+        "open-weight",
+        "ai"
+      ],
+      "license": "",
+      "language": "Rust",
+      "readme_summary": "Terminal-oriented coding agent for open-weight models.",
+      "similarity_score": 0.156,
+      "recommendation": "Ignore",
+      "evidence": [
+        "llm",
+        "terminal",
+        "model"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "chaterm/Chaterm",
+      "url": "https://github.com/chaterm/Chaterm",
+      "stars": 2966,
+      "last_update": "",
+      "description": "Open source AI terminal for cloud and infrastructure management.",
+      "topics": [
+        "terminal",
+        "ai",
+        "cloud",
+        "infrastructure"
+      ],
+      "license": "",
+      "language": "TypeScript",
+      "readme_summary": "AI terminal focused on cloud and infrastructure workflows.",
+      "similarity_score": 0.125,
+      "recommendation": "Ignore",
+      "evidence": [
+        "terminal",
+        "focused",
+        "management",
+        "workflow"
+      ],
+      "avoid_reasons": []
+    }
+  ],
+  "overlap_matrix": [
+    {
+      "candidate": "dwisiswant0/chatgptui",
+      "score": 0.5,
+      "recommendation": "Borrow",
+      "keyword_overlap": 3,
+      "stack_overlap": 2,
+      "user_overlap": 1,
+      "exclusion_overlap": 0,
+      "stars": 94,
+      "last_update": ""
+    },
+    {
+      "candidate": "pythops/tenere",
+      "score": 0.444,
+      "recommendation": "Compete",
+      "keyword_overlap": 3,
+      "stack_overlap": 1,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 666,
+      "last_update": ""
+    },
+    {
+      "candidate": "Chevey339/kelivo",
+      "score": 0.356,
+      "recommendation": "Compete",
+      "keyword_overlap": 2,
+      "stack_overlap": 1,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 2714,
+      "last_update": ""
+    },
+    {
+      "candidate": "beefboomb/deepseek-tui-",
+      "score": 0.269,
+      "recommendation": "Ignore",
+      "keyword_overlap": 2,
+      "stack_overlap": 1,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 24,
+      "last_update": ""
+    },
+    {
+      "candidate": "esengine/DeepSeek-Reasonix",
+      "score": 0.206,
+      "recommendation": "Ignore",
+      "keyword_overlap": 1,
+      "stack_overlap": 0,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 6873,
+      "last_update": ""
+    },
+    {
+      "candidate": "usewhale/DeepSeek-Code-Whale",
+      "score": 0.206,
+      "recommendation": "Ignore",
+      "keyword_overlap": 1,
+      "stack_overlap": 0,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 202,
+      "last_update": ""
+    },
+    {
+      "candidate": "Hmbown/CodeWhale",
+      "score": 0.156,
+      "recommendation": "Ignore",
+      "keyword_overlap": 0,
+      "stack_overlap": 0,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 34338,
+      "last_update": ""
+    },
+    {
+      "candidate": "chaterm/Chaterm",
+      "score": 0.125,
+      "recommendation": "Ignore",
+      "keyword_overlap": 0,
+      "stack_overlap": 0,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 2966,
+      "last_update": ""
+    }
+  ],
+  "recommendations": [
+    {
+      "candidate": "dwisiswant0/chatgptui",
+      "recommendation": "Borrow",
+      "score": 0.5,
+      "evidence": [
+        "chatgpt tui",
+        "terminal chat",
+        "tui",
+        "textual",
+        "terminal users",
+        "chat",
+        "chatgpt",
+        "terminal",
+        "client",
+        "workflow"
+      ]
+    },
+    {
+      "candidate": "pythops/tenere",
+      "recommendation": "Compete",
+      "score": 0.444,
+      "evidence": [
+        "keyboard first",
+        "terminal chat",
+        "tui",
+        "chat",
+        "llm",
+        "terminal",
+        "first",
+        "keyboard"
+      ]
+    },
+    {
+      "candidate": "Chevey339/kelivo",
+      "recommendation": "Compete",
+      "score": 0.356,
+      "evidence": [
+        "desktop ai client",
+        "llm chat client",
+        "desktop",
+        "chat",
+        "llm",
+        "client"
+      ]
+    },
+    {
+      "candidate": "beefboomb/deepseek-tui-",
+      "recommendation": "Ignore",
+      "score": 0.269,
+      "evidence": [
+        "deepseek",
+        "tui"
+      ]
+    },
+    {
+      "candidate": "esengine/DeepSeek-Reasonix",
+      "recommendation": "Ignore",
+      "score": 0.206,
+      "evidence": [
+        "deepseek",
+        "terminal",
+        "workflow"
+      ]
+    },
+    {
+      "candidate": "usewhale/DeepSeek-Code-Whale",
+      "recommendation": "Ignore",
+      "score": 0.206,
+      "evidence": [
+        "deepseek",
+        "terminal",
+        "focused"
+      ]
+    },
+    {
+      "candidate": "Hmbown/CodeWhale",
+      "recommendation": "Ignore",
+      "score": 0.156,
+      "evidence": [
+        "llm",
+        "terminal",
+        "model"
+      ]
+    },
+    {
+      "candidate": "chaterm/Chaterm",
+      "recommendation": "Ignore",
+      "score": 0.125,
+      "evidence": [
+        "terminal",
+        "focused",
+        "management",
+        "workflow"
+      ]
+    }
+  ],
+  "risks": [
+    "dwisiswant0/chatgptui: missing update metadata.",
+    "pythops/tenere: missing update metadata.",
+    "Chevey339/kelivo: missing update metadata.",
+    "beefboomb/deepseek-tui-: missing update metadata.",
+    "esengine/DeepSeek-Reasonix: missing update metadata.",
+    "usewhale/DeepSeek-Code-Whale: missing update metadata.",
+    "Hmbown/CodeWhale: missing update metadata.",
+    "chaterm/Chaterm: missing update metadata."
+  ],
+  "suggested_updates": [
+    "ADR: Record why Borrow is the current recommendation for dwisiswant0/chatgptui.",
+    "Backlog: Add manual review tasks for license, maintenance activity, and integration cost.",
+    "Backlog: Track borrowed ideas separately from differentiating product decisions."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "deepseek-tui-desktop",
+  "goal": "Build a desktop app version of a DeepSeek-focused terminal chat client, preserving keyboard-first workflows while adding desktop packaging, local conversation management, model configuration, and optional plugin hooks.",
+  "keywords": [
+    "deepseek",
+    "tui",
+    "terminal chat",
+    "desktop ai client",
+    "chatgpt tui",
+    "llm chat client",
+    "keyboard first"
+  ],
+  "target_users": [
+    "developers",
+    "power users",
+    "terminal users",
+    "ai coding users"
+  ],
+  "tech_stack": [
+    "python",
+    "textual",
+    "tui",
+    "desktop",
+    "electron",
+    "tauri",
+    "openai compatible api",
+    "deepseek api"
+  ],
+  "exclusions": [
+    "web only",
+    "browser extension",
+    "hosted service",
+    "token storage in cloud",
+    "autonomous agent platform"
+  ]
+}

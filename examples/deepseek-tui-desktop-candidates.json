@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Hmbown/CodeWhale",
+    "url": "https://github.com/Hmbown/CodeWhale",
+    "stars": 34338,
+    "last_update": "",
+    "description": "Coding agent for open source, open weight models.",
+    "topics": ["coding-agent", "llm", "terminal", "open-weight", "ai"],
+    "license": "",
+    "language": "Rust",
+    "readme_summary": "Terminal-oriented coding agent for open-weight models."
+  },
+  {
+    "name": "esengine/DeepSeek-Reasonix",
+    "url": "https://github.com/esengine/DeepSeek-Reasonix",
+    "stars": 6873,
+    "last_update": "",
+    "description": "DeepSeek-native AI coding agent for your terminal.",
+    "topics": ["deepseek", "terminal", "coding-agent", "ai", "cli"],
+    "license": "",
+    "language": "TypeScript",
+    "readme_summary": "Terminal coding agent designed around DeepSeek workflows."
+  },
+  {
+    "name": "beefboomb/deepseek-tui-",
+    "url": "https://github.com/beefboomb/deepseek-tui-",
+    "stars": 24,
+    "last_update": "",
+    "description": "deepseek-tui simple installation guide for Windows computers.",
+    "topics": ["deepseek", "tui", "windows"],
+    "license": "",
+    "language": "",
+    "readme_summary": "Installation-oriented repository for running deepseek-tui on Windows."
+  },
+  {
+    "name": "usewhale/DeepSeek-Code-Whale",
+    "url": "https://github.com/usewhale/DeepSeek-Code-Whale",
+    "stars": 202,
+    "last_update": "",
+    "description": "Terminal AI coding agent built for DeepSeek with MCP tool integration.",
+    "topics": ["deepseek", "terminal", "mcp", "coding-agent", "ai"],
+    "license": "",
+    "language": "Go",
+    "readme_summary": "DeepSeek-focused terminal AI coding agent with tool integration."
+  },
+  {
+    "name": "pythops/tenere",
+    "url": "https://github.com/pythops/tenere",
+    "stars": 666,
+    "last_update": "",
+    "description": "TUI for LLMs.",
+    "topics": ["tui", "llm", "terminal", "chat"],
+    "license": "",
+    "language": "Rust",
+    "readme_summary": "Keyboard-first terminal interface for chatting with LLMs."
+  },
+  {
+    "name": "dwisiswant0/chatgptui",
+    "url": "https://github.com/dwisiswant0/chatgptui",
+    "stars": 94,
+    "last_update": "",
+    "description": "ChatGPT with Textual User Interface mode written in Go.",
+    "topics": ["chatgpt", "tui", "terminal", "chat"],
+    "license": "",
+    "language": "Go",
+    "readme_summary": "Terminal UI chat client for ChatGPT-style workflows."
+  },
+  {
+    "name": "Chevey339/kelivo",
+    "url": "https://github.com/Chevey339/kelivo",
+    "stars": 2714,
+    "last_update": "",
+    "description": "A Flutter LLM chat client supporting mobile and desktop.",
+    "topics": ["llm", "chat", "desktop", "flutter", "mobile"],
+    "license": "",
+    "language": "Dart",
+    "readme_summary": "Cross-platform LLM chat client with desktop support."
+  },
+  {
+    "name": "chaterm/Chaterm",
+    "url": "https://github.com/chaterm/Chaterm",
+    "stars": 2966,
+    "last_update": "",
+    "description": "Open source AI terminal for cloud and infrastructure management.",
+    "topics": ["terminal", "ai", "cloud", "infrastructure"],
+    "license": "",
+    "language": "TypeScript",
+    "readme_summary": "AI terminal focused on cloud and infrastructure workflows."
+  }
+]
