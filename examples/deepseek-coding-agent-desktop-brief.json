@@ -1,0 +1,44 @@
+{
+  "name": "deepseek-coding-agent-desktop",
+  "goal": "Build a desktop coding-agent workbench comparable to Codex App, but optimized for DeepSeek or other OpenAI-compatible models. The app should supervise coding agents across local projects, show diffs and run history, manage approvals, preserve project context, and support long-running tasks from a GUI rather than a terminal-only TUI.",
+  "keywords": [
+    "codex app",
+    "desktop coding agent",
+    "deepseek",
+    "agent workbench",
+    "multi agent",
+    "diff review",
+    "run history",
+    "local first",
+    "byok"
+  ],
+  "target_users": [
+    "software engineers",
+    "ai coding users",
+    "agent supervisors",
+    "engineering leads",
+    "desktop power users"
+  ],
+  "tech_stack": [
+    "desktop",
+    "tauri",
+    "electron",
+    "native macos",
+    "openai compatible api",
+    "deepseek api",
+    "git worktree",
+    "sandbox",
+    "mcp"
+  ],
+  "exclusions": [
+    "tui only",
+    "cli only",
+    "ide extension only",
+    "terminal only",
+    "editor only",
+    "chat only",
+    "hosted service",
+    "web only",
+    "token storage in cloud"
+  ]
+}

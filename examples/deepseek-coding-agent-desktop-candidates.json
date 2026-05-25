@@ -1,0 +1,134 @@
+[
+  {
+    "name": "CarpseDeam/Aura-IDE",
+    "url": "https://github.com/CarpseDeam/Aura-IDE",
+    "stars": 0,
+    "last_update": "",
+    "description": "Open-source desktop AI coding app built around DeepSeek, with a planner/worker workflow for planning, building, editing, and improving software projects.",
+    "topics": ["desktop", "coding-agent", "deepseek", "planner-worker", "run-history", "local-first"],
+    "license": "",
+    "language": "Python",
+    "readme_summary": "Python and PySide6 desktop workspace with DeepSeek as primary provider, OpenAI/Anthropic/Gemini/OpenRouter support, project memory, local codebase indexing, terminal and checkpoint panels, and optional Claude Code, Gemini CLI, and Codex worker backends."
+  },
+  {
+    "name": "Hash-7777/HashCortX",
+    "url": "https://github.com/Hash-7777/HashCortX",
+    "stars": 0,
+    "last_update": "",
+    "description": "Open-source desktop AI agent app for private agent workflows, coding, testing, review, local tools, and coordinated specialist agents.",
+    "topics": ["desktop", "coding-agent", "agent-workbench", "deepseek", "tauri", "local-first", "byok"],
+    "license": "MIT",
+    "language": "JavaScript",
+    "readme_summary": "Tauri desktop app with chats, agents, code, workflow, sandbox, agent swarm, virtual OS, source code release, and multi-provider routing including DeepSeek."
+  },
+  {
+    "name": "Localforge",
+    "url": "https://localforge.dev/",
+    "stars": 0,
+    "last_update": "",
+    "description": "Open-source Codex AI and Claude-compatible desktop agent that runs locally, supports any LLM including DeepSeek-compatible providers, and focuses on multi-file coding tasks.",
+    "topics": ["codex-app", "desktop", "coding-agent", "deepseek", "byok", "local-first"],
+    "license": "MIT",
+    "language": "",
+    "readme_summary": "Desktop coding-agent app for local projects, provider switching, large multi-file tasks, and local-first execution."
+  },
+  {
+    "name": "TesslateAI/OpenSail",
+    "url": "https://github.com/TesslateAI/OpenSail",
+    "stars": 0,
+    "last_update": "",
+    "description": "Open-source alternative to Codex App, Claude Desktop, Cursor, and Cowork for agentic software work, implemented as a Tauri desktop shell with a local sidecar.",
+    "topics": ["codex-app", "desktop", "coding-agent", "tauri", "deepseek", "byok", "sandbox"],
+    "license": "",
+    "language": "",
+    "readme_summary": "Defines runnable agent workflows with tools, connectors, approval gates, budget limits, run history, sandboxed workspaces, and DeepSeek/OpenAI-compatible BYOK providers."
+  },
+  {
+    "name": "ECA",
+    "url": "https://eca.dev/",
+    "stars": 0,
+    "last_update": "",
+    "description": "Open-source editor-agnostic AI pair programming tool with a desktop app and protocol-based editor integration.",
+    "topics": ["desktop", "coding-agent", "openai-compatible", "deepseek", "mcp", "editor-agnostic"],
+    "license": "",
+    "language": "",
+    "readme_summary": "Desktop-capable agent can read, write, and refactor code, attach files and directories, consume MCP resources, and connect to DeepSeek through OpenAI-compatible API configuration."
+  },
+  {
+    "name": "OpenCovibe",
+    "url": "https://opencovibe.com/",
+    "stars": 0,
+    "last_update": "",
+    "description": "Local-first desktop app for AI-assisted coding that wraps Claude Code with a visual interface, provider switching, run history, and custom agent definitions.",
+    "topics": ["desktop", "coding-agent", "run-history", "deepseek", "local-first", "agent-definitions"],
+    "license": "Apache-2.0",
+    "language": "",
+    "readme_summary": "Provides desktop visual supervision around coding-agent runs and supports providers including DeepSeek, Kimi, Zhipu, MiniMax, OpenRouter, and Ollama."
+  },
+  {
+    "name": "CrispyVibe",
+    "url": "https://crispyvibe.com/",
+    "stars": 0,
+    "last_update": "",
+    "description": "Native macOS IDE for AI coding agents with persistent workspaces, terminals, ACP conversations, browser panes, and git integration.",
+    "topics": ["desktop", "native-macos", "coding-agent", "codex", "git", "agent-workspace"],
+    "license": "",
+    "language": "",
+    "readme_summary": "Targets developers who coordinate multiple coding agents such as Codex, Claude Code, Kiro, and Gemini from a native desktop workspace."
+  },
+  {
+    "name": "strIDEterm",
+    "url": "https://strideterm.com/",
+    "stars": 0,
+    "last_update": "",
+    "description": "Open-source Electron desktop app for AI-powered development workspaces, shells, code reviews, Git, Docker, and supervised coding loops.",
+    "topics": ["desktop", "electron", "coding-agent", "codex", "code-review", "git", "docker"],
+    "license": "MIT",
+    "language": "",
+    "readme_summary": "Organizes AI coding agents and local development surfaces into focused workspaces, including supervised worker and judge loops across Codex, Gemini, OpenCode, and similar agents."
+  },
+  {
+    "name": "Kaiden",
+    "url": "https://openkaiden.ai/",
+    "stars": 0,
+    "last_update": "",
+    "description": "Desktop app for agentic development with governed, isolated coding-agent sessions.",
+    "topics": ["desktop", "coding-agent", "sandbox", "codex", "opencode", "local-models"],
+    "license": "",
+    "language": "",
+    "readme_summary": "Supports multiple coding agents including Codex, Cursor, OpenCode, and Goose, with sandboxing backed by local container and microVM technology."
+  },
+  {
+    "name": "Band",
+    "url": "https://getband.app/",
+    "stars": 0,
+    "last_update": "",
+    "description": "Agent-first desktop IDE for dispatching coding tasks to Claude Code, Codex, or OpenCode in parallel across isolated git worktrees.",
+    "topics": ["desktop", "coding-agent", "multi-agent", "git-worktree", "codex", "code-editor"],
+    "license": "",
+    "language": "",
+    "readme_summary": "Combines chat panes, terminals, browsers, code editor, and isolated worktrees for supervising multiple local coding agents."
+  },
+  {
+    "name": "Void",
+    "url": "https://github.com/voideditor/void",
+    "stars": 0,
+    "last_update": "",
+    "description": "Open-source Cursor alternative and desktop AI code editor.",
+    "topics": ["desktop", "ai-code-editor", "cursor-alternative", "coding-agent", "open-source"],
+    "license": "",
+    "language": "",
+    "readme_summary": "Editor only comparison point for AI coding, useful as a comparison point but less directly aligned with a Codex App-style agent supervisor."
+  },
+  {
+    "name": "OpenSeek",
+    "url": "https://openseek.dev/",
+    "stars": 0,
+    "last_update": "",
+    "description": "Open-source terminal coding agent for DeepSeek-compatible and OpenAI-compatible providers.",
+    "topics": ["cli", "terminal", "coding-agent", "deepseek", "openai-compatible"],
+    "license": "",
+    "language": "",
+    "readme_summary": "Useful worker-agent backend reference, but it is terminal only rather than a GUI coding-agent workbench."
+  }
+]
