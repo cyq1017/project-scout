@@ -16,9 +16,14 @@
 
 ## Next
 
+- Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
+- Add DiscoveryBrief parsing and compatibility mapping to ProjectBrief.
+- Add structured search log and coverage confidence to JSON output.
+- Add coverage matrix and blind spots to Markdown output.
+- Add skills registry adapter.
 - Add optional web search adapter.
 - Add optional LLM summarization adapter.
-- Add Codex/Claude skill wrapper.
+- Add user-level Codex/Claude skill install command.
 - Add Conductor plugin/adapter boundary.
 - Add configurable scoring weights.
 - Add richer license and activity risk analysis.

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Prior Art Scout"
+  short_description: "Find existing solutions before building"
+  default_prompt: "Use $prior-art-scout to check existing solutions before I decide whether to build, adopt, fork, extend, or integrate."
+
+policy:
+  allow_implicit_invocation: true
