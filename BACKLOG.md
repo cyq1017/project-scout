@@ -13,14 +13,15 @@
 - [x] Recommend Borrow, Avoid, Integrate, Compete, Fork, or Ignore with evidence.
 - [x] Emit Markdown and JSON reports.
 - [x] Cover core behavior with fixture tests.
+- [x] Add `prior-art-scout` skill source.
+- [x] Add DiscoveryBrief compatibility mapping.
+- [x] Add structured search log and coverage confidence.
+- [x] Add coverage matrix and blind spots to Markdown.
+- [x] Add skills registry parser and CLI adapter.
 
 ## Next
 
 - Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
-- Add DiscoveryBrief parsing and compatibility mapping to ProjectBrief.
-- Add structured search log and coverage confidence to JSON output.
-- Add coverage matrix and blind spots to Markdown output.
-- Add skills registry adapter.
 - Add optional web search adapter.
 - Add optional LLM summarization adapter.
 - Add user-level Codex/Claude skill install command.

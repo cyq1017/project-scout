@@ -4,18 +4,30 @@ Generated: 2026-05-25T00:00:00Z
 
 ## Executive Summary
 
-Reviewed 8 candidate projects. Top recommendation signal: **Borrow**.
+Reviewed 8 candidate projects. Top recommendation signal: **Borrow**. Decision confidence: **Medium**. Coverage confidence: **Medium**.
+
+## Search Summary
+
+| Source | Query | Results | Used | Status | Notes |
+| --- | --- | ---: | ---: | --- | --- |
+| manual | examples/deepseek-tui-desktop-candidates.json | 8 | 8 | ok |  |
+
+## Coverage Matrix
+
+| Source | Status | Used | Notes |
+| --- | --- | ---: | --- |
+| manual | ok | 8 |  |
 
 ## Similar Projects
 
 | Project | Stars | Updated | License | Language | Score | Recommendation |
 | --- | ---: | --- | --- | --- | ---: | --- |
 | [dwisiswant0/chatgptui](https://github.com/dwisiswant0/chatgptui) | 94 | unknown | unknown | Go | 0.500 | Borrow |
-| [pythops/tenere](https://github.com/pythops/tenere) | 666 | unknown | unknown | Rust | 0.444 | Compete |
-| [Chevey339/kelivo](https://github.com/Chevey339/kelivo) | 2714 | unknown | unknown | Dart | 0.356 | Compete |
-| [beefboomb/deepseek-tui-](https://github.com/beefboomb/deepseek-tui-) | 24 | unknown | unknown | unknown | 0.269 | Ignore |
-| [esengine/DeepSeek-Reasonix](https://github.com/esengine/DeepSeek-Reasonix) | 6873 | unknown | unknown | TypeScript | 0.206 | Ignore |
-| [usewhale/DeepSeek-Code-Whale](https://github.com/usewhale/DeepSeek-Code-Whale) | 202 | unknown | unknown | Go | 0.206 | Ignore |
+| [pythops/tenere](https://github.com/pythops/tenere) | 666 | unknown | unknown | Rust | 0.444 | Write New |
+| [Chevey339/kelivo](https://github.com/Chevey339/kelivo) | 2714 | unknown | unknown | Dart | 0.356 | Write New |
+| [beefboomb/deepseek-tui-](https://github.com/beefboomb/deepseek-tui-) | 24 | unknown | unknown | unknown | 0.269 | Monitor |
+| [esengine/DeepSeek-Reasonix](https://github.com/esengine/DeepSeek-Reasonix) | 6873 | unknown | unknown | TypeScript | 0.206 | Monitor |
+| [usewhale/DeepSeek-Code-Whale](https://github.com/usewhale/DeepSeek-Code-Whale) | 202 | unknown | unknown | Go | 0.206 | Monitor |
 | [Hmbown/CodeWhale](https://github.com/Hmbown/CodeWhale) | 34338 | unknown | unknown | Rust | 0.156 | Ignore |
 | [chaterm/Chaterm](https://github.com/chaterm/Chaterm) | 2966 | unknown | unknown | TypeScript | 0.125 | Ignore |
 
@@ -40,17 +52,25 @@ Reviewed 8 candidate projects. Top recommendation signal: **Borrow**.
 
 ## What To Avoid
 
-- beefboomb/deepseek-tui-: low overlap in available metadata.
-- esengine/DeepSeek-Reasonix: low overlap in available metadata.
-- usewhale/DeepSeek-Code-Whale: low overlap in available metadata.
 - Hmbown/CodeWhale: low overlap in available metadata.
 - chaterm/Chaterm: low overlap in available metadata.
 
-## Build / Adopt / Fork / Plugin Recommendation
+## Recommendation And Confidence
 
-- Recommendation: **Borrow** with `dwisiswant0/chatgptui` as the strongest current signal.
-- Evidence: chatgpt tui, terminal chat, tui, textual, terminal users, chat, chatgpt, terminal, client, workflow.
+- Recommendation: **Borrow**.
+- Decision confidence: **Medium**.
+- Rationale: dwisiswant0/chatgptui has the strongest current score (0.500).
+- Rationale: Recommendation is based on evidence: chatgpt tui, terminal chat, tui, textual, terminal users, chat, chatgpt, terminal, client, workflow.
+- Confidence reason: 8 candidates compared.
+- Confidence reason: Metadata is deterministic but may need manual source verification.
 - Treat this as research input, not an automatic decision.
+
+## Coverage Confidence And Blind Spots
+
+- Coverage confidence: **Medium**.
+- Stop reason: Compared available candidates after recorded source collection.
+- Blind spot: Web and community sources were not covered unless supplied manually.
+- Blind spot: Skills registry was not covered unless supplied manually.
 
 ## Differentiation Is Not Enough: Useful Positioning
 

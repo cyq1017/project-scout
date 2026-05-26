@@ -40,6 +40,46 @@
     "candidate_count": 8,
     "top_recommendation": "Borrow"
   },
+  "decision": {
+    "recommendation": "Borrow",
+    "confidence": "Medium",
+    "rationale": [
+      "dwisiswant0/chatgptui has the strongest current score (0.500).",
+      "Recommendation is based on evidence: chatgpt tui, terminal chat, tui, textual, terminal users, chat, chatgpt, terminal, client, workflow."
+    ],
+    "confidence_reasons": [
+      "8 candidates compared.",
+      "Metadata is deterministic but may need manual source verification."
+    ]
+  },
+  "coverage": {
+    "confidence": "Medium",
+    "sources": [
+      {
+        "source": "manual",
+        "query": "examples/deepseek-tui-desktop-candidates.json",
+        "result_count": 8,
+        "used_count": 8,
+        "status": "ok",
+        "error": null
+      }
+    ],
+    "blind_spots": [
+      "Web and community sources were not covered unless supplied manually.",
+      "Skills registry was not covered unless supplied manually."
+    ],
+    "stop_reason": "Compared available candidates after recorded source collection."
+  },
+  "search_log": [
+    {
+      "source": "manual",
+      "query": "examples/deepseek-tui-desktop-candidates.json",
+      "result_count": 8,
+      "used_count": 8,
+      "status": "ok",
+      "error": null
+    }
+  ],
   "candidates": [
     {
       "name": "dwisiswant0/chatgptui",
@@ -88,7 +128,7 @@
       "language": "Rust",
       "readme_summary": "Keyboard-first terminal interface for chatting with LLMs.",
       "similarity_score": 0.444,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "evidence": [
         "keyboard first",
         "terminal chat",
@@ -118,7 +158,7 @@
       "language": "Dart",
       "readme_summary": "Cross-platform LLM chat client with desktop support.",
       "similarity_score": 0.356,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "evidence": [
         "desktop ai client",
         "llm chat client",
@@ -144,7 +184,7 @@
       "language": "",
       "readme_summary": "Installation-oriented repository for running deepseek-tui on Windows.",
       "similarity_score": 0.269,
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "evidence": [
         "deepseek",
         "tui"
@@ -168,7 +208,7 @@
       "language": "TypeScript",
       "readme_summary": "Terminal coding agent designed around DeepSeek workflows.",
       "similarity_score": 0.206,
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "evidence": [
         "deepseek",
         "terminal",
@@ -193,7 +233,7 @@
       "language": "Go",
       "readme_summary": "DeepSeek-focused terminal AI coding agent with tool integration.",
       "similarity_score": 0.206,
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "evidence": [
         "deepseek",
         "terminal",
@@ -267,7 +307,7 @@
     {
       "candidate": "pythops/tenere",
       "score": 0.444,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "keyword_overlap": 3,
       "stack_overlap": 1,
       "user_overlap": 0,
@@ -278,7 +318,7 @@
     {
       "candidate": "Chevey339/kelivo",
       "score": 0.356,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "keyword_overlap": 2,
       "stack_overlap": 1,
       "user_overlap": 0,
@@ -289,7 +329,7 @@
     {
       "candidate": "beefboomb/deepseek-tui-",
       "score": 0.269,
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "keyword_overlap": 2,
       "stack_overlap": 1,
       "user_overlap": 0,
@@ -300,7 +340,7 @@
     {
       "candidate": "esengine/DeepSeek-Reasonix",
       "score": 0.206,
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "keyword_overlap": 1,
       "stack_overlap": 0,
       "user_overlap": 0,
@@ -311,7 +351,7 @@
     {
       "candidate": "usewhale/DeepSeek-Code-Whale",
       "score": 0.206,
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "keyword_overlap": 1,
       "stack_overlap": 0,
       "user_overlap": 0,
@@ -362,7 +402,7 @@
     },
     {
       "candidate": "pythops/tenere",
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "score": 0.444,
       "evidence": [
         "keyboard first",
@@ -377,7 +417,7 @@
     },
     {
       "candidate": "Chevey339/kelivo",
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "score": 0.356,
       "evidence": [
         "desktop ai client",
@@ -390,7 +430,7 @@
     },
     {
       "candidate": "beefboomb/deepseek-tui-",
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "score": 0.269,
       "evidence": [
         "deepseek",
@@ -399,7 +439,7 @@
     },
     {
       "candidate": "esengine/DeepSeek-Reasonix",
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "score": 0.206,
       "evidence": [
         "deepseek",
@@ -409,7 +449,7 @@
     },
     {
       "candidate": "usewhale/DeepSeek-Code-Whale",
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "score": 0.206,
       "evidence": [
         "deepseek",

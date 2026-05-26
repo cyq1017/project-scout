@@ -9,13 +9,27 @@ from urllib.parse import urlparse
 
 from project_scout.models import (
     CandidateRepo,
+    CoverageSummary,
+    DecisionSummary,
+    DiscoveryBrief,
     ProjectBrief,
     ReportSummary,
     ScoredCandidate,
+    SearchLogEntry,
     ScoutReport,
 )
 
-RECOMMENDATIONS = {"Borrow", "Avoid", "Integrate", "Compete", "Fork", "Ignore"}
+RECOMMENDATIONS = {
+    "Adopt",
+    "Borrow",
+    "Integrate",
+    "Fork",
+    "Extend",
+    "Write New",
+    "Avoid",
+    "Ignore",
+    "Monitor",
+}
 STOPWORDS = {
     "and",
     "are",
@@ -33,6 +47,8 @@ def load_brief(path: str | Path) -> ProjectBrief:
     data = _read_json(path)
     if not isinstance(data, dict):
         raise ValueError("brief JSON must be an object")
+    if "target_type" in data or "users_or_consumers" in data:
+        return DiscoveryBrief.from_dict(data).to_project_brief()
     return ProjectBrief.from_dict(data)
 
 
@@ -59,6 +75,7 @@ def build_report(
     candidates: Iterable[CandidateRepo],
     *,
     generated_at: str | None = None,
+    search_log: Iterable[dict[str, object] | SearchLogEntry] | None = None,
 ) -> ScoutReport:
     scored = [_score_candidate(brief, candidate) for candidate in candidates]
     scored.sort(key=lambda candidate: candidate.similarity_score, reverse=True)
@@ -75,15 +92,103 @@ def build_report(
     risks = _risks(scored)
     suggested_updates = _suggested_updates(brief, scored)
     top = scored[0].recommendation if scored else "Ignore"
+    log_entries = _search_log_entries(search_log)
+    decision = _decision_summary(scored, log_entries)
+    coverage = _coverage_summary(log_entries)
     return ScoutReport(
         brief=brief,
         generated_at=generated_at or datetime.now(UTC).replace(microsecond=0).isoformat(),
         summary=ReportSummary(candidate_count=len(scored), top_recommendation=top),
+        decision=decision,
+        coverage=coverage,
+        search_log=log_entries,
         candidates=scored,
         overlap_matrix=matrix,
         recommendations=recommendations,
         risks=risks,
         suggested_updates=suggested_updates,
+    )
+
+
+def _search_log_entries(
+    search_log: Iterable[dict[str, object] | SearchLogEntry] | None,
+) -> list[SearchLogEntry]:
+    if not search_log:
+        return [
+            SearchLogEntry(
+                source="manual",
+                query="unspecified",
+                result_count=0,
+                used_count=0,
+                status="unknown",
+                error=None,
+            )
+        ]
+    entries: list[SearchLogEntry] = []
+    for entry in search_log:
+        if isinstance(entry, SearchLogEntry):
+            entries.append(entry)
+        elif isinstance(entry, dict):
+            entries.append(SearchLogEntry.from_dict(entry))
+    return entries
+
+
+def _decision_summary(
+    candidates: list[ScoredCandidate],
+    search_log: list[SearchLogEntry],
+) -> DecisionSummary:
+    top = candidates[0] if candidates else None
+    if top is None:
+        return DecisionSummary(
+            recommendation="Ignore",
+            confidence="Low",
+            rationale=["No candidates were available for comparison."],
+            confidence_reasons=["Candidate set is empty."],
+        )
+
+    confidence = "High" if top.similarity_score >= 0.72 else "Medium" if top.similarity_score >= 0.45 else "Low"
+    if any(entry.status not in {"ok", "empty"} for entry in search_log):
+        confidence = "Medium" if confidence == "High" else confidence
+    return DecisionSummary(
+        recommendation=top.recommendation,
+        confidence=confidence,
+        rationale=[
+            f"{top.name} has the strongest current score ({top.similarity_score:.3f}).",
+            f"Recommendation is based on evidence: {', '.join(top.evidence) if top.evidence else 'limited metadata'}.",
+        ],
+        confidence_reasons=[
+            f"{len(candidates)} candidates compared.",
+            "Metadata is deterministic but may need manual source verification.",
+        ],
+    )
+
+
+def _coverage_summary(search_log: list[SearchLogEntry]) -> CoverageSummary:
+    sources = [entry.to_dict() for entry in search_log]
+    statuses = {entry.status for entry in search_log}
+    source_names = {entry.source for entry in search_log}
+    if any(status in {"failed", "rate_limited"} for status in statuses):
+        confidence = "Low"
+    elif len(source_names) >= 3:
+        confidence = "High"
+    else:
+        confidence = "Medium"
+
+    blind_spots = []
+    if "web" not in source_names:
+        blind_spots.append("Web and community sources were not covered unless supplied manually.")
+    if "skills" not in source_names:
+        blind_spots.append("Skills registry was not covered unless supplied manually.")
+    if any(status == "rate_limited" for status in statuses):
+        blind_spots.append("At least one source was rate-limited.")
+    if not blind_spots:
+        blind_spots.append("No major source-class blind spots recorded; still verify primary sources before adoption.")
+
+    return CoverageSummary(
+        confidence=confidence,
+        sources=sources,
+        blind_spots=blind_spots,
+        stop_reason="Compared available candidates after recorded source collection.",
     )
 
 
@@ -129,14 +234,18 @@ def _recommend(
 ) -> str:
     if avoid_reasons and score < 0.55:
         return "Avoid"
-    if score >= 0.72 and _permissive_license(candidate.license):
+    if score >= 0.82 and _permissive_license(candidate.license):
+        return "Adopt"
+    if score >= 0.70 and _permissive_license(candidate.license):
         return "Fork"
     if score >= 0.58 and _permissive_license(candidate.license):
         return "Integrate"
     if score >= 0.50:
         return "Borrow"
     if score >= 0.34 and evidence:
-        return "Compete"
+        return "Write New"
+    if score >= 0.20 and evidence:
+        return "Monitor"
     return "Ignore"
 
 

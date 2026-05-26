@@ -41,6 +41,11 @@ def test_cli_generates_fixture_report(tmp_path):
     assert json.loads(out_json.read_text())["brief"]["name"] == "project-scout"
     assert "## Executive Summary" in out_md.read_text()
 
+    data = json.loads(out_json.read_text())
+    assert data["search_log"][0]["source"] == "manual"
+    assert data["coverage"]["sources"][0]["status"] == "ok"
+    assert data["decision"]["confidence"] in {"Low", "Medium", "High"}
+
 
 def test_default_markdown_path_uses_current_year_and_month(tmp_path):
     result = subprocess.run(
@@ -69,3 +74,46 @@ def test_default_markdown_path_uses_current_year_and_month(tmp_path):
     out_md = tmp_path / "docs" / "research" / f"{month}-prior-art-map.md"
     assert result.returncode == 0, result.stderr
     assert out_md.exists()
+
+
+def test_cli_records_skills_registry_candidates(tmp_path, monkeypatch):
+    from project_scout import cli
+    from project_scout.models import CandidateRepo
+
+    def fake_search(query):
+        assert query == "prior art skill"
+        return [
+            CandidateRepo(
+                name="skills.volces.com@github-research",
+                url="https://skills.sh/skills.volces.com/github-research",
+                description="Skill registry result.",
+                topics=["skill", "skills-registry"],
+            )
+        ]
+
+    monkeypatch.setattr(cli, "search_skills_registry", fake_search)
+    out_json = tmp_path / "report.json"
+    out_md = tmp_path / "report.md"
+
+    result = cli.main(
+        [
+            "report",
+            "--brief",
+            str(FIXTURES / "discovery_brief.json"),
+            "--candidates",
+            str(FIXTURES / "github_repos.json"),
+            "--skills-query",
+            "prior art skill",
+            "--out-json",
+            str(out_json),
+            "--out-md",
+            str(out_md),
+            "--generated-at",
+            "2026-05-24T00:00:00Z",
+        ]
+    )
+
+    data = json.loads(out_json.read_text())
+    assert result == 0
+    assert any(entry["source"] == "skills" for entry in data["search_log"])
+    assert any(candidate["name"] == "skills.volces.com@github-research" for candidate in data["candidates"])

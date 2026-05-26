@@ -25,14 +25,46 @@ def render_markdown(report: ScoutReport) -> str:
         "",
         (
             f"Reviewed {report.summary.candidate_count} candidate projects. "
-            f"Top recommendation signal: **{report.summary.top_recommendation}**."
+            f"Top recommendation signal: **{report.summary.top_recommendation}**. "
+            f"Decision confidence: **{report.decision.confidence}**. "
+            f"Coverage confidence: **{report.coverage.confidence}**."
         ),
+        "",
+        "## Search Summary",
+        "",
+        "| Source | Query | Results | Used | Status | Notes |",
+        "| --- | --- | ---: | ---: | --- | --- |",
+    ]
+    for entry in report.search_log:
+        lines.append(
+            "| "
+            f"{entry.source} | {entry.query} | {entry.result_count} | {entry.used_count} | "
+            f"{entry.status} | {entry.error or ''} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Coverage Matrix",
+            "",
+            "| Source | Status | Used | Notes |",
+            "| --- | --- | ---: | --- |",
+        ]
+    )
+    for source in report.coverage.sources:
+        lines.append(
+            "| "
+            f"{source['source']} | {source['status']} | {source['used_count']} | "
+            f"{source.get('error') or ''} |"
+        )
+    lines.extend(
+        [
         "",
         "## Similar Projects",
         "",
         "| Project | Stars | Updated | License | Language | Score | Recommendation |",
         "| --- | ---: | --- | --- | --- | ---: | --- |",
-    ]
+        ]
+    )
     for candidate in report.candidates:
         lines.append(
             "| "
@@ -60,8 +92,10 @@ def render_markdown(report: ScoutReport) -> str:
     lines.extend(_borrow_lines(report))
     lines.extend(["", "## What To Avoid", ""])
     lines.extend(_avoid_lines(report))
-    lines.extend(["", "## Build / Adopt / Fork / Plugin Recommendation", ""])
+    lines.extend(["", "## Recommendation And Confidence", ""])
     lines.extend(_recommendation_lines(report))
+    lines.extend(["", "## Coverage Confidence And Blind Spots", ""])
+    lines.extend(_coverage_lines(report))
     lines.extend(["", "## Differentiation Is Not Enough: Useful Positioning", ""])
     lines.extend(_positioning_lines(report))
     lines.extend(["", "## Risks And Unknowns", ""])
@@ -75,7 +109,7 @@ def render_markdown(report: ScoutReport) -> str:
 def _borrow_lines(report: ScoutReport) -> list[str]:
     rows = []
     for candidate in report.candidates:
-        if candidate.recommendation in {"Borrow", "Integrate", "Fork", "Compete"}:
+        if candidate.recommendation in {"Adopt", "Borrow", "Integrate", "Fork", "Extend", "Write New"}:
             evidence = ", ".join(candidate.evidence) if candidate.evidence else "review implementation details"
             rows.append(f"- {candidate.name}: borrow evidence around {evidence}.")
     return rows or ["- No strong borrow signals found."]
@@ -94,16 +128,23 @@ def _avoid_lines(report: ScoutReport) -> list[str]:
 def _recommendation_lines(report: ScoutReport) -> list[str]:
     if not report.recommendations:
         return ["- Recommendation: gather candidates before making a build/adopt/fork/plugin call."]
-    top = report.recommendations[0]
-    evidence = ", ".join(top["evidence"]) if top["evidence"] else "limited metadata"
-    return [
-        (
-            f"- Recommendation: **{top['recommendation']}** with `{top['candidate']}` "
-            f"as the strongest current signal."
-        ),
-        f"- Evidence: {evidence}.",
-        "- Treat this as research input, not an automatic decision.",
+    lines = [
+        f"- Recommendation: **{report.decision.recommendation}**.",
+        f"- Decision confidence: **{report.decision.confidence}**.",
     ]
+    lines.extend([f"- Rationale: {item}" for item in report.decision.rationale])
+    lines.extend([f"- Confidence reason: {item}" for item in report.decision.confidence_reasons])
+    lines.append("- Treat this as research input, not an automatic decision.")
+    return lines
+
+
+def _coverage_lines(report: ScoutReport) -> list[str]:
+    lines = [
+        f"- Coverage confidence: **{report.coverage.confidence}**.",
+        f"- Stop reason: {report.coverage.stop_reason}",
+    ]
+    lines.extend([f"- Blind spot: {item}" for item in report.coverage.blind_spots])
+    return lines
 
 
 def _positioning_lines(report: ScoutReport) -> list[str]:

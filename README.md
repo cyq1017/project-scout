@@ -4,11 +4,11 @@
 
 The current CLI MVP focuses on a narrow workflow:
 
-1. Read a project brief from JSON.
-2. Import candidate repositories from GitHub search, fixture data, or manual URL lists.
+1. Read a project brief or discovery brief from JSON.
+2. Import candidate repositories and skills from GitHub search, skills registry search, fixture data, or manual URL lists.
 3. Normalize repository metadata.
 4. Score overlap with deterministic rules.
-5. Write a Markdown prior-art map and a machine-readable JSON report.
+5. Write a Markdown prior-art map and a machine-readable JSON report with search log, coverage confidence, decision confidence, and blind spots.
 
 It does not log in, store tokens, create issues or pull requests, or make final decisions for the user.
 
@@ -54,6 +54,19 @@ project-scout report \
 GitHub search uses the unauthenticated REST API and does not store tokens. It may hit public rate limits.
 For each GitHub search result, `project-scout` makes a best-effort unauthenticated README request and stores a short deterministic plaintext summary when available.
 
+## Search Skills Registry
+
+```bash
+project-scout report \
+  --brief tests/fixtures/discovery_brief.json \
+  --skills-query "prior art skill" \
+  --candidates tests/fixtures/github_repos.json \
+  --out-json examples/prior-art-scout-report.json \
+  --out-md docs/research/2026-05-prior-art-scout-map.md
+```
+
+Skills registry search shells out to `npx skills find`. If the registry command fails, the formal-gate search log records the failure rather than hiding it.
+
 ## Run Tests
 
 ```bash
@@ -77,6 +90,16 @@ Are there similar skills/plugins/tools already available?
 ```
 
 For daily use, install or copy the skill folder into the user-level Codex skills directory. Keep this repository as the source of truth for development and public distribution.
+
+Example local install:
+
+```bash
+mkdir -p ~/.codex/skills
+rm -rf ~/.codex/skills/prior-art-scout
+cp -R skills/prior-art-scout ~/.codex/skills/prior-art-scout
+```
+
+Public GitHub release, registry publication, and community promotion require explicit approval before pushing or publishing.
 
 ## Non-Goals For MVP
 

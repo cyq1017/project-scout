@@ -48,3 +48,22 @@ For GitHub promotion, the repository should include:
 - contribution guidance for new source adapters and rubrics
 
 Do not publish or push without explicit user approval.
+
+## Local Install
+
+Keep repo source and installed skill separate:
+
+```bash
+mkdir -p ~/.codex/skills
+rm -rf ~/.codex/skills/prior-art-scout
+cp -R skills/prior-art-scout ~/.codex/skills/prior-art-scout
+```
+
+Do not edit the installed copy directly. Make changes in `skills/prior-art-scout`, validate them, then reinstall.
+
+Validation commands:
+
+```bash
+.venv/bin/python /Users/caoyuqi/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/prior-art-scout
+.venv/bin/python -m pytest
+```

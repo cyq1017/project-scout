@@ -1,11 +1,13 @@
 import base64
 import json
+import subprocess
 from io import BytesIO
 from urllib.error import URLError
 from unittest.mock import patch
 
 from project_scout.core import load_url_candidates
 from project_scout.github import fetch_readme_summary, parse_github_search_response, summarize_readme_text
+from project_scout.skills_registry import parse_skills_find_output, search_skills_registry
 
 
 class FakeResponse:
@@ -90,3 +92,48 @@ def test_fetch_readme_summary_returns_empty_string_on_network_failure():
         summary = fetch_readme_summary("sample/prior-art-cli")
 
     assert summary == ""
+
+
+def test_parse_skills_find_output_extracts_skill_candidates():
+    output = """
+Install with npx skills add <owner/repo@skill>
+
+product-on-purpose/pm-skills@discover-competitive-analysis 162 installs
+└ https://skills.sh/product-on-purpose/pm-skills/discover-competitive-analysis
+
+skills.volces.com@github-research 25 installs
+└ https://skills.sh/skills.volces.com/github-research
+"""
+
+    candidates = parse_skills_find_output(output)
+
+    assert [candidate.name for candidate in candidates] == [
+        "product-on-purpose/pm-skills@discover-competitive-analysis",
+        "skills.volces.com@github-research",
+    ]
+    assert candidates[0].url == "https://skills.sh/product-on-purpose/pm-skills/discover-competitive-analysis"
+    assert candidates[0].topics == ["skill", "skills-registry"]
+    assert candidates[0].stars == 162
+
+
+def test_parse_skills_find_output_strips_ansi_codes_and_k_installs():
+    output = """
+\x1b[38;5;145mphuryn/pm-skills@competitor-analysis\x1b[0m \x1b[36m1.2K installs\x1b[0m
+\x1b[38;5;102m└ https://skills.sh/phuryn/pm-skills/competitor-analysis\x1b[0m
+"""
+
+    candidates = parse_skills_find_output(output)
+
+    assert candidates[0].name == "phuryn/pm-skills@competitor-analysis"
+    assert candidates[0].url == "https://skills.sh/phuryn/pm-skills/competitor-analysis"
+    assert candidates[0].stars == 1200
+
+
+def test_search_skills_registry_converts_timeout_to_runtime_error():
+    with patch("project_scout.skills_registry.subprocess.run", side_effect=subprocess.TimeoutExpired("npx", 1)):
+        try:
+            search_skills_registry("prior art", timeout=1)
+        except RuntimeError as exc:
+            assert "timed out" in str(exc)
+        else:
+            raise AssertionError("expected RuntimeError")

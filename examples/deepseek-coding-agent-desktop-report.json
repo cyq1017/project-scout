@@ -48,6 +48,46 @@
     "candidate_count": 12,
     "top_recommendation": "Integrate"
   },
+  "decision": {
+    "recommendation": "Integrate",
+    "confidence": "Medium",
+    "rationale": [
+      "Hash-7777/HashCortX has the strongest current score (0.617).",
+      "Recommendation is based on evidence: agent workbench, byok, deepseek, desktop coding agent, local first, multi agent, desktop, sandbox, tauri, agent, coding, first."
+    ],
+    "confidence_reasons": [
+      "12 candidates compared.",
+      "Metadata is deterministic but may need manual source verification."
+    ]
+  },
+  "coverage": {
+    "confidence": "Medium",
+    "sources": [
+      {
+        "source": "manual",
+        "query": "examples/deepseek-coding-agent-desktop-candidates.json",
+        "result_count": 12,
+        "used_count": 12,
+        "status": "ok",
+        "error": null
+      }
+    ],
+    "blind_spots": [
+      "Web and community sources were not covered unless supplied manually.",
+      "Skills registry was not covered unless supplied manually."
+    ],
+    "stop_reason": "Compared available candidates after recorded source collection."
+  },
+  "search_log": [
+    {
+      "source": "manual",
+      "query": "examples/deepseek-coding-agent-desktop-candidates.json",
+      "result_count": 12,
+      "used_count": 12,
+      "status": "ok",
+      "error": null
+    }
+  ],
   "candidates": [
     {
       "name": "Hash-7777/HashCortX",
@@ -209,7 +249,7 @@
       "language": "",
       "readme_summary": "Provides desktop visual supervision around coding-agent runs and supports providers including DeepSeek, Kimi, Zhipu, MiniMax, OpenRouter, and Ollama.",
       "similarity_score": 0.483,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "evidence": [
         "deepseek",
         "desktop coding agent",
@@ -244,7 +284,7 @@
       "language": "",
       "readme_summary": "Combines chat panes, terminals, browsers, code editor, and isolated worktrees for supervising multiple local coding agents.",
       "similarity_score": 0.472,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "evidence": [
         "desktop coding agent",
         "local first",
@@ -279,7 +319,7 @@
       "language": "",
       "readme_summary": "Desktop-capable agent can read, write, and refactor code, attach files and directories, consume MCP resources, and connect to DeepSeek through OpenAI-compatible API configuration.",
       "similarity_score": 0.47,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "evidence": [
         "deepseek",
         "desktop coding agent",
@@ -314,7 +354,7 @@
       "language": "",
       "readme_summary": "Organizes AI coding agents and local development surfaces into focused workspaces, including supervised worker and judge loops across Codex, Gemini, OpenCode, and similar agents.",
       "similarity_score": 0.433,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "evidence": [
         "codex app",
         "desktop coding agent",
@@ -348,7 +388,7 @@
       "language": "",
       "readme_summary": "Supports multiple coding agents including Codex, Cursor, OpenCode, and Goose, with sandboxing backed by local container and microVM technology.",
       "similarity_score": 0.433,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "evidence": [
         "codex app",
         "desktop coding agent",
@@ -382,7 +422,7 @@
       "language": "",
       "readme_summary": "Targets developers who coordinate multiple coding agents such as Codex, Claude Code, Kiro, and Gemini from a native desktop workspace.",
       "similarity_score": 0.338,
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "evidence": [
         "desktop coding agent",
         "desktop",
@@ -514,7 +554,7 @@
     {
       "candidate": "OpenCovibe",
       "score": 0.483,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "keyword_overlap": 4,
       "stack_overlap": 1,
       "user_overlap": 0,
@@ -525,7 +565,7 @@
     {
       "candidate": "Band",
       "score": 0.472,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "keyword_overlap": 3,
       "stack_overlap": 2,
       "user_overlap": 0,
@@ -536,7 +576,7 @@
     {
       "candidate": "ECA",
       "score": 0.47,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "keyword_overlap": 2,
       "stack_overlap": 4,
       "user_overlap": 0,
@@ -547,7 +587,7 @@
     {
       "candidate": "strIDEterm",
       "score": 0.433,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "keyword_overlap": 2,
       "stack_overlap": 2,
       "user_overlap": 0,
@@ -558,7 +598,7 @@
     {
       "candidate": "Kaiden",
       "score": 0.433,
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "keyword_overlap": 2,
       "stack_overlap": 2,
       "user_overlap": 0,
@@ -569,7 +609,7 @@
     {
       "candidate": "CrispyVibe",
       "score": 0.338,
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "keyword_overlap": 1,
       "stack_overlap": 2,
       "user_overlap": 0,
@@ -679,7 +719,7 @@
     },
     {
       "candidate": "OpenCovibe",
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "score": 0.483,
       "evidence": [
         "deepseek",
@@ -698,7 +738,7 @@
     },
     {
       "candidate": "Band",
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "score": 0.472,
       "evidence": [
         "desktop coding agent",
@@ -717,7 +757,7 @@
     },
     {
       "candidate": "ECA",
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "score": 0.47,
       "evidence": [
         "deepseek",
@@ -735,7 +775,7 @@
     },
     {
       "candidate": "strIDEterm",
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "score": 0.433,
       "evidence": [
         "codex app",
@@ -753,7 +793,7 @@
     },
     {
       "candidate": "Kaiden",
-      "recommendation": "Compete",
+      "recommendation": "Write New",
       "score": 0.433,
       "evidence": [
         "codex app",
@@ -771,7 +811,7 @@
     },
     {
       "candidate": "CrispyVibe",
-      "recommendation": "Ignore",
+      "recommendation": "Monitor",
       "score": 0.338,
       "evidence": [
         "desktop coding agent",

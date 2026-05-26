@@ -1,0 +1,33 @@
+{
+  "name": "prior-art-scout",
+  "target_type": "skill",
+  "intent": "build",
+  "goal": "Create a reusable skill that discovers existing solutions before building new projects, skills, plugins, or tools.",
+  "keywords": [
+    "prior art",
+    "build vs adopt",
+    "skill discovery"
+  ],
+  "users_or_consumers": [
+    "codex users",
+    "agent builders"
+  ],
+  "ecosystems": [
+    "codex skills",
+    "github"
+  ],
+  "must_have": [
+    "coverage matrix",
+    "search log"
+  ],
+  "nice_to_have": [
+    "skills registry"
+  ],
+  "exclusions": [
+    "autonomous crawler"
+  ],
+  "known_candidates": [
+    "skills.volces.com@github-research",
+    "https://github.com/eze-is/web-access"
+  ]
+}

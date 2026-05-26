@@ -32,6 +32,46 @@
     "candidate_count": 3,
     "top_recommendation": "Fork"
   },
+  "decision": {
+    "recommendation": "Fork",
+    "confidence": "High",
+    "rationale": [
+      "sample/prior-art-cli has the strongest current score (0.760).",
+      "Recommendation is based on evidence: competitive analysis, github search, prior art, cli, json, markdown, python, analysis, art, competitive, github, prior."
+    ],
+    "confidence_reasons": [
+      "3 candidates compared.",
+      "Metadata is deterministic but may need manual source verification."
+    ]
+  },
+  "coverage": {
+    "confidence": "Medium",
+    "sources": [
+      {
+        "source": "manual",
+        "query": "tests/fixtures/github_repos.json",
+        "result_count": 3,
+        "used_count": 3,
+        "status": "ok",
+        "error": null
+      }
+    ],
+    "blind_spots": [
+      "Web and community sources were not covered unless supplied manually.",
+      "Skills registry was not covered unless supplied manually."
+    ],
+    "stop_reason": "Compared available candidates after recorded source collection."
+  },
+  "search_log": [
+    {
+      "source": "manual",
+      "query": "tests/fixtures/github_repos.json",
+      "result_count": 3,
+      "used_count": 3,
+      "status": "ok",
+      "error": null
+    }
+  ],
   "candidates": [
     {
       "name": "sample/prior-art-cli",

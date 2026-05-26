@@ -4,7 +4,19 @@ Generated: 2026-05-24T00:00:00Z
 
 ## Executive Summary
 
-Reviewed 3 candidate projects. Top recommendation signal: **Fork**.
+Reviewed 3 candidate projects. Top recommendation signal: **Fork**. Decision confidence: **High**. Coverage confidence: **Medium**.
+
+## Search Summary
+
+| Source | Query | Results | Used | Status | Notes |
+| --- | --- | ---: | ---: | --- | --- |
+| manual | tests/fixtures/github_repos.json | 3 | 3 | ok |  |
+
+## Coverage Matrix
+
+| Source | Status | Used | Notes |
+| --- | --- | ---: | --- |
+| manual | ok | 3 |  |
 
 ## Similar Projects
 
@@ -31,11 +43,22 @@ Reviewed 3 candidate projects. Top recommendation signal: **Fork**.
 - ecosyste-ms/repos: low overlap in available metadata.
 - octobox/octobox: low overlap in available metadata.
 
-## Build / Adopt / Fork / Plugin Recommendation
+## Recommendation And Confidence
 
-- Recommendation: **Fork** with `sample/prior-art-cli` as the strongest current signal.
-- Evidence: competitive analysis, github search, prior art, cli, json, markdown, python, analysis, art, competitive, github, prior.
+- Recommendation: **Fork**.
+- Decision confidence: **High**.
+- Rationale: sample/prior-art-cli has the strongest current score (0.760).
+- Rationale: Recommendation is based on evidence: competitive analysis, github search, prior art, cli, json, markdown, python, analysis, art, competitive, github, prior.
+- Confidence reason: 3 candidates compared.
+- Confidence reason: Metadata is deterministic but may need manual source verification.
 - Treat this as research input, not an automatic decision.
+
+## Coverage Confidence And Blind Spots
+
+- Coverage confidence: **Medium**.
+- Stop reason: Compared available candidates after recorded source collection.
+- Blind spot: Web and community sources were not covered unless supplied manually.
+- Blind spot: Skills registry was not covered unless supplied manually.
 
 ## Differentiation Is Not Enough: Useful Positioning
 

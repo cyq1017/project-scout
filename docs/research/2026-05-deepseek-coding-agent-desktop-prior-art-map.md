@@ -4,7 +4,19 @@ Generated: 2026-05-25T00:00:00Z
 
 ## Executive Summary
 
-Reviewed 12 candidate projects. Top recommendation signal: **Integrate**.
+Reviewed 12 candidate projects. Top recommendation signal: **Integrate**. Decision confidence: **Medium**. Coverage confidence: **Medium**.
+
+## Search Summary
+
+| Source | Query | Results | Used | Status | Notes |
+| --- | --- | ---: | ---: | --- | --- |
+| manual | examples/deepseek-coding-agent-desktop-candidates.json | 12 | 12 | ok |  |
+
+## Coverage Matrix
+
+| Source | Status | Used | Notes |
+| --- | --- | ---: | --- |
+| manual | ok | 12 |  |
 
 ## Similar Projects
 
@@ -14,12 +26,12 @@ Reviewed 12 candidate projects. Top recommendation signal: **Integrate**.
 | [TesslateAI/OpenSail](https://github.com/TesslateAI/OpenSail) | 0 | unknown | unknown | unknown | 0.578 | Borrow |
 | [Localforge](https://localforge.dev/) | 0 | unknown | MIT | unknown | 0.561 | Borrow |
 | [CarpseDeam/Aura-IDE](https://github.com/CarpseDeam/Aura-IDE) | 0 | unknown | unknown | Python | 0.522 | Borrow |
-| [OpenCovibe](https://opencovibe.com/) | 0 | unknown | Apache-2.0 | unknown | 0.483 | Compete |
-| [Band](https://getband.app/) | 0 | unknown | unknown | unknown | 0.472 | Compete |
-| [ECA](https://eca.dev/) | 0 | unknown | unknown | unknown | 0.470 | Compete |
-| [strIDEterm](https://strideterm.com/) | 0 | unknown | MIT | unknown | 0.433 | Compete |
-| [Kaiden](https://openkaiden.ai/) | 0 | unknown | unknown | unknown | 0.433 | Compete |
-| [CrispyVibe](https://crispyvibe.com/) | 0 | unknown | unknown | unknown | 0.338 | Ignore |
+| [OpenCovibe](https://opencovibe.com/) | 0 | unknown | Apache-2.0 | unknown | 0.483 | Write New |
+| [Band](https://getband.app/) | 0 | unknown | unknown | unknown | 0.472 | Write New |
+| [ECA](https://eca.dev/) | 0 | unknown | unknown | unknown | 0.470 | Write New |
+| [strIDEterm](https://strideterm.com/) | 0 | unknown | MIT | unknown | 0.433 | Write New |
+| [Kaiden](https://openkaiden.ai/) | 0 | unknown | unknown | unknown | 0.433 | Write New |
+| [CrispyVibe](https://crispyvibe.com/) | 0 | unknown | unknown | unknown | 0.338 | Monitor |
 | [Void](https://github.com/voideditor/void) | 0 | unknown | unknown | unknown | 0.305 | Avoid |
 | [OpenSeek](https://openseek.dev/) | 0 | unknown | unknown | unknown | 0.283 | Avoid |
 
@@ -54,15 +66,25 @@ Reviewed 12 candidate projects. Top recommendation signal: **Integrate**.
 
 ## What To Avoid
 
-- CrispyVibe: low overlap in available metadata.
 - Void: matches exclusion: editor only.
 - OpenSeek: matches exclusion: cli only; matches exclusion: terminal only.
 
-## Build / Adopt / Fork / Plugin Recommendation
+## Recommendation And Confidence
 
-- Recommendation: **Integrate** with `Hash-7777/HashCortX` as the strongest current signal.
-- Evidence: agent workbench, byok, deepseek, desktop coding agent, local first, multi agent, desktop, sandbox, tauri, agent, coding, first.
+- Recommendation: **Integrate**.
+- Decision confidence: **Medium**.
+- Rationale: Hash-7777/HashCortX has the strongest current score (0.617).
+- Rationale: Recommendation is based on evidence: agent workbench, byok, deepseek, desktop coding agent, local first, multi agent, desktop, sandbox, tauri, agent, coding, first.
+- Confidence reason: 12 candidates compared.
+- Confidence reason: Metadata is deterministic but may need manual source verification.
 - Treat this as research input, not an automatic decision.
+
+## Coverage Confidence And Blind Spots
+
+- Coverage confidence: **Medium**.
+- Stop reason: Compared available candidates after recorded source collection.
+- Blind spot: Web and community sources were not covered unless supplied manually.
+- Blind spot: Skills registry was not covered unless supplied manually.
 
 ## Differentiation Is Not Enough: Useful Positioning
 

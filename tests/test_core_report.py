@@ -17,13 +17,43 @@ def test_build_report_ranks_candidates_and_records_overlap_evidence():
     assert report.summary.candidate_count == 3
     assert report.candidates[0].name == "sample/prior-art-cli"
     assert report.candidates[0].similarity_score > report.candidates[1].similarity_score
-    assert report.candidates[0].recommendation in {"Borrow", "Integrate", "Fork", "Compete"}
+    assert report.candidates[0].recommendation in {"Adopt", "Borrow", "Integrate", "Fork", "Write New"}
+    assert all(candidate.recommendation != "Compete" for candidate in report.candidates)
     assert "python" in report.candidates[0].evidence
     assert all("and" not in candidate.evidence for candidate in report.candidates)
     assert "analysi" not in report.candidates[0].evidence
     assert "github search" not in report.candidates[1].evidence
     assert report.overlap_matrix[0]["candidate"] == "sample/prior-art-cli"
     assert report.overlap_matrix[0]["keyword_overlap"] >= 3
+
+
+def test_build_report_includes_decision_coverage_and_search_log():
+    brief = load_brief(FIXTURES / "brief.json")
+    candidates = load_candidates(FIXTURES / "github_repos.json")
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-05-24T00:00:00Z",
+        search_log=[
+            {
+                "source": "manual",
+                "query": "tests/fixtures/github_repos.json",
+                "result_count": 3,
+                "used_count": 3,
+                "status": "ok",
+                "error": None,
+            }
+        ],
+    )
+    data = report.to_dict()
+
+    assert data["decision"]["recommendation"] == report.candidates[0].recommendation
+    assert data["decision"]["confidence"] in {"Low", "Medium", "High"}
+    assert data["coverage"]["confidence"] == "Medium"
+    assert data["coverage"]["sources"][0]["source"] == "manual"
+    assert data["coverage"]["blind_spots"]
+    assert data["search_log"][0]["used_count"] == 3
 
 
 def test_render_markdown_contains_required_sections_and_recommendation():
@@ -35,11 +65,14 @@ def test_render_markdown_contains_required_sections_and_recommendation():
 
     for heading in [
         "Executive Summary",
+        "Search Summary",
+        "Coverage Matrix",
         "Similar Projects",
         "Overlap Matrix",
         "What To Borrow",
         "What To Avoid",
-        "Build / Adopt / Fork / Plugin Recommendation",
+        "Recommendation And Confidence",
+        "Coverage Confidence And Blind Spots",
         "Differentiation Is Not Enough: Useful Positioning",
         "Risks And Unknowns",
         "Suggested ADR / Backlog Updates",
