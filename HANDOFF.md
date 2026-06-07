@@ -41,6 +41,10 @@ Primary test gate:
 .venv/bin/python -m pytest
 ```
 
+`scripts/smoke.sh` is the install/entrypoint gate. The pytest suite covers the
+library behavior and includes a regression test that invokes
+`.venv/bin/project-scout` without `PYTHONPATH`.
+
 Fixture smoke generation after a healthy editable install should use the
 console script. This command is also part of `scripts/smoke.sh`:
 

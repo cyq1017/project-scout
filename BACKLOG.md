@@ -25,7 +25,9 @@
 
 - [x] Harden dev bootstrap and smoke scripts.
 - [x] Document Python 3.14/macOS editable install issue.
+- [x] Add pytest coverage for the installed console script.
 - [ ] Consider moving the checkout outside iCloud if hidden/dataless venv flags recur.
+- [ ] Review whether tracked root `project-scout-report.json` should be removed or kept as an example.
 - [ ] Add multi-query GitHub scan later, not part of this fix.
 - Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
 - Add optional web search adapter.

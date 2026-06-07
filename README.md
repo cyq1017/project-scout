@@ -36,7 +36,8 @@ scripts/bootstrap-dev.sh
 `scripts/bootstrap-dev.sh` creates the real venv under
 `${XDG_CACHE_HOME:-$HOME/.cache}/project-scout/venv` by default, links it at
 `.venv`, installs `.[dev]`, and runs the fixture smoke gate. Override the venv
-location with `PROJECT_SCOUT_VENV_DIR=/path/to/venv` if needed.
+location with `PROJECT_SCOUT_VENV_DIR=/path/to/venv` or the parent directory
+with `PROJECT_SCOUT_VENV_PARENT=/path/to/parent` if needed.
 
 `scripts/smoke.sh` verifies both the installed console script and the
 source-tree fallback. It writes only to `/tmp`.
@@ -117,6 +118,10 @@ Skills registry search shells out to `npx skills find`. If the registry command 
 ```bash
 .venv/bin/python -m pytest
 ```
+
+`scripts/smoke.sh` is the install/entrypoint gate. The pytest suite covers the
+library behavior and includes a regression test that invokes
+`.venv/bin/project-scout` without `PYTHONPATH`.
 
 ## Skill Source
 

@@ -47,6 +47,44 @@ def test_cli_generates_fixture_report(tmp_path):
     assert data["decision"]["confidence"] in {"Low", "Medium", "High"}
 
 
+def test_console_script_generates_fixture_report_without_pythonpath(tmp_path):
+    console_script = Path(sys.executable).with_name("project-scout")
+    assert console_script.exists(), (
+        f"Missing console script at {console_script}. "
+        "Run scripts/bootstrap-dev.sh before using the pytest gate."
+    )
+
+    out_json = tmp_path / "entrypoint-report.json"
+    out_md = tmp_path / "entrypoint-report.md"
+    env = {**os.environ}
+    env.pop("PYTHONPATH", None)
+
+    result = subprocess.run(
+        [
+            str(console_script),
+            "report",
+            "--brief",
+            str(FIXTURES / "brief.json"),
+            "--candidates",
+            str(FIXTURES / "github_repos.json"),
+            "--out-json",
+            str(out_json),
+            "--out-md",
+            str(out_md),
+            "--generated-at",
+            "2026-06-04T00:00:00+00:00",
+        ],
+        check=False,
+        text=True,
+        capture_output=True,
+        env=env,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert json.loads(out_json.read_text())["brief"]["name"] == "project-scout"
+    assert "## Executive Summary" in out_md.read_text()
+
+
 def test_default_markdown_path_uses_current_year_and_month(tmp_path):
     result = subprocess.run(
         [
