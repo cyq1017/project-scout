@@ -155,3 +155,38 @@ def test_cli_records_skills_registry_candidates(tmp_path, monkeypatch):
     assert result == 0
     assert any(entry["source"] == "skills" for entry in data["search_log"])
     assert any(candidate["name"] == "skills.volces.com@github-research" for candidate in data["candidates"])
+
+
+def test_init_brief_copies_template_without_overwrite(tmp_path):
+    from project_scout import cli
+
+    out_path = tmp_path / "skill-brief.json"
+
+    result = cli.main(["init-brief", "--template", "skill", "--out", str(out_path)])
+
+    data = json.loads(out_path.read_text())
+    assert result == 0
+    assert data["target_type"] == "skill"
+    assert data["name"] == "replace-with-skill-name"
+
+    try:
+        cli.main(["init-brief", "--template", "skill", "--out", str(out_path)])
+    except SystemExit as exc:
+        assert "already exists" in str(exc)
+    else:
+        raise AssertionError("init-brief should not overwrite without --force")
+
+
+def test_init_brief_force_overwrites_existing_file(tmp_path):
+    from project_scout import cli
+
+    out_path = tmp_path / "plugin-brief.json"
+    out_path.write_text("{}")
+
+    result = cli.main(
+        ["init-brief", "--template", "plugin", "--out", str(out_path), "--force"]
+    )
+
+    data = json.loads(out_path.read_text())
+    assert result == 0
+    assert data["target_type"] == "plugin"

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import shutil
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -16,6 +17,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.command == "report":
         return _report(args)
+    if args.command == "init-brief":
+        return _init_brief(args)
     parser.print_help()
     return 1
 
@@ -47,7 +50,34 @@ def _parser() -> argparse.ArgumentParser:
         help="Markdown output path.",
     )
     report.add_argument("--generated-at", help="Override generated timestamp for repeatable tests.")
+    init_brief = subparsers.add_parser("init-brief", help="Copy a reusable brief template.")
+    init_brief.add_argument(
+        "--template",
+        required=True,
+        choices=sorted(_BRIEF_TEMPLATES),
+        help="Template to copy.",
+    )
+    init_brief.add_argument("--out", required=True, help="Output path for the new brief JSON.")
+    init_brief.add_argument("--force", action="store_true", help="Overwrite an existing output file.")
     return parser
+
+
+_BRIEF_TEMPLATES = {
+    "skill": "skill-discovery.json",
+    "cli": "cli-library.json",
+    "plugin": "agent-plugin.json",
+}
+
+
+def _init_brief(args: argparse.Namespace) -> int:
+    template_path = _brief_template_path(args.template)
+    out_path = Path(args.out)
+    if out_path.exists() and not args.force:
+        raise SystemExit(f"{out_path} already exists. Use --force to overwrite it.")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(template_path, out_path)
+    print(f"Wrote {out_path}")
+    return 0
 
 
 def _report(args: argparse.Namespace) -> int:
@@ -98,6 +128,14 @@ def _report(args: argparse.Namespace) -> int:
 def _default_markdown_path() -> str:
     month = datetime.now(UTC).strftime("%Y-%m")
     return f"docs/research/{month}-prior-art-map.md"
+
+
+def _brief_template_path(template: str) -> Path:
+    repo_root = Path(__file__).resolve().parents[2]
+    path = repo_root / "examples" / "brief-templates" / _BRIEF_TEMPLATES[template]
+    if not path.exists():
+        raise SystemExit(f"Missing brief template: {path}")
+    return path
 
 
 def _search_log_entry(

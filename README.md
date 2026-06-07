@@ -75,8 +75,14 @@ PYTHONPATH=src .venv/bin/python -m project_scout.cli report \
 
 ## Brief Templates
 
-Copy a template from `examples/brief-templates/`, replace the placeholder
-values, and pass it to `project-scout report --brief`:
+Create a brief from a reusable template, replace the placeholder values, and
+pass it to `project-scout report --brief`:
+
+```bash
+.venv/bin/project-scout init-brief \
+  --template skill \
+  --out /tmp/my-skill-brief.json
+```
 
 - [skill-discovery.json](examples/brief-templates/skill-discovery.json): evaluate whether to build a reusable agent skill.
 - [cli-library.json](examples/brief-templates/cli-library.json): evaluate a small local CLI/library idea.
