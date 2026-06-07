@@ -22,30 +22,40 @@ python3.13 -m venv .venv
 python -m pip install -e ".[dev]"
 ```
 
-Python 3.12 or 3.13 is recommended for local development. On macOS, editable
-installs in synced paths can leave `.venv` `site-packages` files marked
-`hidden`/`dataless`, especially with Python 3.14. That can make the
+Python 3.12 or 3.13 is recommended for local development. On macOS, synced
+folders such as iCloud Drive can mark editable-install files in `.venv`
+`hidden`/`dataless`. CPython skips hidden `.pth` files, which can make the
 `project-scout` console script fail to import `project_scout` or make pytest
-import hang. Prefer rebuilding the venv with Python 3.12/3.13:
+import hang. Python 3.14 has reproduced this most often, but the durable fix is
+to keep the actual venv outside the synced checkout.
 
 ```bash
 scripts/bootstrap-dev.sh
 ```
 
+`scripts/bootstrap-dev.sh` creates the real venv under
+`${XDG_CACHE_HOME:-$HOME/.cache}/project-scout/venv` by default, links it at
+`.venv`, installs `.[dev]`, and runs the fixture smoke gate. Override the venv
+location with `PROJECT_SCOUT_VENV_DIR=/path/to/venv` if needed.
+
+`scripts/smoke.sh` verifies both the installed console script and the
+source-tree fallback. It writes only to `/tmp`.
+
 ## Run With Fixtures
 
-After a healthy editable install, use the console script:
+After `scripts/smoke.sh` passes, use the console script:
 
 ```bash
-project-scout report \
+.venv/bin/project-scout report \
   --brief tests/fixtures/brief.json \
   --candidates tests/fixtures/github_repos.json \
-  --out-json project-scout-report.json \
-  --out-md docs/research/2026-05-prior-art-map.md
+  --out-json /tmp/project-scout-entrypoint.json \
+  --out-md /tmp/project-scout-entrypoint.md \
+  --generated-at 2026-06-04T00:00:00+00:00
 ```
 
-For local recovery or import-path troubleshooting, use the source-tree module
-entrypoint. The smoke script writes only to `/tmp`:
+For local recovery or import-path troubleshooting, the reliable fallback is the
+source-tree module entrypoint. The smoke script writes only to `/tmp`:
 
 ```bash
 scripts/smoke.sh

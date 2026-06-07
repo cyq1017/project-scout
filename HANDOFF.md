@@ -31,17 +31,21 @@ Recommended local bootstrap:
 scripts/bootstrap-dev.sh
 ```
 
+This creates the real venv under
+`${XDG_CACHE_HOME:-$HOME/.cache}/project-scout/venv` by default, links it at
+`.venv`, installs `.[dev]`, and runs `scripts/smoke.sh`.
+
 Primary test gate:
 
 ```bash
 .venv/bin/python -m pytest
 ```
 
-Fixture report generation after a healthy editable install should use the
-console script:
+Fixture smoke generation after a healthy editable install should use the
+console script. This command is also part of `scripts/smoke.sh`:
 
 ```bash
-project-scout report \
+.venv/bin/project-scout report \
   --brief tests/fixtures/brief.json \
   --candidates tests/fixtures/github_repos.json \
   --out-json /tmp/project-scout-entrypoint.json \
@@ -49,24 +53,33 @@ project-scout report \
   --generated-at 2026-06-04T00:00:00+00:00
 ```
 
-For local recovery or import-path troubleshooting, use the source-tree smoke
-path:
+For local recovery or import-path troubleshooting, use the source-tree fallback
+path. This command is also part of `scripts/smoke.sh`:
 
 ```bash
-scripts/smoke.sh
+PYTHONPATH=src .venv/bin/python -m project_scout.cli report \
+  --brief tests/fixtures/brief.json \
+  --candidates tests/fixtures/github_repos.json \
+  --out-json /tmp/project-scout-smoke.json \
+  --out-md /tmp/project-scout-smoke.md \
+  --generated-at 2026-06-04T00:00:00+00:00
 ```
+
+Run `scripts/smoke.sh` when checking both paths together.
 
 If `--out-md` is omitted, the CLI writes to `docs/research/YYYY-MM-prior-art-map.md` for the current UTC month.
 
-Known macOS editable-install issue:
+Known macOS/iCloud editable-install issue:
 
 - If `.venv/bin/project-scout` fails with `ModuleNotFoundError: No module named
-  'project_scout'`, rebuild `.venv` with Python 3.12 or 3.13 first.
+  'project_scout'`, rebuild `.venv` with Python 3.12 or 3.13 first by running
+  `scripts/bootstrap-dev.sh`.
 - If pytest import hangs, inspect `.venv/lib/python*/site-packages` with
   `ls -lO`; hidden/dataless flags on editable install files are suspect.
-- If Python 3.14 is the only available interpreter, try
-  `chflags -R nohidden .venv/lib/python*/site-packages`, then rerun
-  `scripts/smoke.sh` and `.venv/bin/python -m pytest`.
+- `scripts/bootstrap-dev.sh` avoids this by keeping the real venv outside the
+  synced checkout and linking it at `.venv`.
+- If hidden/dataless flags keep recurring in other generated files, move the
+  checkout outside an iCloud-synced folder.
 
 Live GitHub search uses unauthenticated requests for both repository search and best-effort README summaries. Rate-limit or README failures leave `readme_summary` empty rather than failing the whole report.
 

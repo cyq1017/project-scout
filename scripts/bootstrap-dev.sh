@@ -51,14 +51,24 @@ case "$version" in
 esac
 
 echo "Rebuilding .venv with $python_bin (Python $version)"
-rm -rf .venv
-"$python_bin" -m venv .venv
+venv_parent=${PROJECT_SCOUT_VENV_PARENT:-${XDG_CACHE_HOME:-"$HOME/.cache"}/project-scout}
+venv_dir=${PROJECT_SCOUT_VENV_DIR:-"$venv_parent/venv"}
+stale_venv=${TMPDIR:-/tmp}/project-scout-stale-venv-$$
+
+mkdir -p "$(dirname "$venv_dir")"
+rm -rf "$venv_dir"
+
+if [ -L .venv ]; then
+  rm .venv
+elif [ -e .venv ]; then
+  mv .venv "$stale_venv"
+  echo "Moved old in-repo .venv to $stale_venv"
+fi
+
+"$python_bin" -m venv "$venv_dir"
+ln -s "$venv_dir" .venv
 .venv/bin/python -m pip install -U pip setuptools wheel
 .venv/bin/python -m pip install -e ".[dev]"
-
-if command -v chflags >/dev/null 2>&1; then
-  chflags -R nohidden .venv
-fi
 
 scripts/smoke.sh
 

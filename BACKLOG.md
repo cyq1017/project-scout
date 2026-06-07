@@ -23,8 +23,9 @@
 
 ## Next
 
-- [ ] Harden dev bootstrap and smoke scripts.
-- [ ] Document Python 3.14/macOS editable install issue.
+- [x] Harden dev bootstrap and smoke scripts.
+- [x] Document Python 3.14/macOS editable install issue.
+- [ ] Consider moving the checkout outside iCloud if hidden/dataless venv flags recur.
 - [ ] Add multi-query GitHub scan later, not part of this fix.
 - Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
 - Add optional web search adapter.
