@@ -1,3 +1,4 @@
+import importlib.resources
 from pathlib import Path
 
 from project_scout.core import load_brief
@@ -44,3 +45,11 @@ def test_example_brief_templates_load_as_project_briefs():
         assert brief.target_users
         assert brief.tech_stack
         assert brief.exclusions
+
+
+def test_packaged_brief_templates_match_example_templates():
+    package_templates = importlib.resources.files("project_scout").joinpath("brief_templates")
+
+    for example_path in sorted(BRIEF_TEMPLATES.glob("*.json")):
+        package_path = package_templates.joinpath(example_path.name)
+        assert package_path.read_text() == example_path.read_text()

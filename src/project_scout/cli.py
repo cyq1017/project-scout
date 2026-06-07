@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import argparse
-import shutil
+import importlib.resources
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -75,12 +75,11 @@ _BRIEF_TEMPLATES = {
 
 
 def _init_brief(args: argparse.Namespace) -> int:
-    template_path = _brief_template_path(args.template)
     out_path = Path(args.out)
     if out_path.exists() and not args.force:
         raise SystemExit(f"{out_path} already exists. Use --force to overwrite it.")
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(template_path, out_path)
+    out_path.write_bytes(_brief_template_bytes(args.template))
     print(f"Wrote {out_path}")
     return 0
 
@@ -101,7 +100,8 @@ def _report(args: argparse.Namespace) -> int:
         search_log.append(_search_log_entry("manual", url_path, len(loaded), len(loaded), "ok"))
     for github_query in args.github_query:
         loaded = search_github_repositories(github_query, limit=max(1, args.github_limit))
-        new_candidates = _merge_candidates(candidates, loaded)
+        new_candidates = _new_candidates(candidates, loaded)
+        candidates.extend(new_candidates)
         search_log.append(
             _search_log_entry("github", github_query, len(loaded), len(new_candidates), "ok")
         )
@@ -135,7 +135,7 @@ def _default_markdown_path() -> str:
     return f"docs/research/{month}-prior-art-map.md"
 
 
-def _merge_candidates(
+def _new_candidates(
     candidates: list[CandidateRepo], loaded: list[CandidateRepo]
 ) -> list[CandidateRepo]:
     seen_urls = {candidate.url for candidate in candidates}
@@ -143,18 +143,25 @@ def _merge_candidates(
     for candidate in loaded:
         if candidate.url in seen_urls:
             continue
-        candidates.append(candidate)
         new_candidates.append(candidate)
         seen_urls.add(candidate.url)
     return new_candidates
 
 
-def _brief_template_path(template: str) -> Path:
-    repo_root = Path(__file__).resolve().parents[2]
-    path = repo_root / "examples" / "brief-templates" / _BRIEF_TEMPLATES[template]
-    if not path.exists():
-        raise SystemExit(f"Missing brief template: {path}")
-    return path
+def _brief_template_bytes(template: str) -> bytes:
+    template_file = _BRIEF_TEMPLATES[template]
+    package_path = importlib.resources.files("project_scout").joinpath(
+        "brief_templates", template_file
+    )
+    if package_path.is_file():
+        return package_path.read_bytes()
+
+    source_path = (
+        Path(__file__).resolve().parents[2] / "examples" / "brief-templates" / template_file
+    )
+    if source_path.exists():
+        return source_path.read_bytes()
+    raise SystemExit(f"Missing brief template: {template_file}")
 
 
 def _search_log_entry(
