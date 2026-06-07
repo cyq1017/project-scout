@@ -75,6 +75,8 @@ PYTHONPATH=src .venv/bin/python -m project_scout.cli report \
 
 ## Sample Reports
 
+- [project-scout fixture JSON report](examples/project-scout-report.json): machine-readable fixture report for the built-in project-scout brief.
+- [project-scout fixture prior-art map](docs/research/2026-05-prior-art-map.md): Markdown fixture report for the built-in project-scout brief.
 - [商机发现 skill prior-art map](docs/research/2026-05-business-opportunity-skill-prior-art-map.md): 用中文展示如何评估是否值得自研一个商机发现 skill。
 - [DeepSeek coding agent desktop prior-art map](docs/research/2026-05-deepseek-coding-agent-desktop-prior-art-map.md): prior-art map for a desktop DeepSeek coding agent direction.
 
@@ -84,8 +86,8 @@ PYTHONPATH=src .venv/bin/python -m project_scout.cli report \
 project-scout report \
   --brief tests/fixtures/brief.json \
   --urls tests/fixtures/manual_urls.txt \
-  --out-json project-scout-report.json \
-  --out-md docs/research/2026-05-prior-art-map.md
+  --out-json /tmp/project-scout-manual-urls.json \
+  --out-md /tmp/project-scout-manual-urls.md
 ```
 
 ## Search GitHub Without Login

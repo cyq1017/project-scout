@@ -27,4 +27,8 @@ Default outputs:
 - `project-scout-report.json`
 - `docs/research/YYYY-MM-prior-art-map.md`
 
+Do not commit ad hoc generated reports at the repo root. Use `/tmp` for smoke
+and local validation outputs, or place curated examples under `examples/` and
+`docs/research/`.
+
 Required Markdown sections are documented in `docs/report-schema.md`.
