@@ -30,9 +30,9 @@
 - [x] Move tracked root `project-scout-report.json` into `examples/`.
 - [x] Add reusable brief templates for common scout tasks.
 - [x] Add multi-query GitHub scan.
+- [x] Add source-profile presets for `market_opportunity`, `product`, `paper`, and `mcp_server`.
 - Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
 - Add optional web search adapter.
-- Add optional source-profile presets for `market_opportunity`, `product`, `paper`, and `mcp_server`.
 - Add source-pattern docs for social, papers, packages, and job-market signals.
 - Add optional LLM summarization adapter.
 - Add user-level Codex/Claude skill install command.

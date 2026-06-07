@@ -88,6 +88,12 @@ pass it to `project-scout report --brief`:
 - [cli-library.json](examples/brief-templates/cli-library.json): evaluate a small local CLI/library idea.
 - [agent-plugin.json](examples/brief-templates/agent-plugin.json): evaluate an agent plugin, connector, or MCP-style integration.
 
+## Source Profiles
+
+Use [source profiles](docs/source-profiles/README.md) to decide which sources
+are required before running a report. Profiles are lightweight presets, not
+crawler instructions.
+
 ## Sample Reports
 
 - [project-scout fixture JSON report](examples/project-scout-report.json): machine-readable fixture report for the built-in project-scout brief.
