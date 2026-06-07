@@ -10,7 +10,7 @@
 - [x] Search GitHub repositories without login.
 - [x] Normalize repository metadata.
 - [x] Score deterministic similarity and overlap.
-- [x] Recommend Borrow, Avoid, Integrate, Compete, Fork, or Ignore with evidence.
+- [x] Recommend Adopt, Borrow, Integrate, Fork, Extend, Write New, Avoid, Ignore, or Monitor with evidence.
 - [x] Emit Markdown and JSON reports.
 - [x] Cover core behavior with fixture tests.
 - [x] Add `prior-art-scout` skill source.
@@ -18,11 +18,18 @@
 - [x] Add structured search log and coverage confidence.
 - [x] Add coverage matrix and blind spots to Markdown.
 - [x] Add skills registry parser and CLI adapter.
+- [x] Add repo-level experience library for reusable skill/project lessons.
+- [x] Add search adapter reference for capability-based source access.
 
 ## Next
 
+- [ ] Harden dev bootstrap and smoke scripts.
+- [ ] Document Python 3.14/macOS editable install issue.
+- [ ] Add multi-query GitHub scan later, not part of this fix.
 - Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
 - Add optional web search adapter.
+- Add optional source-profile presets for `market_opportunity`, `product`, `paper`, and `mcp_server`.
+- Add source-pattern docs for social, papers, packages, and job-market signals.
 - Add optional LLM summarization adapter.
 - Add user-level Codex/Claude skill install command.
 - Add Conductor plugin/adapter boundary.

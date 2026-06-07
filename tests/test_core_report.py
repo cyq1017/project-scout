@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 from project_scout.core import build_report, load_brief, load_candidates
+from project_scout.models import CandidateRepo, ProjectBrief
 from project_scout.report import render_markdown, write_report
 
 
@@ -54,6 +55,65 @@ def test_build_report_includes_decision_coverage_and_search_log():
     assert data["coverage"]["sources"][0]["source"] == "manual"
     assert data["coverage"]["blind_spots"]
     assert data["search_log"][0]["used_count"] == 3
+
+
+def test_failed_search_source_is_recorded_as_blind_spot():
+    brief = load_brief(FIXTURES / "brief.json")
+    candidates = load_candidates(FIXTURES / "github_repos.json")
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-05-24T00:00:00Z",
+        search_log=[
+            {
+                "source": "skills",
+                "query": "prior art skill",
+                "result_count": 0,
+                "used_count": 0,
+                "status": "failed",
+                "error": "registry unavailable",
+            },
+            {
+                "source": "web",
+                "query": "prior art tool",
+                "result_count": 2,
+                "used_count": 1,
+                "status": "ok",
+                "error": None,
+            },
+        ],
+    )
+
+    assert report.coverage.confidence == "Low"
+    assert any("skills source failed" in item for item in report.coverage.blind_spots)
+    assert all("No major source-class blind spots" not in item for item in report.coverage.blind_spots)
+
+
+def test_write_new_suggested_update_explains_no_candidate_is_sufficient():
+    brief = ProjectBrief(
+        name="business-opportunity-discovery-skill",
+        goal="Find business opportunity discovery tools before building.",
+        keywords=["business opportunity discovery", "market research", "startup idea validation"],
+        target_users=["founders"],
+        tech_stack=["skill", "web search"],
+        exclusions=[],
+    )
+    candidates = [
+        CandidateRepo(
+            name="startup-idea-validation",
+            url="https://example.com/startup-idea-validation",
+            description="Startup idea validation and market research workflow.",
+            topics=["market-research"],
+            license="",
+            language="Markdown",
+        )
+    ]
+
+    report = build_report(brief, candidates, generated_at="2026-05-24T00:00:00Z")
+
+    assert report.candidates[0].recommendation == "Write New"
+    assert "no candidate is sufficient" in report.suggested_updates[0]
 
 
 def test_render_markdown_contains_required_sections_and_recommendation():

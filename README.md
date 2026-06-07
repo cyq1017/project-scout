@@ -17,12 +17,24 @@ The broader skill direction is `prior-art-scout`: a pre-build / pre-adopt discov
 ## Install For Development
 
 ```bash
-python3 -m venv .venv
+python3.13 -m venv .venv
 . .venv/bin/activate
 python -m pip install -e ".[dev]"
 ```
 
+Python 3.12 or 3.13 is recommended for local development. On macOS, editable
+installs in synced paths can leave `.venv` `site-packages` files marked
+`hidden`/`dataless`, especially with Python 3.14. That can make the
+`project-scout` console script fail to import `project_scout` or make pytest
+import hang. Prefer rebuilding the venv with Python 3.12/3.13:
+
+```bash
+scripts/bootstrap-dev.sh
+```
+
 ## Run With Fixtures
+
+After a healthy editable install, use the console script:
 
 ```bash
 project-scout report \
@@ -31,6 +43,29 @@ project-scout report \
   --out-json project-scout-report.json \
   --out-md docs/research/2026-05-prior-art-map.md
 ```
+
+For local recovery or import-path troubleshooting, use the source-tree module
+entrypoint. The smoke script writes only to `/tmp`:
+
+```bash
+scripts/smoke.sh
+```
+
+Equivalent direct command:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m project_scout.cli report \
+  --brief tests/fixtures/brief.json \
+  --candidates tests/fixtures/github_repos.json \
+  --out-json /tmp/project-scout-smoke.json \
+  --out-md /tmp/project-scout-smoke.md \
+  --generated-at 2026-06-04T00:00:00+00:00
+```
+
+## Sample Reports
+
+- [商机发现 skill prior-art map](docs/research/2026-05-business-opportunity-skill-prior-art-map.md): 用中文展示如何评估是否值得自研一个商机发现 skill。
+- [DeepSeek coding agent desktop prior-art map](docs/research/2026-05-deepseek-coding-agent-desktop-prior-art-map.md): prior-art map for a desktop DeepSeek coding agent direction.
 
 ## Import Manual URLs
 
@@ -70,7 +105,7 @@ Skills registry search shells out to `npx skills find`. If the registry command 
 ## Run Tests
 
 ```bash
-pytest
+.venv/bin/python -m pytest
 ```
 
 ## Skill Source
@@ -80,6 +115,7 @@ This repository also maintains skill source under `skills/`.
 - [skills/prior-art-scout/SKILL.md](skills/prior-art-scout/SKILL.md): reusable discovery skill.
 - [docs/skill-repository-strategy.md](docs/skill-repository-strategy.md): how this repo uses skills and adjacent skill orchestration.
 - [docs/plans/2026-05-26-prior-art-scout-skill-design.md](docs/plans/2026-05-26-prior-art-scout-skill-design.md): current design plan.
+- [docs/patterns/skill-experience-library.md](docs/patterns/skill-experience-library.md): how reusable skill/project lessons are captured without bloating installable skills.
 
 The skill is intended to answer questions such as:
 
@@ -100,6 +136,20 @@ cp -R skills/prior-art-scout ~/.codex/skills/prior-art-scout
 ```
 
 Public GitHub release, registry publication, and community promotion require explicit approval before pushing or publishing.
+
+## Experience Library
+
+Reusable lessons from building and testing skills live under `docs/`, separate
+from installable skill runtime files:
+
+- `docs/patterns/`: transferable methods and design patterns.
+- `docs/case-studies/`: evidence-rich analyses of existing skills, projects, or scans.
+- `docs/templates/`: repeatable forms for future discovery and skill design work.
+- `docs/source-patterns/`: source-specific search notes and pitfalls.
+
+Only promote a lesson into `skills/*/references/` when an agent needs it during
+execution. Keep process history, broad comparisons, and promotion strategy in
+repo-level docs.
 
 ## Non-Goals For MVP
 

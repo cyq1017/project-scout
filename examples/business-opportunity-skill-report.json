@@ -1,0 +1,1148 @@
+{
+  "brief": {
+    "name": "business-opportunity-discovery-skill",
+    "goal": "Create a reusable agent skill that discovers and validates business opportunities before users build a product, skill, plugin, or startup idea. It should search prior art, existing products, open-source projects, skill registries, community pain signals, China-specific platforms, and demand proxies, then produce an evidence-backed opportunity map with build/adopt/borrow/extend recommendations. Target type: skill. Intent: build.",
+    "keywords": [
+      "business opportunity discovery",
+      "market opportunity",
+      "startup idea validation",
+      "product discovery",
+      "market research",
+      "competitive analysis",
+      "community pain signals",
+      "prior art",
+      "evidence-based recommendation",
+      "source coverage matrix",
+      "search log",
+      "blind spots",
+      "evidence-backed recommendation",
+      "build adopt borrow extend decision",
+      "China platform signals",
+      "community mining",
+      "job market signals",
+      "review mining",
+      "multi-source triangulation"
+    ],
+    "target_users": [
+      "founders",
+      "indie hackers",
+      "product managers",
+      "AI agents",
+      "skill authors"
+    ],
+    "tech_stack": [
+      "Codex skills",
+      "Claude skills",
+      "GitHub",
+      "web search",
+      "Reddit",
+      "Hacker News",
+      "Xiaohongshu",
+      "WeChat",
+      "job boards",
+      "source coverage matrix",
+      "search log",
+      "blind spots",
+      "evidence-backed recommendation",
+      "build adopt borrow extend decision"
+    ],
+    "exclusions": [
+      "autonomous crawler platform",
+      "token storage",
+      "account automation",
+      "survey-only validation",
+      "LLM-only scoring"
+    ]
+  },
+  "generated_at": "2026-05-28T10:44:13+08:00",
+  "summary": {
+    "candidate_count": 15,
+    "top_recommendation": "Write New"
+  },
+  "decision": {
+    "recommendation": "Write New",
+    "confidence": "Low",
+    "rationale": [
+      "startup-idea-validation has the strongest current score (0.432).",
+      "Recommendation is based on evidence: competitive analysis, evidence based recommendation, market opportunity, prior art, startup idea validation, ai agents, founders, analysis, based, competitive, evidence, idea."
+    ],
+    "confidence_reasons": [
+      "15 candidates compared.",
+      "Metadata is deterministic but may need manual source verification."
+    ]
+  },
+  "coverage": {
+    "confidence": "Low",
+    "sources": [
+      {
+        "source": "skills",
+        "query": "npx skills find \"business opportunity discovery\"",
+        "result_count": 0,
+        "used_count": 0,
+        "status": "failed",
+        "error": "npm/npx skills registry command hung or failed in this environment; web fallback used for skill candidates."
+      },
+      {
+        "source": "web",
+        "query": "business opportunity discovery AI agent skill startup idea validation GitHub; site:skills.sh opportunity discovery skill; startup idea validation skill",
+        "result_count": 30,
+        "used_count": 8,
+        "status": "ok",
+        "error": null
+      },
+      {
+        "source": "github",
+        "query": "startup idea validation",
+        "result_count": 10,
+        "used_count": 4,
+        "status": "ok",
+        "error": null
+      },
+      {
+        "source": "github",
+        "query": "market research agent",
+        "result_count": 10,
+        "used_count": 1,
+        "status": "ok",
+        "error": null
+      },
+      {
+        "source": "github",
+        "query": "business idea validation",
+        "result_count": 10,
+        "used_count": 3,
+        "status": "ok",
+        "error": null
+      },
+      {
+        "source": "github",
+        "query": "opportunity discovery agent",
+        "result_count": 1,
+        "used_count": 1,
+        "status": "ok",
+        "error": null
+      },
+      {
+        "source": "manual",
+        "query": "known candidates from prior quick scan and user discussion",
+        "result_count": 4,
+        "used_count": 4,
+        "status": "ok",
+        "error": null
+      }
+    ],
+    "blind_spots": [
+      "skills source failed for query: npx skills find \"business opportunity discovery\"."
+    ],
+    "stop_reason": "Compared available candidates after recorded source collection."
+  },
+  "search_log": [
+    {
+      "source": "skills",
+      "query": "npx skills find \"business opportunity discovery\"",
+      "result_count": 0,
+      "used_count": 0,
+      "status": "failed",
+      "error": "npm/npx skills registry command hung or failed in this environment; web fallback used for skill candidates."
+    },
+    {
+      "source": "web",
+      "query": "business opportunity discovery AI agent skill startup idea validation GitHub; site:skills.sh opportunity discovery skill; startup idea validation skill",
+      "result_count": 30,
+      "used_count": 8,
+      "status": "ok",
+      "error": null
+    },
+    {
+      "source": "github",
+      "query": "startup idea validation",
+      "result_count": 10,
+      "used_count": 4,
+      "status": "ok",
+      "error": null
+    },
+    {
+      "source": "github",
+      "query": "market research agent",
+      "result_count": 10,
+      "used_count": 1,
+      "status": "ok",
+      "error": null
+    },
+    {
+      "source": "github",
+      "query": "business idea validation",
+      "result_count": 10,
+      "used_count": 3,
+      "status": "ok",
+      "error": null
+    },
+    {
+      "source": "github",
+      "query": "opportunity discovery agent",
+      "result_count": 1,
+      "used_count": 1,
+      "status": "ok",
+      "error": null
+    },
+    {
+      "source": "manual",
+      "query": "known candidates from prior quick scan and user discussion",
+      "result_count": 4,
+      "used_count": 4,
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "candidates": [
+    {
+      "name": "startup-idea-validation",
+      "url": "https://eliteai.tools/agent-skills/startup-idea-validation",
+      "stars": 163,
+      "last_update": "2026-05-28",
+      "description": "Agent skill for startup idea validation using a 9-dimension framework covering problem severity, market sizing, timing, competitive moats, unit economics, founder-market fit, feasibility, GTM clarity, and risk profile.",
+      "topics": [
+        "skill",
+        "startup-idea-validation",
+        "market-sizing",
+        "competitive-analysis",
+        "evidence-based-recommendation"
+      ],
+      "license": "MIT",
+      "language": "Markdown",
+      "readme_summary": "Strong validation scorecard and experiment ladder. Useful for idea validation after an opportunity has been found, but it is not primarily a multi-source opportunity discovery or prior-art coverage skill.",
+      "similarity_score": 0.432,
+      "recommendation": "Write New",
+      "evidence": [
+        "competitive analysis",
+        "evidence based recommendation",
+        "market opportunity",
+        "prior art",
+        "startup idea validation",
+        "ai agents",
+        "founders",
+        "analysis",
+        "based",
+        "competitive",
+        "evidence",
+        "idea"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "Fulcrum",
+      "url": "https://www.fulcrum.host/",
+      "stars": 0,
+      "last_update": "2026-05-28",
+      "description": "AI-powered data intelligence product where autonomous agents scan Reddit, Hacker News, GitHub Issues, RSS feeds, and Twitter for raw signals of unmet demand, then extract, validate, and score product opportunities.",
+      "topics": [
+        "product",
+        "product-opportunity-discovery",
+        "community-signals",
+        "adversarial-review",
+        "market-shifts",
+        "competitive-landscape"
+      ],
+      "license": "",
+      "language": "",
+      "readme_summary": "Closest product positioning to the proposed skill: multi-source opportunity discovery with validation and scoring. Useful competitive positioning reference, not a reusable open skill.",
+      "similarity_score": 0.41,
+      "recommendation": "Write New",
+      "evidence": [
+        "market opportunity",
+        "product discovery",
+        "github",
+        "hacker news",
+        "reddit",
+        "ai agents",
+        "community",
+        "competitive",
+        "discovery",
+        "market",
+        "opportunity",
+        "product"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "ferdinandobons/startup-skill",
+      "url": "https://github.com/ferdinandobons/startup-skill",
+      "stars": 319,
+      "last_update": "2026-05-26T14:42:28Z",
+      "description": "AI agent skills for startup validation, competitive intelligence, and planning.",
+      "topics": [
+        "ai-agents",
+        "claude-code",
+        "claude-skills",
+        "competitive-analysis",
+        "competitive-intelligence",
+        "market-research",
+        "pricing-analysis",
+        "startup",
+        "startup-validation",
+        "battle-cards"
+      ],
+      "license": "MIT",
+      "language": "",
+      "readme_summary": "High-overlap public skill repository. Strong candidate to inspect for modular startup validation and competitive intelligence patterns before building a new business-opportunity skill.",
+      "similarity_score": 0.393,
+      "recommendation": "Write New",
+      "evidence": [
+        "competitive analysis",
+        "market opportunity",
+        "market research",
+        "claude skills",
+        "ai agents",
+        "analysis",
+        "competitive",
+        "market",
+        "research",
+        "startup",
+        "validation",
+        "agent"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "ailabs-393/ai-labs-claude-skills@startup-validator",
+      "url": "https://agent-skills.md/skills/ailabs-393/ai-labs-claude-skills/startup-validator",
+      "stars": 0,
+      "last_update": "2026-05-28",
+      "description": "Startup validator skill triggered by requests to validate startup ideas, analyze market opportunity, research competition, evaluate business ideas, or check demand.",
+      "topics": [
+        "skill",
+        "startup-validator",
+        "market-opportunity",
+        "competition-research",
+        "business-idea"
+      ],
+      "license": "",
+      "language": "Markdown",
+      "readme_summary": "Useful validation workflow candidate. Public listing emphasizes idea viability and demand checks rather than source coverage confidence or multi-platform opportunity discovery.",
+      "similarity_score": 0.392,
+      "recommendation": "Write New",
+      "evidence": [
+        "business opportunity discovery",
+        "market opportunity",
+        "market research",
+        "startup idea validation",
+        "claude skills",
+        "business",
+        "idea",
+        "market",
+        "opportunity",
+        "research",
+        "startup",
+        "coverage"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "onvoyage-ai/gtm-engineer-skills@reddit-opportunity-research",
+      "url": "https://skills.sh/onvoyage-ai/gtm-engineer-skills/reddit-opportunity-research",
+      "stars": 0,
+      "last_update": "2026-05-28",
+      "description": "Skill candidate for Reddit opportunity research and community-signal mining.",
+      "topics": [
+        "skill",
+        "reddit",
+        "opportunity-research",
+        "community-signals",
+        "market-research"
+      ],
+      "license": "",
+      "language": "Markdown",
+      "readme_summary": "Useful source-specific adapter pattern for community pain discovery. It should be integrated as one signal route rather than treated as a complete opportunity discovery system.",
+      "similarity_score": 0.392,
+      "recommendation": "Write New",
+      "evidence": [
+        "community mining",
+        "community pain signals",
+        "market opportunity",
+        "market research",
+        "reddit",
+        "community",
+        "market",
+        "opportunity",
+        "research",
+        "signal",
+        "discovery",
+        "mining"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "igr290/XHS_Business_Idea_Validator",
+      "url": "https://github.com/igr290/XHS_Business_Idea_Validator",
+      "stars": 5,
+      "last_update": "2026-05-28T02:21:33Z",
+      "description": "Analyze Xiaohongshu data to uncover market opportunities and user needs, generating automated reports for business idea validation.",
+      "topics": [
+        "agent",
+        "agentic-ai",
+        "business",
+        "cli",
+        "python",
+        "xiaohongshu",
+        "market-opportunity",
+        "user-needs"
+      ],
+      "license": "",
+      "language": "Python",
+      "readme_summary": "Important China-platform signal source. Strong borrow candidate for Xiaohongshu-specific opportunity detection, but direct reuse needs license and data-access review.",
+      "similarity_score": 0.375,
+      "recommendation": "Write New",
+      "evidence": [
+        "china platform signals",
+        "market opportunity",
+        "xiaohongshu",
+        "ai agents",
+        "business",
+        "market",
+        "opportunity",
+        "agent",
+        "borrow",
+        "china",
+        "idea",
+        "opportunitie"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "Nirikshan95/VettIQ",
+      "url": "https://github.com/Nirikshan95/VettIQ",
+      "stars": 14,
+      "last_update": "2026-05-17T07:45:41Z",
+      "description": "AI-powered startup idea validation tool using LangGraph workflows, FastAPI, and Streamlit to deliver actionable insights for entrepreneurs.",
+      "topics": [
+        "agentic-ai",
+        "ai-agents",
+        "business-intelligence",
+        "entrepreneurship",
+        "fastapi",
+        "langchain",
+        "langgraph",
+        "market-analysis",
+        "risk-assessment",
+        "streamlit",
+        "competitor-research",
+        "startup-idea-validation"
+      ],
+      "license": "MIT",
+      "language": "Python",
+      "readme_summary": "Application implementation candidate. Useful for validation workflow, LangGraph structure, and entrepreneur-facing reports, but less directly reusable as a cross-agent skill.",
+      "similarity_score": 0.357,
+      "recommendation": "Write New",
+      "evidence": [
+        "market research",
+        "startup idea validation",
+        "ai agents",
+        "analysis",
+        "business",
+        "idea",
+        "market",
+        "research",
+        "startup",
+        "validation",
+        "agent",
+        "reusable"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "OSSIdeas",
+      "url": "https://ossideas.ai/",
+      "stars": 0,
+      "last_update": "2026-05-28",
+      "description": "Product that analyzes trending open-source repositories to discover, validate, and launch open-source startup ideas with monetization and competitive insights.",
+      "topics": [
+        "product",
+        "open-source-startup-ideas",
+        "business-opportunity-discovery",
+        "competitive-insights",
+        "monetization"
+      ],
+      "license": "",
+      "language": "",
+      "readme_summary": "Product-level competitor for opportunity discovery from GitHub/open-source signals. Useful positioning comparison; not directly adoptable as a skill.",
+      "similarity_score": 0.355,
+      "recommendation": "Write New",
+      "evidence": [
+        "business opportunity discovery",
+        "product discovery",
+        "github",
+        "business",
+        "competitive",
+        "discovery",
+        "idea",
+        "opportunity",
+        "product",
+        "source",
+        "startup",
+        "discover"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "nweii/agent-stuff@validating-startup-ideas",
+      "url": "https://www.learn-skills.dev/en/skills/nweii/agent-stuff/validating-startup-ideas",
+      "stars": 0,
+      "last_update": "2026-05-28",
+      "description": "Skill for finding and validating startup ideas by mining user complaints, crafting premises, and navigating the idea maze.",
+      "topics": [
+        "skill",
+        "startup-ideas",
+        "user-complaints",
+        "idea-maze",
+        "market-research"
+      ],
+      "license": "",
+      "language": "Markdown",
+      "readme_summary": "Closest skill-language overlap around mining complaints and finding ideas. Needs source inspection before adoption; public listing suggests useful complaint-mining workflow.",
+      "similarity_score": 0.338,
+      "recommendation": "Monitor",
+      "evidence": [
+        "market research",
+        "ai agents",
+        "idea",
+        "market",
+        "research",
+        "startup",
+        "agent",
+        "before",
+        "mining",
+        "skill",
+        "source",
+        "user"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "majiayu000/claude-arsenal@product-discovery",
+      "url": "https://skills.sh/majiayu000/claude-arsenal/product-discovery",
+      "stars": 0,
+      "last_update": "2026-05-28",
+      "description": "Product discovery skill focused on continuous discovery, outcomes, assumption testing, co-creation, data-driven decisions, and problem-first thinking.",
+      "topics": [
+        "skill",
+        "product-discovery",
+        "assumption-testing",
+        "customer-research",
+        "evidence"
+      ],
+      "license": "",
+      "language": "Markdown",
+      "readme_summary": "Good product discovery doctrine. Borrow problem-first and assumption-testing patterns, but it is broader PM workflow rather than a search-backed opportunity discovery gate.",
+      "similarity_score": 0.336,
+      "recommendation": "Monitor",
+      "evidence": [
+        "product discovery",
+        "claude skills",
+        "discovery",
+        "evidence",
+        "product",
+        "research",
+        "backed",
+        "borrow",
+        "decision",
+        "opportunity",
+        "search",
+        "skill"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "mxvsh/prove",
+      "url": "https://github.com/mxvsh/prove",
+      "stars": 3,
+      "last_update": "2026-03-15T17:44:16Z",
+      "description": "Local-first startup idea validator that runs a structured AI conversation across five stages and produces a verdict.",
+      "topics": [
+        "local-first",
+        "startup-idea-validation",
+        "structured-conversation",
+        "verdict"
+      ],
+      "license": "",
+      "language": "TypeScript",
+      "readme_summary": "Useful local-first and verdict framing. It validates an input idea more than it discovers opportunities from source coverage.",
+      "similarity_score": 0.318,
+      "recommendation": "Monitor",
+      "evidence": [
+        "startup idea validation",
+        "idea",
+        "startup",
+        "validation",
+        "coverage",
+        "discover",
+        "opportunitie",
+        "produce",
+        "source",
+        "validate"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "codechan-dev/ai-business-validator",
+      "url": "https://github.com/codechan-dev/ai-business-validator",
+      "stars": 1,
+      "last_update": "2026-04-26T06:45:41Z",
+      "description": "AI-powered business idea validator using LangGraph workflows, Groq LLM reasoning, and MCP tools for market research, competitor analysis, demand validation, and feasibility scoring.",
+      "topics": [
+        "business-idea-validation",
+        "langgraph",
+        "mcp",
+        "market-research",
+        "competitor-analysis",
+        "demand-validation",
+        "feasibility-score"
+      ],
+      "license": "",
+      "language": "Python",
+      "readme_summary": "Good implementation reference for MCP-backed market research and feasibility scoring.",
+      "similarity_score": 0.318,
+      "recommendation": "Monitor",
+      "evidence": [
+        "market research",
+        "analysis",
+        "business",
+        "idea",
+        "market",
+        "research",
+        "validation",
+        "backed",
+        "demand"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "thim81/ost-builder@opportunity-solution-tree-builder",
+      "url": "https://skills.sh/thim81/ost-builder/opportunity-solution-tree-builder",
+      "stars": 3,
+      "last_update": "2026-05-28",
+      "description": "Skill for creating Opportunity Solution Trees in structured Markdown with outcomes, opportunities, solutions, experiments, and visualization support.",
+      "topics": [
+        "skill",
+        "opportunity-solution-tree",
+        "product-discovery",
+        "experiments",
+        "markdown"
+      ],
+      "license": "",
+      "language": "Markdown",
+      "readme_summary": "Useful output format for organizing opportunities after discovery. It does not appear to search the web, GitHub, or communities for new opportunity candidates.",
+      "similarity_score": 0.317,
+      "recommendation": "Monitor",
+      "evidence": [
+        "product discovery",
+        "github",
+        "web search",
+        "discovery",
+        "opportunity",
+        "product",
+        "opportunitie",
+        "search",
+        "skill"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "bhagwadG/oda",
+      "url": "https://github.com/bhagwadG/oda",
+      "stars": 1,
+      "last_update": "2026-03-02T01:58:10Z",
+      "description": "Opportunity Discovery Agent.",
+      "topics": [
+        "opportunity-discovery",
+        "agent",
+        "business-opportunity"
+      ],
+      "license": "",
+      "language": "Python",
+      "readme_summary": "Name-level match. Needs source inspection because public metadata is sparse.",
+      "similarity_score": 0.282,
+      "recommendation": "Monitor",
+      "evidence": [
+        "business opportunity discovery",
+        "ai agents",
+        "business",
+        "discovery",
+        "opportunity",
+        "agent",
+        "source"
+      ],
+      "avoid_reasons": []
+    },
+    {
+      "name": "Pranavharshans/ThinkTank-AI",
+      "url": "https://github.com/Pranavharshans/ThinkTank-AI",
+      "stars": 8,
+      "last_update": "2026-04-12T16:12:48Z",
+      "description": "AI-powered startup idea validator that analyzes market trends, feasibility, customer personas, business models, and investor readiness.",
+      "topics": [
+        "startup-idea-validation",
+        "market-trends",
+        "customer-personas",
+        "business-models",
+        "investor-readiness"
+      ],
+      "license": "",
+      "language": "Python",
+      "readme_summary": "Good benchmark for broad validation dimensions. Unknown license limits direct reuse.",
+      "similarity_score": 0.262,
+      "recommendation": "Monitor",
+      "evidence": [
+        "startup idea validation",
+        "business",
+        "idea",
+        "market",
+        "startup",
+        "validation"
+      ],
+      "avoid_reasons": []
+    }
+  ],
+  "overlap_matrix": [
+    {
+      "candidate": "startup-idea-validation",
+      "score": 0.432,
+      "recommendation": "Write New",
+      "keyword_overlap": 5,
+      "stack_overlap": 0,
+      "user_overlap": 2,
+      "exclusion_overlap": 0,
+      "stars": 163,
+      "last_update": "2026-05-28"
+    },
+    {
+      "candidate": "Fulcrum",
+      "score": 0.41,
+      "recommendation": "Write New",
+      "keyword_overlap": 2,
+      "stack_overlap": 3,
+      "user_overlap": 1,
+      "exclusion_overlap": 0,
+      "stars": 0,
+      "last_update": "2026-05-28"
+    },
+    {
+      "candidate": "ferdinandobons/startup-skill",
+      "score": 0.393,
+      "recommendation": "Write New",
+      "keyword_overlap": 3,
+      "stack_overlap": 1,
+      "user_overlap": 1,
+      "exclusion_overlap": 0,
+      "stars": 319,
+      "last_update": "2026-05-26T14:42:28Z"
+    },
+    {
+      "candidate": "ailabs-393/ai-labs-claude-skills@startup-validator",
+      "score": 0.392,
+      "recommendation": "Write New",
+      "keyword_overlap": 4,
+      "stack_overlap": 1,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 0,
+      "last_update": "2026-05-28"
+    },
+    {
+      "candidate": "onvoyage-ai/gtm-engineer-skills@reddit-opportunity-research",
+      "score": 0.392,
+      "recommendation": "Write New",
+      "keyword_overlap": 4,
+      "stack_overlap": 1,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 0,
+      "last_update": "2026-05-28"
+    },
+    {
+      "candidate": "igr290/XHS_Business_Idea_Validator",
+      "score": 0.375,
+      "recommendation": "Write New",
+      "keyword_overlap": 2,
+      "stack_overlap": 1,
+      "user_overlap": 1,
+      "exclusion_overlap": 0,
+      "stars": 5,
+      "last_update": "2026-05-28T02:21:33Z"
+    },
+    {
+      "candidate": "Nirikshan95/VettIQ",
+      "score": 0.357,
+      "recommendation": "Write New",
+      "keyword_overlap": 2,
+      "stack_overlap": 0,
+      "user_overlap": 1,
+      "exclusion_overlap": 0,
+      "stars": 14,
+      "last_update": "2026-05-17T07:45:41Z"
+    },
+    {
+      "candidate": "OSSIdeas",
+      "score": 0.355,
+      "recommendation": "Write New",
+      "keyword_overlap": 2,
+      "stack_overlap": 1,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 0,
+      "last_update": "2026-05-28"
+    },
+    {
+      "candidate": "nweii/agent-stuff@validating-startup-ideas",
+      "score": 0.338,
+      "recommendation": "Monitor",
+      "keyword_overlap": 1,
+      "stack_overlap": 0,
+      "user_overlap": 1,
+      "exclusion_overlap": 0,
+      "stars": 0,
+      "last_update": "2026-05-28"
+    },
+    {
+      "candidate": "majiayu000/claude-arsenal@product-discovery",
+      "score": 0.336,
+      "recommendation": "Monitor",
+      "keyword_overlap": 1,
+      "stack_overlap": 1,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 0,
+      "last_update": "2026-05-28"
+    },
+    {
+      "candidate": "mxvsh/prove",
+      "score": 0.318,
+      "recommendation": "Monitor",
+      "keyword_overlap": 1,
+      "stack_overlap": 0,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 3,
+      "last_update": "2026-03-15T17:44:16Z"
+    },
+    {
+      "candidate": "codechan-dev/ai-business-validator",
+      "score": 0.318,
+      "recommendation": "Monitor",
+      "keyword_overlap": 1,
+      "stack_overlap": 0,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 1,
+      "last_update": "2026-04-26T06:45:41Z"
+    },
+    {
+      "candidate": "thim81/ost-builder@opportunity-solution-tree-builder",
+      "score": 0.317,
+      "recommendation": "Monitor",
+      "keyword_overlap": 1,
+      "stack_overlap": 2,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 3,
+      "last_update": "2026-05-28"
+    },
+    {
+      "candidate": "bhagwadG/oda",
+      "score": 0.282,
+      "recommendation": "Monitor",
+      "keyword_overlap": 1,
+      "stack_overlap": 0,
+      "user_overlap": 1,
+      "exclusion_overlap": 0,
+      "stars": 1,
+      "last_update": "2026-03-02T01:58:10Z"
+    },
+    {
+      "candidate": "Pranavharshans/ThinkTank-AI",
+      "score": 0.262,
+      "recommendation": "Monitor",
+      "keyword_overlap": 1,
+      "stack_overlap": 0,
+      "user_overlap": 0,
+      "exclusion_overlap": 0,
+      "stars": 8,
+      "last_update": "2026-04-12T16:12:48Z"
+    }
+  ],
+  "recommendations": [
+    {
+      "candidate": "startup-idea-validation",
+      "recommendation": "Write New",
+      "score": 0.432,
+      "evidence": [
+        "competitive analysis",
+        "evidence based recommendation",
+        "market opportunity",
+        "prior art",
+        "startup idea validation",
+        "ai agents",
+        "founders",
+        "analysis",
+        "based",
+        "competitive",
+        "evidence",
+        "idea"
+      ]
+    },
+    {
+      "candidate": "Fulcrum",
+      "recommendation": "Write New",
+      "score": 0.41,
+      "evidence": [
+        "market opportunity",
+        "product discovery",
+        "github",
+        "hacker news",
+        "reddit",
+        "ai agents",
+        "community",
+        "competitive",
+        "discovery",
+        "market",
+        "opportunity",
+        "product"
+      ]
+    },
+    {
+      "candidate": "ferdinandobons/startup-skill",
+      "recommendation": "Write New",
+      "score": 0.393,
+      "evidence": [
+        "competitive analysis",
+        "market opportunity",
+        "market research",
+        "claude skills",
+        "ai agents",
+        "analysis",
+        "competitive",
+        "market",
+        "research",
+        "startup",
+        "validation",
+        "agent"
+      ]
+    },
+    {
+      "candidate": "ailabs-393/ai-labs-claude-skills@startup-validator",
+      "recommendation": "Write New",
+      "score": 0.392,
+      "evidence": [
+        "business opportunity discovery",
+        "market opportunity",
+        "market research",
+        "startup idea validation",
+        "claude skills",
+        "business",
+        "idea",
+        "market",
+        "opportunity",
+        "research",
+        "startup",
+        "coverage"
+      ]
+    },
+    {
+      "candidate": "onvoyage-ai/gtm-engineer-skills@reddit-opportunity-research",
+      "recommendation": "Write New",
+      "score": 0.392,
+      "evidence": [
+        "community mining",
+        "community pain signals",
+        "market opportunity",
+        "market research",
+        "reddit",
+        "community",
+        "market",
+        "opportunity",
+        "research",
+        "signal",
+        "discovery",
+        "mining"
+      ]
+    },
+    {
+      "candidate": "igr290/XHS_Business_Idea_Validator",
+      "recommendation": "Write New",
+      "score": 0.375,
+      "evidence": [
+        "china platform signals",
+        "market opportunity",
+        "xiaohongshu",
+        "ai agents",
+        "business",
+        "market",
+        "opportunity",
+        "agent",
+        "borrow",
+        "china",
+        "idea",
+        "opportunitie"
+      ]
+    },
+    {
+      "candidate": "Nirikshan95/VettIQ",
+      "recommendation": "Write New",
+      "score": 0.357,
+      "evidence": [
+        "market research",
+        "startup idea validation",
+        "ai agents",
+        "analysis",
+        "business",
+        "idea",
+        "market",
+        "research",
+        "startup",
+        "validation",
+        "agent",
+        "reusable"
+      ]
+    },
+    {
+      "candidate": "OSSIdeas",
+      "recommendation": "Write New",
+      "score": 0.355,
+      "evidence": [
+        "business opportunity discovery",
+        "product discovery",
+        "github",
+        "business",
+        "competitive",
+        "discovery",
+        "idea",
+        "opportunity",
+        "product",
+        "source",
+        "startup",
+        "discover"
+      ]
+    },
+    {
+      "candidate": "nweii/agent-stuff@validating-startup-ideas",
+      "recommendation": "Monitor",
+      "score": 0.338,
+      "evidence": [
+        "market research",
+        "ai agents",
+        "idea",
+        "market",
+        "research",
+        "startup",
+        "agent",
+        "before",
+        "mining",
+        "skill",
+        "source",
+        "user"
+      ]
+    },
+    {
+      "candidate": "majiayu000/claude-arsenal@product-discovery",
+      "recommendation": "Monitor",
+      "score": 0.336,
+      "evidence": [
+        "product discovery",
+        "claude skills",
+        "discovery",
+        "evidence",
+        "product",
+        "research",
+        "backed",
+        "borrow",
+        "decision",
+        "opportunity",
+        "search",
+        "skill"
+      ]
+    },
+    {
+      "candidate": "mxvsh/prove",
+      "recommendation": "Monitor",
+      "score": 0.318,
+      "evidence": [
+        "startup idea validation",
+        "idea",
+        "startup",
+        "validation",
+        "coverage",
+        "discover",
+        "opportunitie",
+        "produce",
+        "source",
+        "validate"
+      ]
+    },
+    {
+      "candidate": "codechan-dev/ai-business-validator",
+      "recommendation": "Monitor",
+      "score": 0.318,
+      "evidence": [
+        "market research",
+        "analysis",
+        "business",
+        "idea",
+        "market",
+        "research",
+        "validation",
+        "backed",
+        "demand"
+      ]
+    },
+    {
+      "candidate": "thim81/ost-builder@opportunity-solution-tree-builder",
+      "recommendation": "Monitor",
+      "score": 0.317,
+      "evidence": [
+        "product discovery",
+        "github",
+        "web search",
+        "discovery",
+        "opportunity",
+        "product",
+        "opportunitie",
+        "search",
+        "skill"
+      ]
+    },
+    {
+      "candidate": "bhagwadG/oda",
+      "recommendation": "Monitor",
+      "score": 0.282,
+      "evidence": [
+        "business opportunity discovery",
+        "ai agents",
+        "business",
+        "discovery",
+        "opportunity",
+        "agent",
+        "source"
+      ]
+    },
+    {
+      "candidate": "Pranavharshans/ThinkTank-AI",
+      "recommendation": "Monitor",
+      "score": 0.262,
+      "evidence": [
+        "startup idea validation",
+        "business",
+        "idea",
+        "market",
+        "startup",
+        "validation"
+      ]
+    }
+  ],
+  "risks": [
+    "No blocking risks found in fixture metadata; verify licenses and activity before adopting."
+  ],
+  "suggested_updates": [
+    "ADR: Record why no candidate is sufficient to adopt or fork, and what to borrow from startup-idea-validation.",
+    "Backlog: Add manual review tasks for license, maintenance activity, and integration cost.",
+    "Backlog: Track borrowed ideas separately from differentiating product decisions."
+  ]
+}

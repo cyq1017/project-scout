@@ -1,0 +1,62 @@
+{
+  "name": "business-opportunity-discovery-skill",
+  "target_type": "skill",
+  "intent": "build",
+  "goal": "Create a reusable agent skill that discovers and validates business opportunities before users build a product, skill, plugin, or startup idea. It should search prior art, existing products, open-source projects, skill registries, community pain signals, China-specific platforms, and demand proxies, then produce an evidence-backed opportunity map with build/adopt/borrow/extend recommendations.",
+  "keywords": [
+    "business opportunity discovery",
+    "market opportunity",
+    "startup idea validation",
+    "product discovery",
+    "market research",
+    "competitive analysis",
+    "community pain signals",
+    "prior art",
+    "evidence-based recommendation"
+  ],
+  "users_or_consumers": [
+    "founders",
+    "indie hackers",
+    "product managers",
+    "AI agents",
+    "skill authors"
+  ],
+  "ecosystems": [
+    "Codex skills",
+    "Claude skills",
+    "GitHub",
+    "web search",
+    "Reddit",
+    "Hacker News",
+    "Xiaohongshu",
+    "WeChat",
+    "job boards"
+  ],
+  "must_have": [
+    "source coverage matrix",
+    "search log",
+    "blind spots",
+    "evidence-backed recommendation",
+    "build adopt borrow extend decision"
+  ],
+  "nice_to_have": [
+    "China platform signals",
+    "community mining",
+    "job market signals",
+    "review mining",
+    "multi-source triangulation"
+  ],
+  "exclusions": [
+    "autonomous crawler platform",
+    "token storage",
+    "account automation",
+    "survey-only validation",
+    "LLM-only scoring"
+  ],
+  "known_candidates": [
+    "https://eliteai.tools/agent-skills/startup-idea-validation",
+    "https://www.fulcrum.host/",
+    "https://github.com/ferdinandobons/startup-skill",
+    "https://github.com/igr290/XHS_Business_Idea_Validator"
+  ]
+}

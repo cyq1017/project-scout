@@ -175,12 +175,15 @@ def _coverage_summary(search_log: list[SearchLogEntry]) -> CoverageSummary:
         confidence = "Medium"
 
     blind_spots = []
+    for entry in search_log:
+        if entry.status == "failed":
+            blind_spots.append(f"{entry.source} source failed: {entry.error or 'no error detail recorded'}.")
+        elif entry.status == "rate_limited":
+            blind_spots.append(f"{entry.source} source was rate-limited.")
     if "web" not in source_names:
         blind_spots.append("Web and community sources were not covered unless supplied manually.")
     if "skills" not in source_names:
         blind_spots.append("Skills registry was not covered unless supplied manually.")
-    if any(status == "rate_limited" for status in statuses):
-        blind_spots.append("At least one source was rate-limited.")
     if not blind_spots:
         blind_spots.append("No major source-class blind spots recorded; still verify primary sources before adoption.")
 
@@ -282,6 +285,12 @@ def _suggested_updates(brief: ProjectBrief, candidates: list[ScoredCandidate]) -
     top = candidates[0] if candidates else None
     if top is None:
         return [f"ADR: Document why {brief.name} proceeds without comparable candidates."]
+    if top.recommendation == "Write New":
+        return [
+            f"ADR: Record why no candidate is sufficient and Write New is the current recommendation for {top.name}.",
+            "Backlog: Add manual review tasks for license, maintenance activity, and integration cost.",
+            "Backlog: Track borrowed ideas separately from differentiating product decisions.",
+        ]
     return [
         f"ADR: Record why {top.recommendation} is the current recommendation for {top.name}.",
         "Backlog: Add manual review tasks for license, maintenance activity, and integration cost.",
