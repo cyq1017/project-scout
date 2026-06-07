@@ -28,6 +28,7 @@
 - [x] Add pytest coverage for the installed console script.
 - [ ] Consider moving the checkout outside iCloud if hidden/dataless venv flags recur.
 - [x] Move tracked root `project-scout-report.json` into `examples/`.
+- [x] Add reusable brief templates for common scout tasks.
 - [ ] Add multi-query GitHub scan later, not part of this fix.
 - Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
 - Add optional web search adapter.

@@ -73,6 +73,15 @@ PYTHONPATH=src .venv/bin/python -m project_scout.cli report \
   --generated-at 2026-06-04T00:00:00+00:00
 ```
 
+## Brief Templates
+
+Copy a template from `examples/brief-templates/`, replace the placeholder
+values, and pass it to `project-scout report --brief`:
+
+- [skill-discovery.json](examples/brief-templates/skill-discovery.json): evaluate whether to build a reusable agent skill.
+- [cli-library.json](examples/brief-templates/cli-library.json): evaluate a small local CLI/library idea.
+- [agent-plugin.json](examples/brief-templates/agent-plugin.json): evaluate an agent plugin, connector, or MCP-style integration.
+
 ## Sample Reports
 
 - [project-scout fixture JSON report](examples/project-scout-report.json): machine-readable fixture report for the built-in project-scout brief.

@@ -4,6 +4,7 @@ from project_scout.core import load_brief
 
 
 FIXTURES = Path(__file__).parent / "fixtures"
+BRIEF_TEMPLATES = Path(__file__).parents[1] / "examples" / "brief-templates"
 
 
 def test_load_brief_maps_discovery_brief_to_project_brief():
@@ -25,3 +26,21 @@ def test_load_brief_preserves_project_brief_schema():
     assert brief.name == "project-scout"
     assert "github search" in brief.keywords
     assert "staff engineers" in brief.target_users
+
+
+def test_example_brief_templates_load_as_project_briefs():
+    template_paths = sorted(BRIEF_TEMPLATES.glob("*.json"))
+
+    assert {path.name for path in template_paths} == {
+        "agent-plugin.json",
+        "cli-library.json",
+        "skill-discovery.json",
+    }
+    for path in template_paths:
+        brief = load_brief(path)
+        assert brief.name.startswith("replace-with-")
+        assert brief.goal
+        assert brief.keywords
+        assert brief.target_users
+        assert brief.tech_stack
+        assert brief.exclusions

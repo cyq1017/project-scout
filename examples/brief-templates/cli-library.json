@@ -1,0 +1,43 @@
+{
+  "name": "replace-with-cli-or-library-name",
+  "target_type": "tool",
+  "intent": "build",
+  "goal": "Evaluate whether to build a small local CLI/library, and compare existing tools before committing to implementation.",
+  "keywords": [
+    "command line tool",
+    "python library",
+    "local-first workflow",
+    "deterministic report"
+  ],
+  "users_or_consumers": [
+    "developers",
+    "technical founders",
+    "staff engineers"
+  ],
+  "ecosystems": [
+    "python",
+    "github",
+    "package registry"
+  ],
+  "must_have": [
+    "fixture-based tests",
+    "machine-readable output",
+    "markdown report",
+    "thin CLI over library modules"
+  ],
+  "nice_to_have": [
+    "shell completion",
+    "config file",
+    "examples directory"
+  ],
+  "exclusions": [
+    "daemon",
+    "hosted backend",
+    "broad crawler platform",
+    "stored tokens"
+  ],
+  "known_candidates": [
+    "https://github.com/example/similar-cli",
+    "https://pypi.org/project/example-package/"
+  ]
+}

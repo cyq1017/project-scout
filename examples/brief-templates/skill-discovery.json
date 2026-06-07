@@ -1,0 +1,42 @@
+{
+  "name": "replace-with-skill-name",
+  "target_type": "skill",
+  "intent": "build",
+  "goal": "Evaluate whether to build a reusable agent skill for a repeated workflow, and identify existing skills, tools, or references to borrow from first.",
+  "keywords": [
+    "agent skill",
+    "workflow automation",
+    "reusable prompt",
+    "tool routing"
+  ],
+  "users_or_consumers": [
+    "agent users",
+    "workflow owners",
+    "developers maintaining local skills"
+  ],
+  "ecosystems": [
+    "codex skills",
+    "claude skills",
+    "github"
+  ],
+  "must_have": [
+    "clear trigger conditions",
+    "fixture-first validation",
+    "local-first operation",
+    "safe fallback path"
+  ],
+  "nice_to_have": [
+    "cross-agent compatibility notes",
+    "install instructions",
+    "example transcripts"
+  ],
+  "exclusions": [
+    "autonomous crawler",
+    "stored credentials",
+    "hosted service dependency"
+  ],
+  "known_candidates": [
+    "https://github.com/example/existing-skill",
+    "skills.registry@example-skill"
+  ]
+}

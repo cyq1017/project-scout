@@ -1,0 +1,44 @@
+{
+  "name": "replace-with-plugin-name",
+  "target_type": "plugin",
+  "intent": "adopt_or_build",
+  "goal": "Evaluate whether an agent plugin or connector should be adopted, wrapped, forked, or built locally.",
+  "keywords": [
+    "agent plugin",
+    "connector",
+    "mcp server",
+    "tool integration"
+  ],
+  "users_or_consumers": [
+    "agent operators",
+    "developers",
+    "teams integrating local tools"
+  ],
+  "ecosystems": [
+    "codex plugins",
+    "mcp",
+    "github",
+    "local cli"
+  ],
+  "must_have": [
+    "explicit permission boundary",
+    "local validation command",
+    "clear install path",
+    "no credential storage by default"
+  ],
+  "nice_to_have": [
+    "read-only mode",
+    "fixture adapter",
+    "typed manifest"
+  ],
+  "exclusions": [
+    "public publishing by default",
+    "production data access",
+    "background daemon",
+    "automatic remote mutation"
+  ],
+  "known_candidates": [
+    "https://github.com/example/plugin",
+    "https://github.com/modelcontextprotocol/servers"
+  ]
+}
