@@ -40,7 +40,12 @@ def _parser() -> argparse.ArgumentParser:
         default=[],
         help="Path to a newline-delimited manual URL list. May be passed more than once.",
     )
-    report.add_argument("--github-query", help="Unauthenticated GitHub repository search query.")
+    report.add_argument(
+        "--github-query",
+        action="append",
+        default=[],
+        help="Unauthenticated GitHub repository search query. May be passed more than once.",
+    )
     report.add_argument("--github-limit", type=int, default=10, help="Maximum GitHub results.")
     report.add_argument("--skills-query", help="Search installed skills registry via `npx skills find`.")
     report.add_argument("--out-json", default="project-scout-report.json", help="JSON output path.")
@@ -94,11 +99,11 @@ def _report(args: argparse.Namespace) -> int:
         loaded = load_url_candidates(url_path)
         candidates.extend(loaded)
         search_log.append(_search_log_entry("manual", url_path, len(loaded), len(loaded), "ok"))
-    if args.github_query:
-        loaded = search_github_repositories(args.github_query, limit=max(1, args.github_limit))
-        candidates.extend(loaded)
+    for github_query in args.github_query:
+        loaded = search_github_repositories(github_query, limit=max(1, args.github_limit))
+        new_candidates = _merge_candidates(candidates, loaded)
         search_log.append(
-            _search_log_entry("github", args.github_query, len(loaded), len(loaded), "ok")
+            _search_log_entry("github", github_query, len(loaded), len(new_candidates), "ok")
         )
     if args.skills_query:
         try:
@@ -128,6 +133,20 @@ def _report(args: argparse.Namespace) -> int:
 def _default_markdown_path() -> str:
     month = datetime.now(UTC).strftime("%Y-%m")
     return f"docs/research/{month}-prior-art-map.md"
+
+
+def _merge_candidates(
+    candidates: list[CandidateRepo], loaded: list[CandidateRepo]
+) -> list[CandidateRepo]:
+    seen_urls = {candidate.url for candidate in candidates}
+    new_candidates = []
+    for candidate in loaded:
+        if candidate.url in seen_urls:
+            continue
+        candidates.append(candidate)
+        new_candidates.append(candidate)
+        seen_urls.add(candidate.url)
+    return new_candidates
 
 
 def _brief_template_path(template: str) -> Path:

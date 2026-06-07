@@ -157,6 +157,61 @@ def test_cli_records_skills_registry_candidates(tmp_path, monkeypatch):
     assert any(candidate["name"] == "skills.volces.com@github-research" for candidate in data["candidates"])
 
 
+def test_cli_merges_multiple_github_queries_by_url(tmp_path, monkeypatch):
+    from project_scout import cli
+    from project_scout.models import CandidateRepo
+
+    calls = []
+
+    def fake_search(query, *, limit):
+        calls.append((query, limit))
+        return [
+            CandidateRepo(
+                name=f"{query}-shared",
+                url="https://github.com/example/shared",
+                description=f"Shared result for {query}.",
+            ),
+            CandidateRepo(
+                name=f"{query}-unique",
+                url=f"https://github.com/example/{query.replace(' ', '-')}",
+                description=f"Unique result for {query}.",
+            ),
+        ]
+
+    monkeypatch.setattr(cli, "search_github_repositories", fake_search)
+    out_json = tmp_path / "report.json"
+    out_md = tmp_path / "report.md"
+
+    result = cli.main(
+        [
+            "report",
+            "--brief",
+            str(FIXTURES / "brief.json"),
+            "--github-query",
+            "prior art cli",
+            "--github-query",
+            "project discovery",
+            "--github-limit",
+            "3",
+            "--out-json",
+            str(out_json),
+            "--out-md",
+            str(out_md),
+            "--generated-at",
+            "2026-06-04T00:00:00+00:00",
+        ]
+    )
+
+    data = json.loads(out_json.read_text())
+    urls = [candidate["url"] for candidate in data["candidates"]]
+    github_entries = [entry for entry in data["search_log"] if entry["source"] == "github"]
+    assert result == 0
+    assert calls == [("prior art cli", 3), ("project discovery", 3)]
+    assert urls.count("https://github.com/example/shared") == 1
+    assert len(github_entries) == 2
+    assert {entry["query"] for entry in github_entries} == {"prior art cli", "project discovery"}
+
+
 def test_init_brief_copies_template_without_overwrite(tmp_path):
     from project_scout import cli
 

@@ -29,7 +29,7 @@
 - [ ] Consider moving the checkout outside iCloud if hidden/dataless venv flags recur.
 - [x] Move tracked root `project-scout-report.json` into `examples/`.
 - [x] Add reusable brief templates for common scout tasks.
-- [ ] Add multi-query GitHub scan later, not part of this fix.
+- [x] Add multi-query GitHub scan.
 - Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
 - Add optional web search adapter.
 - Add optional source-profile presets for `market_opportunity`, `product`, `paper`, and `mcp_server`.

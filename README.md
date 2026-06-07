@@ -111,11 +111,13 @@ project-scout report \
 project-scout report \
   --brief tests/fixtures/brief.json \
   --github-query "prior art github search cli python" \
+  --github-query "project discovery markdown report" \
   --github-limit 10
 ```
 
 GitHub search uses the unauthenticated REST API and does not store tokens. It may hit public rate limits.
 For each GitHub search result, `project-scout` makes a best-effort unauthenticated README request and stores a short deterministic plaintext summary when available.
+Pass `--github-query` more than once to run multiple bounded searches; candidates are merged by URL.
 
 ## Search Skills Registry
 
