@@ -125,6 +125,9 @@ Skills registry search shells out to `npx skills find`. If the registry command 
 library behavior and includes a regression test that invokes
 `.venv/bin/project-scout` without `PYTHONPATH`.
 
+The GitHub Actions CI gate runs `scripts/bootstrap-dev.sh` and then
+`.venv/bin/python -m pytest`.
+
 ## Skill Source
 
 This repository also maintains skill source under `skills/`.
