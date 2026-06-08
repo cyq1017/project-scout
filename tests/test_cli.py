@@ -157,6 +157,37 @@ def test_cli_records_skills_registry_candidates(tmp_path, monkeypatch):
     assert any(candidate["name"] == "skills.volces.com@github-research" for candidate in data["candidates"])
 
 
+def test_cli_records_web_candidates_and_summary_overrides(tmp_path):
+    from project_scout import cli
+
+    out_json = tmp_path / "report.json"
+    out_md = tmp_path / "report.md"
+
+    result = cli.main(
+        [
+            "report",
+            "--brief",
+            str(FIXTURES / "brief.json"),
+            "--web-candidates",
+            str(FIXTURES / "web_candidates.json"),
+            "--summary-overrides",
+            str(FIXTURES / "summary_overrides.json"),
+            "--out-json",
+            str(out_json),
+            "--out-md",
+            str(out_md),
+            "--generated-at",
+            "2026-06-04T00:00:00+00:00",
+        ]
+    )
+
+    data = json.loads(out_json.read_text())
+    assert result == 0
+    assert data["candidates"][0]["readme_summary"] == "LLM-prepared summary from an external offline review."
+    assert any(entry["source"] == "web" for entry in data["search_log"])
+    assert any(entry["source"] == "summary_overrides" for entry in data["search_log"])
+
+
 def test_cli_merges_multiple_github_queries_by_url(tmp_path, monkeypatch):
     from project_scout import cli
     from project_scout.models import CandidateRepo

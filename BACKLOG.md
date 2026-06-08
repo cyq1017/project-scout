@@ -32,9 +32,9 @@
 - [x] Add multi-query GitHub scan.
 - [x] Add source-profile presets for `market_opportunity`, `product`, `paper`, and `mcp_server`.
 - [x] Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
-- Add optional web search adapter.
+- [x] Add optional web search adapter.
 - [x] Add source-pattern docs for social, papers, packages, and job-market signals.
-- Add optional LLM summarization adapter.
+- [x] Add optional LLM summarization adapter.
 - [x] Add user-level Codex/Claude skill install command.
 - [x] Add Conductor plugin/adapter boundary.
 - Add configurable scoring weights.

@@ -10,6 +10,8 @@ from project_scout.github import search_github_repositories
 from project_scout.models import CandidateRepo
 from project_scout.report import write_report
 from project_scout.skills_registry import search_skills_registry
+from project_scout.summaries import apply_summary_overrides, load_summary_overrides
+from project_scout.web import load_web_candidates
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -41,6 +43,12 @@ def _parser() -> argparse.ArgumentParser:
         help="Path to a newline-delimited manual URL list. May be passed more than once.",
     )
     report.add_argument(
+        "--web-candidates",
+        action="append",
+        default=[],
+        help="Path to curated web/product/page candidate JSON. May be passed more than once.",
+    )
+    report.add_argument(
         "--github-query",
         action="append",
         default=[],
@@ -48,6 +56,12 @@ def _parser() -> argparse.ArgumentParser:
     )
     report.add_argument("--github-limit", type=int, default=10, help="Maximum GitHub results.")
     report.add_argument("--skills-query", help="Search installed skills registry via `npx skills find`.")
+    report.add_argument(
+        "--summary-overrides",
+        action="append",
+        default=[],
+        help="Path to optional summary override JSON produced by an external summarizer.",
+    )
     report.add_argument("--out-json", default="project-scout-report.json", help="JSON output path.")
     report.add_argument(
         "--out-md",
@@ -98,6 +112,10 @@ def _report(args: argparse.Namespace) -> int:
         loaded = load_url_candidates(url_path)
         candidates.extend(loaded)
         search_log.append(_search_log_entry("manual", url_path, len(loaded), len(loaded), "ok"))
+    for web_path in args.web_candidates:
+        loaded = load_web_candidates(web_path)
+        candidates.extend(loaded)
+        search_log.append(_search_log_entry("web", web_path, len(loaded), len(loaded), "ok"))
     for github_query in args.github_query:
         loaded = search_github_repositories(github_query, limit=max(1, args.github_limit))
         new_candidates = _new_candidates(candidates, loaded)
@@ -117,6 +135,14 @@ def _report(args: argparse.Namespace) -> int:
             search_log.append(
                 _search_log_entry("skills", args.skills_query, len(loaded), len(loaded), "ok")
             )
+    for summary_path in args.summary_overrides:
+        overrides = load_summary_overrides(summary_path)
+        candidates, applied = apply_summary_overrides(candidates, overrides)
+        search_log.append(
+            _search_log_entry(
+                "summary_overrides", summary_path, len(overrides), applied, "ok"
+            )
+        )
     if not candidates:
         raise SystemExit(
             "No candidates provided. Use --candidates, --urls, --github-query, or --skills-query."

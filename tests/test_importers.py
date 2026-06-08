@@ -7,7 +7,9 @@ from unittest.mock import patch
 
 from project_scout.core import load_url_candidates
 from project_scout.github import fetch_readme_summary, parse_github_search_response, summarize_readme_text
+from project_scout.summaries import apply_summary_overrides, load_summary_overrides
 from project_scout.skills_registry import parse_skills_find_output, search_skills_registry
+from project_scout.web import load_web_candidates
 
 
 class FakeResponse:
@@ -29,6 +31,25 @@ def test_load_url_candidates_derives_repo_names_from_manual_urls():
         "ecosyste-ms/repos",
     ]
     assert candidates[0].url == "https://github.com/sample/prior-art-cli"
+
+
+def test_load_web_candidates_maps_curated_page_metadata():
+    candidates = load_web_candidates("tests/fixtures/web_candidates.json")
+
+    assert candidates[0].name == "Official Prior Art Product"
+    assert candidates[0].url == "https://example.com/prior-art-product"
+    assert candidates[0].topics == ["product", "prior-art", "research"]
+    assert candidates[0].readme_summary == "Official product page describing prior-art research workflows."
+
+
+def test_summary_overrides_update_candidates_by_url():
+    candidates = load_web_candidates("tests/fixtures/web_candidates.json")
+    overrides = load_summary_overrides("tests/fixtures/summary_overrides.json")
+
+    updated, applied = apply_summary_overrides(candidates, overrides)
+
+    assert applied == 1
+    assert updated[0].readme_summary == "LLM-prepared summary from an external offline review."
 
 
 def test_parse_github_search_response_normalizes_repository_metadata():

@@ -111,6 +111,24 @@ project-scout report \
   --out-md /tmp/project-scout-manual-urls.md
 ```
 
+## Import Curated Web Candidates
+
+Use curated web candidate JSON for product pages, papers, docs, or externally
+reviewed pages. This is an offline adapter; it does not crawl.
+
+```bash
+project-scout report \
+  --brief tests/fixtures/brief.json \
+  --web-candidates tests/fixtures/web_candidates.json \
+  --summary-overrides tests/fixtures/summary_overrides.json \
+  --out-json /tmp/project-scout-web.json \
+  --out-md /tmp/project-scout-web.md
+```
+
+`--summary-overrides` is the optional LLM summarization adapter boundary: an
+external summarizer may write JSON summaries, and `project-scout` imports them
+without calling a model itself.
+
 ## Search GitHub Without Login
 
 ```bash
