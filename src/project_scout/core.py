@@ -89,7 +89,8 @@ def build_report(
         }
         for candidate in scored
     ]
-    risks = _risks(scored)
+    generated = generated_at or datetime.now(UTC).replace(microsecond=0).isoformat()
+    risks = _risks(scored, generated_at=generated)
     suggested_updates = _suggested_updates(brief, scored)
     top = scored[0].recommendation if scored else "Ignore"
     log_entries = _search_log_entries(search_log)
@@ -97,7 +98,7 @@ def build_report(
     coverage = _coverage_summary(log_entries)
     return ScoutReport(
         brief=brief,
-        generated_at=generated_at or datetime.now(UTC).replace(microsecond=0).isoformat(),
+        generated_at=generated,
         summary=ReportSummary(candidate_count=len(scored), top_recommendation=top),
         decision=decision,
         coverage=coverage,
@@ -267,18 +268,50 @@ def _matrix_row(brief: ProjectBrief, candidate: ScoredCandidate) -> dict[str, ob
     }
 
 
-def _risks(candidates: list[ScoredCandidate]) -> list[str]:
+def _risks(candidates: list[ScoredCandidate], *, generated_at: str) -> list[str]:
     risks: list[str] = []
+    generated_date = _parse_datetime(generated_at)
     for candidate in candidates:
         if candidate.avoid_reasons:
             risks.append(f"{candidate.name}: {'; '.join(candidate.avoid_reasons)}")
-        if candidate.license.upper().startswith("AGPL"):
+        normalized_license = candidate.license.strip()
+        if not normalized_license:
+            risks.append(f"{candidate.name}: missing license metadata; verify adoption constraints.")
+        elif normalized_license.upper().startswith("AGPL"):
             risks.append(f"{candidate.name}: AGPL license may limit direct adoption.")
+        elif not _permissive_license(normalized_license):
+            risks.append(
+                f"{candidate.name}: license '{normalized_license}' is not recognized as permissive; verify adoption constraints."
+            )
         if not candidate.last_update:
             risks.append(f"{candidate.name}: missing update metadata.")
+        elif _is_stale(candidate.last_update, generated_date):
+            risks.append(
+                f"{candidate.name}: last update is more than 24 months before report generation; verify maintenance activity."
+            )
     if not risks:
         risks.append("No blocking risks found in fixture metadata; verify licenses and activity before adopting.")
     return risks
+
+
+def _parse_datetime(value: str) -> datetime | None:
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def _is_stale(last_update: str, generated_at: datetime | None) -> bool:
+    if generated_at is None:
+        return False
+    updated_at = _parse_datetime(last_update)
+    if updated_at is None:
+        return False
+    if updated_at.tzinfo is None:
+        updated_at = updated_at.replace(tzinfo=UTC)
+    if generated_at.tzinfo is None:
+        generated_at = generated_at.replace(tzinfo=UTC)
+    return (generated_at - updated_at).days > 730
 
 
 def _suggested_updates(brief: ProjectBrief, candidates: list[ScoredCandidate]) -> list[str]:

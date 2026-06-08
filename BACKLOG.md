@@ -38,7 +38,7 @@
 - Add user-level Codex/Claude skill install command.
 - Add Conductor plugin/adapter boundary.
 - Add configurable scoring weights.
-- Add richer license and activity risk analysis.
+- [x] Add richer license and activity risk analysis.
 - Add README language/section-aware summarization.
 
 ## Non-Goals

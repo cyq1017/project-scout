@@ -116,6 +116,58 @@ def test_write_new_suggested_update_explains_no_candidate_is_sufficient():
     assert "no candidate is sufficient" in report.suggested_updates[0]
 
 
+def test_risks_include_license_and_activity_metadata():
+    brief = ProjectBrief(
+        name="integration-review",
+        goal="Review integration candidates before adopting.",
+        keywords=["integration"],
+        target_users=["developers"],
+        tech_stack=["python"],
+        exclusions=[],
+    )
+    candidates = [
+        CandidateRepo(
+            name="missing-license",
+            url="https://example.com/missing-license",
+            description="Python integration helper.",
+            topics=["integration"],
+            language="Python",
+            license="",
+            last_update="2026-01-01T00:00:00Z",
+        ),
+        CandidateRepo(
+            name="custom-license",
+            url="https://example.com/custom-license",
+            description="Python integration helper.",
+            topics=["integration"],
+            language="Python",
+            license="Custom",
+            last_update="2026-01-01T00:00:00Z",
+        ),
+        CandidateRepo(
+            name="stale-agpl",
+            url="https://example.com/stale-agpl",
+            description="Python integration helper.",
+            topics=["integration"],
+            language="Python",
+            license="AGPL-3.0",
+            last_update="2022-01-01T00:00:00Z",
+        ),
+    ]
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-06-04T00:00:00+00:00",
+    )
+
+    risks = "\n".join(report.risks)
+    assert "missing-license: missing license metadata" in risks
+    assert "custom-license: license 'Custom' is not recognized as permissive" in risks
+    assert "stale-agpl: AGPL license may limit direct adoption" in risks
+    assert "stale-agpl: last update is more than 24 months before report generation" in risks
+
+
 def test_render_markdown_contains_required_sections_and_recommendation():
     brief = load_brief(FIXTURES / "brief.json")
     candidates = load_candidates(FIXTURES / "github_repos.json")
