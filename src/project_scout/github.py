@@ -97,7 +97,8 @@ def fetch_readme_summary(full_name: str, *, timeout: int = 20) -> str:
 
 
 def summarize_readme_text(text: str, *, max_chars: int = 400) -> str:
-    without_code = re.sub(r"```.*?```", " ", text, flags=re.DOTALL)
+    selected = _section_aware_readme_text(text)
+    without_code = re.sub(r"```.*?```", " ", selected, flags=re.DOTALL)
     without_images = re.sub(r"!\[[^\]]*]\([^)]*\)", " ", without_code)
     without_links = re.sub(r"\[([^\]]+)]\([^)]*\)", r"\1", without_images)
     without_markup = re.sub(r"[#>*_`|~]+", " ", without_links)
@@ -105,3 +106,50 @@ def summarize_readme_text(text: str, *, max_chars: int = 400) -> str:
     if len(collapsed) <= max_chars:
         return collapsed
     return collapsed[: max_chars - 1].rsplit(" ", 1)[0].rstrip(".") + "."
+
+
+def _section_aware_readme_text(text: str) -> str:
+    sections = _markdown_sections(text)
+    if not sections:
+        return text
+    ranked = sorted(sections, key=lambda section: section[0], reverse=True)
+    selected = [body for score, _heading, body in ranked if score > 0]
+    if not selected:
+        selected = [body for _score, _heading, body in sections]
+    return "\n\n".join(selected[:3])
+
+
+def _markdown_sections(text: str) -> list[tuple[int, str, str]]:
+    sections: list[tuple[int, str, str]] = []
+    current_heading = ""
+    current_lines: list[str] = []
+
+    def flush() -> None:
+        body = "\n".join(current_lines).strip()
+        if body:
+            sections.append((_section_score(current_heading), current_heading, body))
+
+    for line in text.splitlines():
+        heading = re.match(r"^\s{0,3}#{1,3}\s+(.+?)\s*$", line)
+        if heading:
+            flush()
+            current_heading = heading.group(1).strip().lower()
+            current_lines = [line]
+        else:
+            current_lines.append(line)
+    flush()
+    return sections
+
+
+def _section_score(heading: str) -> int:
+    if not heading:
+        return 4
+    if any(term in heading for term in ["overview", "about", "what", "why"]):
+        return 5
+    if any(term in heading for term in ["feature", "usage", "example", "quickstart"]):
+        return 4
+    if any(term in heading for term in ["install", "setup", "configuration"]):
+        return 1
+    if any(term in heading for term in ["license", "contributing", "changelog", "roadmap"]):
+        return 0
+    return 2

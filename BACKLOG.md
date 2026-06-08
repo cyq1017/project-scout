@@ -39,7 +39,7 @@
 - [x] Add Conductor plugin/adapter boundary.
 - [x] Add configurable scoring weights.
 - [x] Add richer license and activity risk analysis.
-- Add README language/section-aware summarization.
+- [x] Add README language/section-aware summarization.
 
 ## Non-Goals
 

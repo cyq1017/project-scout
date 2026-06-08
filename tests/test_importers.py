@@ -99,6 +99,39 @@ project-scout report --brief brief.json
     )
 
 
+def test_summarize_readme_text_prefers_meaningful_sections():
+    readme = """# sample
+
+![badge](https://example.com/badge.svg)
+
+## Installation
+
+```bash
+pip install sample
+```
+
+## Overview
+
+Sample helps teams compare project ideas before implementation.
+
+## Features
+
+- deterministic reports
+- source coverage notes
+
+## License
+
+MIT
+"""
+
+    summary = summarize_readme_text(readme, max_chars=240)
+
+    assert "Sample helps teams compare project ideas" in summary
+    assert "deterministic reports" in summary
+    assert "pip install" not in summary
+    assert "License" not in summary
+
+
 def test_fetch_readme_summary_decodes_github_api_content():
     content = base64.b64encode(b"# sample\n\nPython CLI report generator.").decode("ascii")
 
