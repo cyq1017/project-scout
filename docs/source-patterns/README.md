@@ -9,7 +9,9 @@ load every file by default.
 Initial source classes to maintain:
 
 - `github.md`
-- `skills-registry.md`
-- `web.md`
-- `social.md`
+- `job-market.md`
+- `packages.md`
 - `papers.md`
+- `skills-registry.md`
+- `social.md`
+- `web.md`
