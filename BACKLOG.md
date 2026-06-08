@@ -31,12 +31,12 @@
 - [x] Add reusable brief templates for common scout tasks.
 - [x] Add multi-query GitHub scan.
 - [x] Add source-profile presets for `market_opportunity`, `product`, `paper`, and `mcp_server`.
-- Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
+- [x] Harden `prior-art-scout` skill against real quick-scan and formal-gate tasks.
 - Add optional web search adapter.
 - [x] Add source-pattern docs for social, papers, packages, and job-market signals.
 - Add optional LLM summarization adapter.
-- Add user-level Codex/Claude skill install command.
-- Add Conductor plugin/adapter boundary.
+- [x] Add user-level Codex/Claude skill install command.
+- [x] Add Conductor plugin/adapter boundary.
 - Add configurable scoring weights.
 - [x] Add richer license and activity risk analysis.
 - Add README language/section-aware summarization.

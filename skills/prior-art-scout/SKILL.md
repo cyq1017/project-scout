@@ -74,23 +74,35 @@ Always separate:
 If this repository is available locally, prefer:
 
 ```bash
-project-scout report \
+.venv/bin/project-scout report \
   --brief path/to/brief.json \
   --candidates path/to/candidates.json \
   --out-json path/to/report.json \
   --out-md path/to/prior-art-map.md
 ```
 
+For a new brief, start from a reusable template:
+
+```bash
+.venv/bin/project-scout init-brief \
+  --template skill \
+  --out /tmp/prior-art-brief.json
+```
+
 For live GitHub search:
 
 ```bash
-project-scout report \
+.venv/bin/project-scout report \
   --brief path/to/brief.json \
   --github-query "query terms" \
+  --github-query "alternate query terms" \
   --github-limit 10
 ```
 
 If unauthenticated GitHub API is rate-limited, fall back to manual candidates or search results from other sources and record the rate limit in the search log.
+
+Use `/tmp` for draft outputs unless the user explicitly asks to curate a report
+into the repository.
 
 ## Skill Orchestration
 

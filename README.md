@@ -173,12 +173,13 @@ For daily use, install or copy the skill folder into the user-level Codex skills
 Example local install:
 
 ```bash
-mkdir -p ~/.codex/skills
-rm -rf ~/.codex/skills/prior-art-scout
-cp -R skills/prior-art-scout ~/.codex/skills/prior-art-scout
+scripts/install-skill.sh
 ```
 
 Public GitHub release, registry publication, and community promotion require explicit approval before pushing or publishing.
+
+Conductor integration must stay as an external local CLI/plugin boundary; see
+[docs/integrations/conductor-boundary.md](docs/integrations/conductor-boundary.md).
 
 ## Experience Library
 
