@@ -30,6 +30,15 @@ RECOMMENDATIONS = {
     "Ignore",
     "Monitor",
 }
+DEFAULT_SCORE_WEIGHTS = {
+    "keyword": 0.35,
+    "stack": 0.25,
+    "user": 0.10,
+    "topic": 0.15,
+    "text": 0.15,
+    "language_bonus": 0.05,
+    "exclusion_multiplier": 0.75,
+}
 STOPWORDS = {
     "and",
     "are",
@@ -70,14 +79,23 @@ def load_url_candidates(path: str | Path) -> list[CandidateRepo]:
     return candidates
 
 
+def load_score_weights(path: str | Path) -> dict[str, float]:
+    data = _read_json(path)
+    if not isinstance(data, dict):
+        raise ValueError("score weights JSON must be an object")
+    return _score_weights({str(key): float(value) for key, value in data.items()})
+
+
 def build_report(
     brief: ProjectBrief,
     candidates: Iterable[CandidateRepo],
     *,
     generated_at: str | None = None,
     search_log: Iterable[dict[str, object] | SearchLogEntry] | None = None,
+    score_weights: dict[str, float] | None = None,
 ) -> ScoutReport:
-    scored = [_score_candidate(brief, candidate) for candidate in candidates]
+    weights = _score_weights(score_weights)
+    scored = [_score_candidate(brief, candidate, weights=weights) for candidate in candidates]
     scored.sort(key=lambda candidate: candidate.similarity_score, reverse=True)
     matrix = [_matrix_row(brief, candidate) for candidate in scored]
     recommendations = [
@@ -196,7 +214,9 @@ def _coverage_summary(search_log: list[SearchLogEntry]) -> CoverageSummary:
     )
 
 
-def _score_candidate(brief: ProjectBrief, candidate: CandidateRepo) -> ScoredCandidate:
+def _score_candidate(
+    brief: ProjectBrief, candidate: CandidateRepo, *, weights: dict[str, float]
+) -> ScoredCandidate:
     keyword_hits = _phrase_hits(brief.keywords, _candidate_text(candidate))
     stack_hits = _phrase_hits(brief.tech_stack, _candidate_text(candidate))
     user_hits = _phrase_hits(brief.target_users, _candidate_text(candidate))
@@ -205,17 +225,17 @@ def _score_candidate(brief: ProjectBrief, candidate: CandidateRepo) -> ScoredCan
     text_hits = sorted(_tokens([brief.goal, *brief.keywords]) & _tokens(_text_fields(candidate)))
 
     score = (
-        0.35 * _ratio(keyword_hits, brief.keywords)
-        + 0.25 * _ratio(stack_hits, brief.tech_stack)
-        + 0.10 * _ratio(user_hits, brief.target_users)
-        + 0.15 * min(1.0, len(topic_hits) / 3)
-        + 0.15 * min(1.0, len(text_hits) / 8)
+        weights["keyword"] * _ratio(keyword_hits, brief.keywords)
+        + weights["stack"] * _ratio(stack_hits, brief.tech_stack)
+        + weights["user"] * _ratio(user_hits, brief.target_users)
+        + weights["topic"] * min(1.0, len(topic_hits) / 3)
+        + weights["text"] * min(1.0, len(text_hits) / 8)
     )
     if candidate.language and candidate.language.lower() in _tokens(brief.tech_stack):
-        score += 0.05
+        score += weights["language_bonus"]
         stack_hits = sorted(set(stack_hits + [candidate.language.lower()]))
     if exclusion_hits:
-        score *= 0.75
+        score *= weights["exclusion_multiplier"]
 
     score = round(min(score, 1.0), 3)
     evidence = _evidence(keyword_hits, stack_hits, user_hits, topic_hits, text_hits)
@@ -251,6 +271,22 @@ def _recommend(
     if score >= 0.20 and evidence:
         return "Monitor"
     return "Ignore"
+
+
+def _score_weights(overrides: dict[str, float] | None) -> dict[str, float]:
+    weights = dict(DEFAULT_SCORE_WEIGHTS)
+    if not overrides:
+        return weights
+    unknown = set(overrides) - set(DEFAULT_SCORE_WEIGHTS)
+    if unknown:
+        raise ValueError(f"unknown score weight(s): {', '.join(sorted(unknown))}")
+    for key, value in overrides.items():
+        if value < 0:
+            raise ValueError(f"score weight {key} must be non-negative")
+        weights[key] = value
+    if not 0 <= weights["exclusion_multiplier"] <= 1:
+        raise ValueError("score weight exclusion_multiplier must be between 0 and 1")
+    return weights
 
 
 def _matrix_row(brief: ProjectBrief, candidate: ScoredCandidate) -> dict[str, object]:

@@ -129,6 +129,19 @@ project-scout report \
 external summarizer may write JSON summaries, and `project-scout` imports them
 without calling a model itself.
 
+## Configure Scoring Weights
+
+Default scoring is deterministic. Override weights only for local experiments:
+
+```bash
+project-scout report \
+  --brief tests/fixtures/brief.json \
+  --candidates tests/fixtures/github_repos.json \
+  --weights tests/fixtures/score_weights_stack.json \
+  --out-json /tmp/project-scout-weighted.json \
+  --out-md /tmp/project-scout-weighted.md
+```
+
 ## Search GitHub Without Login
 
 ```bash

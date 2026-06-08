@@ -5,7 +5,13 @@ import importlib.resources
 from datetime import UTC, datetime
 from pathlib import Path
 
-from project_scout.core import build_report, load_brief, load_candidates, load_url_candidates
+from project_scout.core import (
+    build_report,
+    load_brief,
+    load_candidates,
+    load_score_weights,
+    load_url_candidates,
+)
 from project_scout.github import search_github_repositories
 from project_scout.models import CandidateRepo
 from project_scout.report import write_report
@@ -63,6 +69,7 @@ def _parser() -> argparse.ArgumentParser:
         help="Path to optional summary override JSON produced by an external summarizer.",
     )
     report.add_argument("--out-json", default="project-scout-report.json", help="JSON output path.")
+    report.add_argument("--weights", help="Path to optional scoring weights JSON.")
     report.add_argument(
         "--out-md",
         default=None,
@@ -148,7 +155,14 @@ def _report(args: argparse.Namespace) -> int:
             "No candidates provided. Use --candidates, --urls, --github-query, or --skills-query."
         )
 
-    report = build_report(brief, candidates, generated_at=args.generated_at, search_log=search_log)
+    score_weights = load_score_weights(args.weights) if args.weights else None
+    report = build_report(
+        brief,
+        candidates,
+        generated_at=args.generated_at,
+        search_log=search_log,
+        score_weights=score_weights,
+    )
     out_md = Path(args.out_md or _default_markdown_path())
     write_report(report, out_json=Path(args.out_json), out_md=out_md)
     print(f"Wrote {args.out_json}")

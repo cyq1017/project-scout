@@ -188,6 +188,34 @@ def test_cli_records_web_candidates_and_summary_overrides(tmp_path):
     assert any(entry["source"] == "summary_overrides" for entry in data["search_log"])
 
 
+def test_cli_accepts_score_weights_file(tmp_path):
+    from project_scout import cli
+
+    out_json = tmp_path / "report.json"
+    out_md = tmp_path / "report.md"
+
+    result = cli.main(
+        [
+            "report",
+            "--brief",
+            str(FIXTURES / "brief.json"),
+            "--candidates",
+            str(FIXTURES / "github_repos.json"),
+            "--weights",
+            str(FIXTURES / "score_weights_stack.json"),
+            "--out-json",
+            str(out_json),
+            "--out-md",
+            str(out_md),
+            "--generated-at",
+            "2026-06-04T00:00:00+00:00",
+        ]
+    )
+
+    assert result == 0
+    assert json.loads(out_json.read_text())["summary"]["candidate_count"] == 3
+
+
 def test_cli_merges_multiple_github_queries_by_url(tmp_path, monkeypatch):
     from project_scout import cli
     from project_scout.models import CandidateRepo

@@ -28,6 +28,50 @@ def test_build_report_ranks_candidates_and_records_overlap_evidence():
     assert report.overlap_matrix[0]["keyword_overlap"] >= 3
 
 
+def test_build_report_accepts_configurable_score_weights():
+    brief = ProjectBrief(
+        name="weighted-review",
+        goal="Choose between keyword and stack overlap.",
+        keywords=["alpha"],
+        target_users=[],
+        tech_stack=["python"],
+        exclusions=[],
+    )
+    candidates = [
+        CandidateRepo(
+            name="keyword-match",
+            url="https://example.com/keyword-match",
+            description="alpha workflow",
+            language="Go",
+            license="MIT",
+        ),
+        CandidateRepo(
+            name="stack-match",
+            url="https://example.com/stack-match",
+            description="developer tool",
+            language="Python",
+            license="MIT",
+        ),
+    ]
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-06-04T00:00:00+00:00",
+        score_weights={
+            "keyword": 0,
+            "stack": 1,
+            "user": 0,
+            "topic": 0,
+            "text": 0,
+            "language_bonus": 0,
+            "exclusion_multiplier": 0.75,
+        },
+    )
+
+    assert report.candidates[0].name == "stack-match"
+
+
 def test_build_report_includes_decision_coverage_and_search_log():
     brief = load_brief(FIXTURES / "brief.json")
     candidates = load_candidates(FIXTURES / "github_repos.json")

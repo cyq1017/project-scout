@@ -37,7 +37,7 @@
 - [x] Add optional LLM summarization adapter.
 - [x] Add user-level Codex/Claude skill install command.
 - [x] Add Conductor plugin/adapter boundary.
-- Add configurable scoring weights.
+- [x] Add configurable scoring weights.
 - [x] Add richer license and activity risk analysis.
 - Add README language/section-aware summarization.
 
