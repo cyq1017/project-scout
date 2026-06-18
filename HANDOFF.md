@@ -87,6 +87,20 @@ Known macOS/iCloud editable-install issue:
 
 Live GitHub search uses unauthenticated requests for both repository search and best-effort README summaries. Rate-limit or README failures leave `readme_summary` empty rather than failing the whole report.
 
+Trustworthiness hardening status:
+
+- Candidate-level recommendations no longer use `Write New`.
+- `Write New` is a report-level decision only when coverage is high and no
+  candidate is strong enough to adopt, integrate, fork, or borrow.
+- Empty candidate sets and failed live sources should still write partial
+  reports with `Research More` and recorded blind spots.
+- Decision confidence is heuristic and is capped by coverage confidence.
+- Markdown reports escape table and list content before rendering.
+
+The larger GPT Pro architecture review is local-only unless intentionally
+curated into repo docs. The current executable roadmap is
+`docs/plans/2026-06-18-trustworthiness-hardening.md`.
+
 Experience library entry points:
 
 - `docs/patterns/skill-experience-library.md`

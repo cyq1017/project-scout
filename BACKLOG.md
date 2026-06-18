@@ -40,6 +40,15 @@
 - [x] Add configurable scoring weights.
 - [x] Add richer license and activity risk analysis.
 - [x] Add README language/section-aware summarization.
+- [x] Add trustworthiness hardening plan.
+- [x] Make empty candidate sets produce partial `Research More` reports.
+- [x] Keep `Write New` as a report-level decision rather than candidate disposition.
+- [x] Cap decision confidence by coverage confidence.
+- [x] Escape Markdown report table/list content.
+- [ ] Preserve `DiscoveryBrief` fields through scoring and source policy.
+- [ ] Replace source-name coverage heuristics with explicit source requirements.
+- [ ] Generalize repository-centric candidates for products, papers, skills, plugins, and MCP-style servers.
+- [ ] Add Unicode/CJK-aware relevance matching.
 
 ## Non-Goals
 

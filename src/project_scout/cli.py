@@ -4,6 +4,7 @@ import argparse
 import importlib.resources
 from datetime import UTC, datetime
 from pathlib import Path
+from urllib.error import HTTPError, URLError
 
 from project_scout.core import (
     build_report,
@@ -124,12 +125,16 @@ def _report(args: argparse.Namespace) -> int:
         candidates.extend(loaded)
         search_log.append(_search_log_entry("web", web_path, len(loaded), len(loaded), "ok"))
     for github_query in args.github_query:
-        loaded = search_github_repositories(github_query, limit=max(1, args.github_limit))
-        new_candidates = _new_candidates(candidates, loaded)
-        candidates.extend(new_candidates)
-        search_log.append(
-            _search_log_entry("github", github_query, len(loaded), len(new_candidates), "ok")
-        )
+        try:
+            loaded = search_github_repositories(github_query, limit=max(1, args.github_limit))
+        except (HTTPError, URLError, TimeoutError, ValueError) as exc:
+            search_log.append(_search_log_entry("github", github_query, 0, 0, "failed", str(exc)))
+        else:
+            new_candidates = _new_candidates(candidates, loaded)
+            candidates.extend(new_candidates)
+            search_log.append(
+                _search_log_entry("github", github_query, len(loaded), len(new_candidates), "ok")
+            )
     if args.skills_query:
         try:
             loaded = search_skills_registry(args.skills_query)
@@ -150,11 +155,6 @@ def _report(args: argparse.Namespace) -> int:
                 "summary_overrides", summary_path, len(overrides), applied, "ok"
             )
         )
-    if not candidates:
-        raise SystemExit(
-            "No candidates provided. Use --candidates, --urls, --github-query, or --skills-query."
-        )
-
     score_weights = load_score_weights(args.weights) if args.weights else None
     report = build_report(
         brief,

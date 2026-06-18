@@ -271,6 +271,71 @@ def test_cli_merges_multiple_github_queries_by_url(tmp_path, monkeypatch):
     assert {entry["query"] for entry in github_entries} == {"prior art cli", "project discovery"}
 
 
+def test_cli_records_github_failure_and_writes_partial_report(tmp_path, monkeypatch):
+    from project_scout import cli
+
+    def fake_search(query, *, limit):
+        raise ValueError(f"boom: {query}:{limit}")
+
+    monkeypatch.setattr(cli, "search_github_repositories", fake_search)
+    out_json = tmp_path / "report.json"
+    out_md = tmp_path / "report.md"
+
+    result = cli.main(
+        [
+            "report",
+            "--brief",
+            str(FIXTURES / "brief.json"),
+            "--github-query",
+            "prior art cli",
+            "--github-limit",
+            "2",
+            "--out-json",
+            str(out_json),
+            "--out-md",
+            str(out_md),
+            "--generated-at",
+            "2026-06-04T00:00:00+00:00",
+        ]
+    )
+
+    data = json.loads(out_json.read_text())
+    assert result == 0
+    assert data["summary"]["candidate_count"] == 0
+    assert data["decision"]["recommendation"] == "Research More"
+    assert data["coverage"]["confidence"] == "Low"
+    assert data["search_log"][0]["source"] == "github"
+    assert data["search_log"][0]["status"] == "failed"
+    assert "boom: prior art cli:2" in data["search_log"][0]["error"]
+
+
+def test_cli_writes_partial_report_without_candidates(tmp_path):
+    from project_scout import cli
+
+    out_json = tmp_path / "report.json"
+    out_md = tmp_path / "report.md"
+
+    result = cli.main(
+        [
+            "report",
+            "--brief",
+            str(FIXTURES / "brief.json"),
+            "--out-json",
+            str(out_json),
+            "--out-md",
+            str(out_md),
+            "--generated-at",
+            "2026-06-04T00:00:00+00:00",
+        ]
+    )
+
+    data = json.loads(out_json.read_text())
+    assert result == 0
+    assert data["summary"]["candidate_count"] == 0
+    assert data["decision"]["recommendation"] == "Research More"
+    assert "Recommendation: **Research More**" in out_md.read_text()
+
+
 def test_init_brief_copies_template_without_overwrite(tmp_path):
     from project_scout import cli
 

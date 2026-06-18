@@ -9,7 +9,12 @@ permissions:
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.10", "3.13"]
 
     steps:
       - name: Check out repository
@@ -18,10 +23,22 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: ${{ matrix.python-version }}
 
       - name: Bootstrap development environment
         run: scripts/bootstrap-dev.sh
 
       - name: Run tests
         run: .venv/bin/python -m pytest
+
+      - name: Verify wheel console script
+        run: |
+          .venv/bin/python -m pip wheel . -w /tmp/project-scout-wheelhouse
+          python -m venv /tmp/project-scout-wheel-venv
+          /tmp/project-scout-wheel-venv/bin/python -m pip install /tmp/project-scout-wheelhouse/project_scout-*.whl
+          /tmp/project-scout-wheel-venv/bin/project-scout report \
+            --brief tests/fixtures/brief.json \
+            --candidates tests/fixtures/github_repos.json \
+            --out-json /tmp/project-scout-wheel.json \
+            --out-md /tmp/project-scout-wheel.md \
+            --generated-at 2026-06-04T00:00:00+00:00

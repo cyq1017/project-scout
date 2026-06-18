@@ -10,7 +10,8 @@ The current CLI MVP focuses on a narrow workflow:
 4. Score overlap with deterministic rules.
 5. Write a Markdown prior-art map and a machine-readable JSON report with search log, coverage confidence, decision confidence, and blind spots.
 
-It does not log in, store tokens, create issues or pull requests, or make final decisions for the user.
+It does not log in, store tokens, create issues or pull requests, claim
+exhaustive discovery, or make final decisions for the user.
 
 The broader skill direction is `prior-art-scout`: a pre-build / pre-adopt discovery gate that can quick-scan or formally compare projects, skills, plugins, tools, MCP servers, products, papers, and internal assets.
 
@@ -155,6 +156,8 @@ project-scout report \
 GitHub search uses the unauthenticated REST API and does not store tokens. It may hit public rate limits.
 For each GitHub search result, `project-scout` makes a best-effort unauthenticated README request and stores a short deterministic plaintext summary when available.
 Pass `--github-query` more than once to run multiple bounded searches; candidates are merged by URL.
+If GitHub search fails, the CLI records a failed source entry and still writes a
+partial `Research More` report when possible.
 
 ## Search Skills Registry
 
@@ -168,6 +171,21 @@ project-scout report \
 ```
 
 Skills registry search shells out to `npx skills find`. If the registry command fails, the formal-gate search log records the failure rather than hiding it.
+
+## Recommendation Semantics
+
+Candidate-level recommendations describe what to do with a specific candidate:
+`Adopt`, `Borrow`, `Integrate`, `Fork`, `Extend`, `Avoid`, `Ignore`, or
+`Monitor`.
+
+Report-level decisions describe what to do after considering the candidate set
+and source coverage. `Write New` is report-level only. Empty candidate sets,
+failed sources, or weak coverage produce `Research More` so the report can
+document the failed path and blind spots instead of pretending that no useful
+prior art exists.
+
+Decision confidence is heuristic, not a probability, and is capped by coverage
+confidence.
 
 ## Run Tests
 
@@ -233,3 +251,4 @@ repo-level docs.
 - Credential or token storage.
 - Automatic issue, PR, or roadmap edits.
 - LLM-only scoring or non-repeatable recommendations.
+- Claims that recorded sources prove no other solution exists.

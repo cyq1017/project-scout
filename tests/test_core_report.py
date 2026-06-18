@@ -130,11 +130,13 @@ def test_failed_search_source_is_recorded_as_blind_spot():
     )
 
     assert report.coverage.confidence == "Low"
+    assert report.decision.confidence == "Low"
+    assert report.decision.recommendation == "Research More"
     assert any("skills source failed" in item for item in report.coverage.blind_spots)
     assert all("No major source-class blind spots" not in item for item in report.coverage.blind_spots)
 
 
-def test_write_new_suggested_update_explains_no_candidate_is_sufficient():
+def test_write_new_is_report_level_not_candidate_disposition():
     brief = ProjectBrief(
         name="business-opportunity-discovery-skill",
         goal="Find business opportunity discovery tools before building.",
@@ -154,10 +156,67 @@ def test_write_new_suggested_update_explains_no_candidate_is_sufficient():
         )
     ]
 
-    report = build_report(brief, candidates, generated_at="2026-05-24T00:00:00Z")
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-05-24T00:00:00Z",
+        search_log=[
+            {
+                "source": "manual",
+                "query": "fixture",
+                "result_count": 1,
+                "used_count": 1,
+                "status": "ok",
+                "error": None,
+            },
+            {
+                "source": "web",
+                "query": "business opportunity discovery tools",
+                "result_count": 0,
+                "used_count": 0,
+                "status": "empty",
+                "error": None,
+            },
+            {
+                "source": "github",
+                "query": "business opportunity discovery skill",
+                "result_count": 0,
+                "used_count": 0,
+                "status": "empty",
+                "error": None,
+            },
+        ],
+    )
 
-    assert report.candidates[0].recommendation == "Write New"
+    assert report.candidates[0].recommendation == "Monitor"
+    assert report.decision.recommendation == "Write New"
     assert "no candidate is sufficient" in report.suggested_updates[0]
+
+
+def test_empty_candidate_set_produces_partial_research_more_report():
+    brief = load_brief(FIXTURES / "brief.json")
+
+    report = build_report(
+        brief,
+        [],
+        generated_at="2026-05-24T00:00:00Z",
+        search_log=[
+            {
+                "source": "github",
+                "query": "project discovery cli",
+                "result_count": 0,
+                "used_count": 0,
+                "status": "failed",
+                "error": "rate limit",
+            }
+        ],
+    )
+
+    assert report.summary.candidate_count == 0
+    assert report.summary.top_recommendation == "Research More"
+    assert report.decision.recommendation == "Research More"
+    assert report.decision.confidence == "Low"
+    assert report.coverage.confidence == "Low"
 
 
 def test_risks_include_license_and_activity_metadata():
@@ -236,6 +295,48 @@ def test_render_markdown_contains_required_sections_and_recommendation():
         assert f"## {heading}" in markdown
     assert "sample/prior-art-cli" in markdown
     assert "Recommendation" in markdown
+
+
+def test_render_markdown_escapes_table_and_list_content():
+    brief = ProjectBrief(
+        name="pipe | brief",
+        goal="Review table escaping.",
+        keywords=["table"],
+        target_users=[],
+        tech_stack=["python"],
+        exclusions=[],
+    )
+    candidates = [
+        CandidateRepo(
+            name="owner/repo | injected",
+            url="https://example.com/repo(foo)",
+            description="Python table tool.",
+            license="MIT | Apache",
+            language="Python\nExtra",
+        )
+    ]
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-05-24T00:00:00Z",
+        search_log=[
+            {
+                "source": "manual",
+                "query": "table | query\nsecond line",
+                "result_count": 1,
+                "used_count": 1,
+                "status": "ok",
+                "error": "note | detail",
+            }
+        ],
+    )
+
+    markdown = render_markdown(report)
+
+    assert "table \\| query second line" in markdown
+    assert "MIT \\| Apache" in markdown
+    assert "Python Extra" in markdown
+    assert "[owner/repo \\| injected](https://example.com/repo%28foo%29)" in markdown
 
 
 def test_write_report_outputs_json_and_markdown(tmp_path):

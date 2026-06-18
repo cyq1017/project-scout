@@ -25,7 +25,6 @@ RECOMMENDATIONS = {
     "Integrate",
     "Fork",
     "Extend",
-    "Write New",
     "Avoid",
     "Ignore",
     "Monitor",
@@ -108,12 +107,12 @@ def build_report(
         for candidate in scored
     ]
     generated = generated_at or datetime.now(UTC).replace(microsecond=0).isoformat()
-    risks = _risks(scored, generated_at=generated)
-    suggested_updates = _suggested_updates(brief, scored)
-    top = scored[0].recommendation if scored else "Ignore"
     log_entries = _search_log_entries(search_log)
-    decision = _decision_summary(scored, log_entries)
     coverage = _coverage_summary(log_entries)
+    decision = _decision_summary(scored, log_entries, coverage)
+    risks = _risks(scored, generated_at=generated)
+    suggested_updates = _suggested_updates(brief, scored, decision)
+    top = decision.recommendation
     return ScoutReport(
         brief=brief,
         generated_at=generated,
@@ -155,40 +154,73 @@ def _search_log_entries(
 def _decision_summary(
     candidates: list[ScoredCandidate],
     search_log: list[SearchLogEntry],
+    coverage: CoverageSummary,
 ) -> DecisionSummary:
     top = candidates[0] if candidates else None
     if top is None:
         return DecisionSummary(
-            recommendation="Ignore",
+            recommendation="Research More",
             confidence="Low",
             rationale=["No candidates were available for comparison."],
-            confidence_reasons=["Candidate set is empty."],
+            confidence_reasons=[
+                "Candidate set is empty.",
+                "A partial report can document source attempts and blind spots, but cannot support an adoption decision.",
+            ],
         )
 
     confidence = "High" if top.similarity_score >= 0.72 else "Medium" if top.similarity_score >= 0.45 else "Low"
     if any(entry.status not in {"ok", "empty"} for entry in search_log):
         confidence = "Medium" if confidence == "High" else confidence
+    confidence = _cap_confidence(confidence, coverage.confidence)
+
+    recommendation = top.recommendation
+    rationale = [
+        f"{top.name} has the strongest current score ({top.similarity_score:.3f}).",
+        f"Recommendation is based on evidence: {', '.join(top.evidence) if top.evidence else 'limited metadata'}.",
+    ]
+    confidence_reasons = [
+        f"{len(candidates)} candidates compared.",
+        "Metadata is deterministic but may need manual source verification.",
+        f"Coverage confidence caps decision confidence at {coverage.confidence}.",
+    ]
+    if coverage.confidence == "Low":
+        recommendation = "Research More"
+        confidence = "Low"
+        rationale.append("Coverage is too low to support a build/adopt recommendation.")
+        confidence_reasons.append("One or more required source attempts failed or no reliable source completed.")
+    elif top.recommendation in {"Monitor", "Ignore"}:
+        recommendation = "Write New" if coverage.confidence == "High" else "Research More"
+        confidence = _cap_confidence("Medium", coverage.confidence)
+        if recommendation == "Write New":
+            rationale.append("No candidate has enough relevance to adopt, integrate, fork, or borrow from directly.")
+            confidence_reasons.append("Write New is a report-level decision, not a candidate disposition.")
+        else:
+            rationale.append("Candidate relevance is weak and coverage is not high enough to justify Write New.")
+            confidence_reasons.append("Weak matches require more source coverage before deciding to build.")
     return DecisionSummary(
-        recommendation=top.recommendation,
+        recommendation=recommendation,
         confidence=confidence,
-        rationale=[
-            f"{top.name} has the strongest current score ({top.similarity_score:.3f}).",
-            f"Recommendation is based on evidence: {', '.join(top.evidence) if top.evidence else 'limited metadata'}.",
-        ],
-        confidence_reasons=[
-            f"{len(candidates)} candidates compared.",
-            "Metadata is deterministic but may need manual source verification.",
-        ],
+        rationale=rationale,
+        confidence_reasons=confidence_reasons,
     )
+
+
+def _cap_confidence(confidence: str, coverage_confidence: str) -> str:
+    levels = {"Low": 0, "Medium": 1, "High": 2}
+    reverse = {value: key for key, value in levels.items()}
+    return reverse[min(levels[confidence], levels.get(coverage_confidence, 0))]
 
 
 def _coverage_summary(search_log: list[SearchLogEntry]) -> CoverageSummary:
     sources = [entry.to_dict() for entry in search_log]
     statuses = {entry.status for entry in search_log}
     source_names = {entry.source for entry in search_log}
+    ok_sources = {entry.source for entry in search_log if entry.status in {"ok", "empty"}}
     if any(status in {"failed", "rate_limited"} for status in statuses):
         confidence = "Low"
-    elif len(source_names) >= 3:
+    elif not ok_sources:
+        confidence = "Low"
+    elif {"manual", "web", "github"}.issubset(ok_sources) or {"manual", "web", "skills"}.issubset(ok_sources):
         confidence = "High"
     else:
         confidence = "Medium"
@@ -201,6 +233,8 @@ def _coverage_summary(search_log: list[SearchLogEntry]) -> CoverageSummary:
             blind_spots.append(f"{entry.source} source was rate-limited.")
     if "web" not in source_names:
         blind_spots.append("Web and community sources were not covered unless supplied manually.")
+    if "github" not in source_names:
+        blind_spots.append("GitHub repository search was not covered unless supplied manually.")
     if "skills" not in source_names:
         blind_spots.append("Skills registry was not covered unless supplied manually.")
     if not blind_spots:
@@ -266,8 +300,6 @@ def _recommend(
         return "Integrate"
     if score >= 0.50:
         return "Borrow"
-    if score >= 0.34 and evidence:
-        return "Write New"
     if score >= 0.20 and evidence:
         return "Monitor"
     return "Ignore"
@@ -350,13 +382,20 @@ def _is_stale(last_update: str, generated_at: datetime | None) -> bool:
     return (generated_at - updated_at).days > 730
 
 
-def _suggested_updates(brief: ProjectBrief, candidates: list[ScoredCandidate]) -> list[str]:
+def _suggested_updates(
+    brief: ProjectBrief,
+    candidates: list[ScoredCandidate],
+    decision: DecisionSummary,
+) -> list[str]:
     top = candidates[0] if candidates else None
     if top is None:
-        return [f"ADR: Document why {brief.name} proceeds without comparable candidates."]
-    if top.recommendation == "Write New":
         return [
-            f"ADR: Record why no candidate is sufficient and Write New is the current recommendation for {top.name}.",
+            f"ADR: Record why {brief.name} needs more research before a build/adopt decision.",
+            "Backlog: Add at least one candidate source or document why sources were unavailable.",
+        ]
+    if decision.recommendation == "Write New":
+        return [
+            f"ADR: Record why no candidate is sufficient and Write New is the current report-level recommendation for {brief.name}.",
             "Backlog: Add manual review tasks for license, maintenance activity, and integration cost.",
             "Backlog: Track borrowed ideas separately from differentiating product decisions.",
         ]

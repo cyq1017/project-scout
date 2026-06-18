@@ -17,7 +17,7 @@ def write_report(report: ScoutReport, *, out_json: str | Path, out_md: str | Pat
 
 def render_markdown(report: ScoutReport) -> str:
     lines = [
-        f"# {report.brief.name} Prior-Art Map",
+        f"# {_inline_text(report.brief.name)} Prior-Art Map",
         "",
         f"Generated: {report.generated_at}",
         "",
@@ -38,8 +38,8 @@ def render_markdown(report: ScoutReport) -> str:
     for entry in report.search_log:
         lines.append(
             "| "
-            f"{entry.source} | {entry.query} | {entry.result_count} | {entry.used_count} | "
-            f"{entry.status} | {entry.error or ''} |"
+            f"{_table_cell(entry.source)} | {_table_cell(entry.query)} | {entry.result_count} | {entry.used_count} | "
+            f"{_table_cell(entry.status)} | {_table_cell(entry.error or '')} |"
         )
     lines.extend(
         [
@@ -53,8 +53,8 @@ def render_markdown(report: ScoutReport) -> str:
     for source in report.coverage.sources:
         lines.append(
             "| "
-            f"{source['source']} | {source['status']} | {source['used_count']} | "
-            f"{source.get('error') or ''} |"
+            f"{_table_cell(source['source'])} | {_table_cell(source['status'])} | {source['used_count']} | "
+            f"{_table_cell(source.get('error') or '')} |"
         )
     lines.extend(
         [
@@ -68,10 +68,10 @@ def render_markdown(report: ScoutReport) -> str:
     for candidate in report.candidates:
         lines.append(
             "| "
-            f"[{candidate.name}]({candidate.url}) | {candidate.stars} | "
-            f"{candidate.last_update or 'unknown'} | {candidate.license or 'unknown'} | "
-            f"{candidate.language or 'unknown'} | {candidate.similarity_score:.3f} | "
-            f"{candidate.recommendation} |"
+            f"[{_link_text(candidate.name)}]({_link_url(candidate.url)}) | {candidate.stars} | "
+            f"{_table_cell(candidate.last_update or 'unknown')} | {_table_cell(candidate.license or 'unknown')} | "
+            f"{_table_cell(candidate.language or 'unknown')} | {candidate.similarity_score:.3f} | "
+            f"{_table_cell(candidate.recommendation)} |"
         )
     lines.extend(
         [
@@ -85,7 +85,7 @@ def render_markdown(report: ScoutReport) -> str:
     for row in report.overlap_matrix:
         lines.append(
             "| "
-            f"{row['candidate']} | {row['keyword_overlap']} | {row['stack_overlap']} | "
+            f"{_table_cell(row['candidate'])} | {row['keyword_overlap']} | {row['stack_overlap']} | "
             f"{row['user_overlap']} | {row['exclusion_overlap']} | {row['score']:.3f} |"
         )
     lines.extend(["", "## What To Borrow", ""])
@@ -99,9 +99,9 @@ def render_markdown(report: ScoutReport) -> str:
     lines.extend(["", "## Differentiation Is Not Enough: Useful Positioning", ""])
     lines.extend(_positioning_lines(report))
     lines.extend(["", "## Risks And Unknowns", ""])
-    lines.extend([f"- {risk}" for risk in report.risks])
+    lines.extend([f"- {_inline_text(risk)}" for risk in report.risks])
     lines.extend(["", "## Suggested ADR / Backlog Updates", ""])
-    lines.extend([f"- {update}" for update in report.suggested_updates])
+    lines.extend([f"- {_inline_text(update)}" for update in report.suggested_updates])
     lines.append("")
     return "\n".join(lines)
 
@@ -109,9 +109,9 @@ def render_markdown(report: ScoutReport) -> str:
 def _borrow_lines(report: ScoutReport) -> list[str]:
     rows = []
     for candidate in report.candidates:
-        if candidate.recommendation in {"Adopt", "Borrow", "Integrate", "Fork", "Extend", "Write New"}:
+        if candidate.recommendation in {"Adopt", "Borrow", "Integrate", "Fork", "Extend"}:
             evidence = ", ".join(candidate.evidence) if candidate.evidence else "review implementation details"
-            rows.append(f"- {candidate.name}: borrow evidence around {evidence}.")
+            rows.append(f"- {_inline_text(candidate.name)}: borrow evidence around {_inline_text(evidence)}.")
     return rows or ["- No strong borrow signals found."]
 
 
@@ -119,31 +119,29 @@ def _avoid_lines(report: ScoutReport) -> list[str]:
     rows = []
     for candidate in report.candidates:
         if candidate.avoid_reasons:
-            rows.append(f"- {candidate.name}: {'; '.join(candidate.avoid_reasons)}.")
+            rows.append(f"- {_inline_text(candidate.name)}: {_inline_text('; '.join(candidate.avoid_reasons))}.")
         elif candidate.recommendation == "Ignore":
-            rows.append(f"- {candidate.name}: low overlap in available metadata.")
+            rows.append(f"- {_inline_text(candidate.name)}: low overlap in available metadata.")
     return rows or ["- No explicit avoid signals found in the available metadata."]
 
 
 def _recommendation_lines(report: ScoutReport) -> list[str]:
-    if not report.recommendations:
-        return ["- Recommendation: gather candidates before making a build/adopt/fork/plugin call."]
     lines = [
-        f"- Recommendation: **{report.decision.recommendation}**.",
-        f"- Decision confidence: **{report.decision.confidence}**.",
+        f"- Recommendation: **{_inline_text(report.decision.recommendation)}**.",
+        f"- Decision confidence: **{_inline_text(report.decision.confidence)}**.",
     ]
-    lines.extend([f"- Rationale: {item}" for item in report.decision.rationale])
-    lines.extend([f"- Confidence reason: {item}" for item in report.decision.confidence_reasons])
+    lines.extend([f"- Rationale: {_inline_text(item)}" for item in report.decision.rationale])
+    lines.extend([f"- Confidence reason: {_inline_text(item)}" for item in report.decision.confidence_reasons])
     lines.append("- Treat this as research input, not an automatic decision.")
     return lines
 
 
 def _coverage_lines(report: ScoutReport) -> list[str]:
     lines = [
-        f"- Coverage confidence: **{report.coverage.confidence}**.",
-        f"- Stop reason: {report.coverage.stop_reason}",
+        f"- Coverage confidence: **{_inline_text(report.coverage.confidence)}**.",
+        f"- Stop reason: {_inline_text(report.coverage.stop_reason)}",
     ]
-    lines.extend([f"- Blind spot: {item}" for item in report.coverage.blind_spots])
+    lines.extend([f"- Blind spot: {_inline_text(item)}" for item in report.coverage.blind_spots])
     return lines
 
 
@@ -156,5 +154,22 @@ def _positioning_lines(report: ScoutReport) -> list[str]:
             "- Position around the workflow decision this tool enables: evidence-backed "
             "build/adopt/fork/plugin choices before roadmap commitment."
         ),
-        f"- Compare explicitly against: {', '.join(top_candidates)}.",
+        f"- Compare explicitly against: {_inline_text(', '.join(top_candidates))}.",
     ]
+
+
+def _inline_text(value: object) -> str:
+    return " ".join(str(value).split())
+
+
+def _table_cell(value: object) -> str:
+    return _inline_text(value).replace("\\", "\\\\").replace("|", "\\|")
+
+
+def _link_text(value: object) -> str:
+    return _table_cell(value).replace("[", "\\[").replace("]", "\\]")
+
+
+def _link_url(value: object) -> str:
+    text = _inline_text(value)
+    return text.replace(" ", "%20").replace("(", "%28").replace(")", "%29")
