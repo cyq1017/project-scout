@@ -73,9 +73,35 @@ class DiscoveryBrief:
 
 
 @dataclass(frozen=True)
+class NormalizedBrief:
+    name: str
+    goal: str
+    keywords: list[str]
+    target_users: list[str]
+    tech_stack: list[str]
+    exclusions: list[str]
+    target_type: str = "project"
+    intent: str = "research"
+    must_have: list[str] = field(default_factory=list)
+    nice_to_have: list[str] = field(default_factory=list)
+    known_candidates: list[str] = field(default_factory=list)
+
+    def to_project_brief(self) -> ProjectBrief:
+        return ProjectBrief(
+            name=self.name,
+            goal=self.goal,
+            keywords=self.keywords,
+            target_users=self.target_users,
+            tech_stack=self.tech_stack,
+            exclusions=self.exclusions,
+        )
+
+
+@dataclass(frozen=True)
 class CandidateRepo:
     name: str
     url: str
+    kind: str = "repo"
     stars: int = 0
     last_update: str = ""
     description: str = ""
@@ -83,12 +109,14 @@ class CandidateRepo:
     license: str = ""
     language: str = ""
     readme_summary: str = ""
+    attributes: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "CandidateRepo":
         return cls(
             name=str(data["name"]),
             url=str(data["url"]),
+            kind=str(data.get("kind", "repo") or "repo"),
             stars=int(data.get("stars", 0) or 0),
             last_update=str(data.get("last_update", "") or ""),
             description=str(data.get("description", "") or ""),
@@ -96,6 +124,7 @@ class CandidateRepo:
             license=str(data.get("license", "") or ""),
             language=str(data.get("language", "") or ""),
             readme_summary=str(data.get("readme_summary", "") or ""),
+            attributes=_string_dict(data.get("attributes", {})),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -107,6 +136,7 @@ class ScoredCandidate(CandidateRepo):
     similarity_score: float = 0.0
     recommendation: str = "Ignore"
     evidence: list[str] = field(default_factory=list)
+    evidence_records: list[dict[str, str]] = field(default_factory=list)
     avoid_reasons: list[str] = field(default_factory=list)
 
     @classmethod
@@ -117,6 +147,7 @@ class ScoredCandidate(CandidateRepo):
         similarity_score: float,
         recommendation: str,
         evidence: list[str],
+        evidence_records: list[dict[str, str]],
         avoid_reasons: list[str],
     ) -> "ScoredCandidate":
         return cls(
@@ -124,6 +155,7 @@ class ScoredCandidate(CandidateRepo):
             similarity_score=similarity_score,
             recommendation=recommendation,
             evidence=evidence,
+            evidence_records=evidence_records,
             avoid_reasons=avoid_reasons,
         )
 
@@ -178,6 +210,7 @@ class CoverageSummary:
     sources: list[dict[str, Any]]
     blind_spots: list[str]
     stop_reason: str
+    source_requirements: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -185,7 +218,7 @@ class CoverageSummary:
 
 @dataclass(frozen=True)
 class ScoutReport:
-    brief: ProjectBrief
+    brief: ProjectBrief | DiscoveryBrief
     generated_at: str
     summary: ReportSummary
     decision: DecisionSummary
@@ -219,6 +252,14 @@ def _string_list(value: Any) -> list[str]:
     if not isinstance(value, list):
         raise TypeError("expected a list of strings")
     return [str(item) for item in value if str(item).strip()]
+
+
+def _string_dict(value: Any) -> dict[str, str]:
+    if value is None:
+        return {}
+    if not isinstance(value, dict):
+        raise TypeError("expected a dict of string attributes")
+    return {str(key): str(item) for key, item in value.items() if str(item).strip()}
 
 
 def _dedupe(values: list[str]) -> list[str]:

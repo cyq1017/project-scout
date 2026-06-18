@@ -38,8 +38,31 @@ def test_load_web_candidates_maps_curated_page_metadata():
 
     assert candidates[0].name == "Official Prior Art Product"
     assert candidates[0].url == "https://example.com/prior-art-product"
+    assert candidates[0].kind == "web"
     assert candidates[0].topics == ["product", "prior-art", "research"]
     assert candidates[0].readme_summary == "Official product page describing prior-art research workflows."
+
+
+def test_load_web_candidates_accepts_kind_and_attributes(tmp_path):
+    path = tmp_path / "paper_candidates.json"
+    path.write_text(
+        json.dumps(
+            [
+                {
+                    "title": "Paper Candidate",
+                    "url": "https://example.com/paper",
+                    "kind": "paper",
+                    "summary": "Academic prior-art paper.",
+                    "attributes": {"venue": "ExampleConf", "year": 2026},
+                }
+            ]
+        )
+    )
+
+    candidates = load_web_candidates(path)
+
+    assert candidates[0].kind == "paper"
+    assert candidates[0].attributes == {"venue": "ExampleConf", "year": "2026"}
 
 
 def test_summary_overrides_update_candidates_by_url():
@@ -72,6 +95,7 @@ def test_parse_github_search_response_normalizes_repository_metadata():
 
     assert len(candidates) == 1
     assert candidates[0].name == "sample/prior-art-cli"
+    assert candidates[0].kind == "repo"
     assert candidates[0].stars == 128
     assert candidates[0].license == "MIT"
     assert candidates[0].readme_summary == ""
@@ -167,6 +191,7 @@ skills.volces.com@github-research 25 installs
     ]
     assert candidates[0].url == "https://skills.sh/product-on-purpose/pm-skills/discover-competitive-analysis"
     assert candidates[0].topics == ["skill", "skills-registry"]
+    assert candidates[0].kind == "skill"
     assert candidates[0].stars == 162
 
 

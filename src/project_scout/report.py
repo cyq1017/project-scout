@@ -44,6 +44,20 @@ def render_markdown(report: ScoutReport) -> str:
     lines.extend(
         [
             "",
+            "## Source Requirements",
+            "",
+            "| Source | Required |",
+            "| --- | --- |",
+        ]
+    )
+    for source in report.coverage.source_requirements:
+        lines.append(
+            "| "
+            f"{_table_cell(source['source'])} | {_table_cell('yes' if source['required'] else 'no')} |"
+        )
+    lines.extend(
+        [
+            "",
             "## Coverage Matrix",
             "",
             "| Source | Status | Used | Notes |",
@@ -58,17 +72,17 @@ def render_markdown(report: ScoutReport) -> str:
         )
     lines.extend(
         [
-        "",
-        "## Similar Projects",
-        "",
-        "| Project | Stars | Updated | License | Language | Score | Recommendation |",
-        "| --- | ---: | --- | --- | --- | ---: | --- |",
+            "",
+            "## Similar Projects",
+            "",
+            "| Project | Kind | Stars | Updated | License | Language | Score | Recommendation |",
+            "| --- | --- | ---: | --- | --- | --- | ---: | --- |",
         ]
     )
     for candidate in report.candidates:
         lines.append(
             "| "
-            f"[{_link_text(candidate.name)}]({_link_url(candidate.url)}) | {candidate.stars} | "
+            f"[{_link_text(candidate.name)}]({_link_url(candidate.url)}) | {_table_cell(candidate.kind)} | {candidate.stars} | "
             f"{_table_cell(candidate.last_update or 'unknown')} | {_table_cell(candidate.license or 'unknown')} | "
             f"{_table_cell(candidate.language or 'unknown')} | {candidate.similarity_score:.3f} | "
             f"{_table_cell(candidate.recommendation)} |"

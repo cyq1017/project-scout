@@ -22,6 +22,7 @@ def parse_skills_find_output(output: str) -> list[CandidateRepo]:
             CandidateRepo(
                 name=name,
                 url=url,
+                kind="skill",
                 stars=_installs(line),
                 description=f"Skill registry result for {name}.",
                 topics=["skill", "skills-registry"],

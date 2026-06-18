@@ -52,6 +52,7 @@ def _repo_from_item(item: dict[str, object]) -> CandidateRepo:
     return CandidateRepo(
         name=str(item.get("full_name") or item.get("name") or ""),
         url=str(item.get("html_url") or ""),
+        kind="repo",
         stars=int(item.get("stargazers_count") or 0),
         last_update=str(item.get("updated_at") or ""),
         description=str(item.get("description") or ""),

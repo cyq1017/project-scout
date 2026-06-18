@@ -96,6 +96,20 @@ Trustworthiness hardening status:
   reports with `Research More` and recorded blind spots.
 - Decision confidence is heuristic and is capped by coverage confidence.
 - Markdown reports escape table and list content before rendering.
+- Discovery briefs remain intact in report JSON; scoring uses an internal
+  normalized view rather than destructively converting the brief at load time.
+- Coverage now records target-specific source requirements and known-candidate
+  misses as blind spots.
+- Candidates can carry `kind` and source-specific `attributes` for non-repo
+  assets such as products, papers, skills, plugins, and MCP-style servers.
+- Relevance matching includes basic CJK lexical overlap in addition to ASCII
+  tokens.
+- Scored candidates include structured `evidence_records` for license,
+  maintenance, primary-source URL, integration, and pricing/security. Unknown
+  adoption evidence caps decision confidence and must be resolved manually.
+- Candidate disposition and report-level decision gates live in
+  `project_scout.recommendation`; keep scoring deterministic and separate from
+  adoption readiness.
 
 The larger GPT Pro architecture review is local-only unless intentionally
 curated into repo docs. The current executable roadmap is

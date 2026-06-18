@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from project_scout.core import build_report, load_brief, load_candidates
-from project_scout.models import CandidateRepo, ProjectBrief
+from project_scout.models import CandidateRepo, DiscoveryBrief, ProjectBrief
 from project_scout.report import render_markdown, write_report
 
 
@@ -18,7 +18,7 @@ def test_build_report_ranks_candidates_and_records_overlap_evidence():
     assert report.summary.candidate_count == 3
     assert report.candidates[0].name == "sample/prior-art-cli"
     assert report.candidates[0].similarity_score > report.candidates[1].similarity_score
-    assert report.candidates[0].recommendation in {"Adopt", "Borrow", "Integrate", "Fork", "Write New"}
+    assert report.candidates[0].recommendation in {"Adopt", "Borrow", "Integrate", "Fork"}
     assert all(candidate.recommendation != "Compete" for candidate in report.candidates)
     assert "python" in report.candidates[0].evidence
     assert all("and" not in candidate.evidence for candidate in report.candidates)
@@ -72,6 +72,43 @@ def test_build_report_accepts_configurable_score_weights():
     assert report.candidates[0].name == "stack-match"
 
 
+def test_build_report_scores_cjk_text_overlap():
+    brief = ProjectBrief(
+        name="商机发现助手",
+        goal="评估是否要构建商机发现和市场研究助手。",
+        keywords=["商机发现", "市场研究"],
+        target_users=["创业者"],
+        tech_stack=["技能"],
+        exclusions=[],
+    )
+    candidates = [
+        CandidateRepo(
+            name="通用信息整理",
+            url="https://example.com/generic",
+            kind="product",
+            description="面向团队的资料收集工具。",
+        ),
+        CandidateRepo(
+            name="商机发现研究助手",
+            url="https://example.com/opportunity",
+            kind="skill",
+            description="帮助创业者进行商机发现、市场研究和竞品分析。",
+            topics=["商机发现", "市场研究"],
+            language="Markdown",
+        ),
+    ]
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-06-04T00:00:00+00:00",
+    )
+
+    assert report.candidates[0].name == "商机发现研究助手"
+    assert report.candidates[0].similarity_score > report.candidates[1].similarity_score
+    assert "商机发现" in report.candidates[0].evidence
+
+
 def test_build_report_includes_decision_coverage_and_search_log():
     brief = load_brief(FIXTURES / "brief.json")
     candidates = load_candidates(FIXTURES / "github_repos.json")
@@ -99,6 +136,177 @@ def test_build_report_includes_decision_coverage_and_search_log():
     assert data["coverage"]["sources"][0]["source"] == "manual"
     assert data["coverage"]["blind_spots"]
     assert data["search_log"][0]["used_count"] == 3
+    assert data["coverage"]["source_requirements"]
+    assert data["candidates"][0]["evidence_records"]
+
+
+def test_unknown_adoption_evidence_caps_decision_confidence():
+    brief = ProjectBrief(
+        name="adoption-review",
+        goal="Adopt a matching Python CLI.",
+        keywords=["prior art", "report"],
+        target_users=["developers"],
+        tech_stack=["python"],
+        exclusions=[],
+    )
+    candidates = [
+        CandidateRepo(
+            name="strong-match",
+            url="https://example.com/strong-match",
+            kind="repo",
+            description="Prior art report CLI for developers.",
+            topics=["prior-art", "report", "python"],
+            license="MIT",
+            language="Python",
+            last_update="2026-01-01T00:00:00Z",
+        )
+    ]
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-06-04T00:00:00+00:00",
+        search_log=[
+            {
+                "source": "manual",
+                "query": "fixture",
+                "result_count": 1,
+                "used_count": 1,
+                "status": "ok",
+                "error": None,
+            },
+            {
+                "source": "github",
+                "query": "prior art report cli",
+                "result_count": 1,
+                "used_count": 1,
+                "status": "ok",
+                "error": None,
+            },
+            {
+                "source": "web",
+                "query": "prior art report cli",
+                "result_count": 1,
+                "used_count": 1,
+                "status": "ok",
+                "error": None,
+            },
+        ],
+    )
+
+    records = report.candidates[0].evidence_records
+    assert {"category": "license", "status": "known", "source": "candidate_metadata", "detail": "MIT"} in records
+    assert any(record["category"] == "integration" and record["status"] == "unknown" for record in records)
+    assert report.coverage.confidence == "High"
+    assert report.decision.confidence == "Medium"
+    assert any("adoption evidence records" in reason for reason in report.decision.confidence_reasons)
+
+
+def test_discovery_brief_fields_survive_report_generation():
+    brief = load_brief(FIXTURES / "discovery_brief.json")
+    assert isinstance(brief, DiscoveryBrief)
+    candidates = [
+        CandidateRepo(
+            name="skills.volces.com@github-research",
+            url="https://skills.sh/skills.volces.com/github-research",
+            description="GitHub research skill with coverage matrix and search log.",
+            topics=["skill", "github"],
+            language="Markdown",
+        ),
+        CandidateRepo(
+            name="eze-is/web-access",
+            url="https://github.com/eze-is/web-access",
+            description="Web access helper for agents.",
+            topics=["web", "search"],
+            language="Python",
+        ),
+    ]
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-05-24T00:00:00Z",
+        search_log=[
+            {
+                "source": "manual",
+                "query": "known candidates",
+                "result_count": 2,
+                "used_count": 2,
+                "status": "ok",
+                "error": None,
+            },
+            {
+                "source": "github",
+                "query": "prior art skill",
+                "result_count": 1,
+                "used_count": 1,
+                "status": "ok",
+                "error": None,
+            },
+            {
+                "source": "skills",
+                "query": "prior art skill",
+                "result_count": 1,
+                "used_count": 1,
+                "status": "ok",
+                "error": None,
+            },
+        ],
+    )
+    data = report.to_dict()
+
+    assert data["brief"]["target_type"] == "skill"
+    assert data["brief"]["intent"] == "build"
+    assert data["brief"]["must_have"] == ["coverage matrix", "search log"]
+    assert data["coverage"]["confidence"] == "High"
+    assert {"source": "skills", "required": True} in data["coverage"]["source_requirements"]
+
+
+def test_missing_known_candidate_caps_coverage():
+    brief = load_brief(FIXTURES / "discovery_brief.json")
+    assert isinstance(brief, DiscoveryBrief)
+
+    report = build_report(
+        brief,
+        [
+            CandidateRepo(
+                name="skills.volces.com@github-research",
+                url="https://skills.sh/skills.volces.com/github-research",
+                description="GitHub research skill with coverage matrix and search log.",
+                topics=["skill", "github"],
+            )
+        ],
+        generated_at="2026-05-24T00:00:00Z",
+        search_log=[
+            {
+                "source": "manual",
+                "query": "known candidates",
+                "result_count": 1,
+                "used_count": 1,
+                "status": "ok",
+                "error": None,
+            },
+            {
+                "source": "github",
+                "query": "prior art skill",
+                "result_count": 1,
+                "used_count": 1,
+                "status": "ok",
+                "error": None,
+            },
+            {
+                "source": "skills",
+                "query": "prior art skill",
+                "result_count": 1,
+                "used_count": 1,
+                "status": "ok",
+                "error": None,
+            },
+        ],
+    )
+
+    assert report.coverage.confidence == "Medium"
+    assert any("https://github.com/eze-is/web-access" in item for item in report.coverage.blind_spots)
 
 
 def test_failed_search_source_is_recorded_as_blind_spot():
@@ -281,6 +489,7 @@ def test_render_markdown_contains_required_sections_and_recommendation():
     for heading in [
         "Executive Summary",
         "Search Summary",
+        "Source Requirements",
         "Coverage Matrix",
         "Similar Projects",
         "Overlap Matrix",

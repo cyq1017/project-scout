@@ -6,7 +6,7 @@ The current CLI MVP focuses on a narrow workflow:
 
 1. Read a project brief or discovery brief from JSON.
 2. Import candidate repositories and skills from GitHub search, skills registry search, fixture data, or manual URL lists.
-3. Normalize repository metadata.
+3. Normalize candidate metadata while preserving candidate `kind` and source-specific attributes.
 4. Score overlap with deterministic rules.
 5. Write a Markdown prior-art map and a machine-readable JSON report with search log, coverage confidence, decision confidence, and blind spots.
 
@@ -89,11 +89,26 @@ pass it to `project-scout report --brief`:
 - [cli-library.json](examples/brief-templates/cli-library.json): evaluate a small local CLI/library idea.
 - [agent-plugin.json](examples/brief-templates/agent-plugin.json): evaluate an agent plugin, connector, or MCP-style integration.
 
+Discovery briefs keep their `target_type`, `intent`, `must_have`,
+`nice_to_have`, and `known_candidates` fields in JSON reports. The scoring path
+uses an internal normalized view, but the report preserves the original brief so
+source requirements and known-candidate blind spots can be audited.
+
 ## Source Profiles
 
 Use [source profiles](docs/source-profiles/README.md) to decide which sources
 are required before running a report. Profiles are lightweight presets, not
 crawler instructions.
+
+Reports include a `source_requirements` coverage section. High coverage requires
+the target-specific required sources to be satisfied and all known candidates to
+be represented in the candidate set. Missing required sources or known
+candidates are recorded as blind spots.
+
+Each scored candidate also includes structured `evidence_records` for license,
+maintenance, primary-source URL, integration, and pricing/security. Records can
+be `known` or `unknown`; unknown adoption evidence caps decision confidence and
+must be resolved by manual primary-source review before relying on the report.
 
 ## Sample Reports
 
@@ -130,6 +145,11 @@ project-scout report \
 external summarizer may write JSON summaries, and `project-scout` imports them
 without calling a model itself.
 
+Curated candidates may include `kind` such as `product`, `paper`, `skill`,
+`mcp_server`, or `repo`, plus an `attributes` object for source-specific
+metadata. These fields are included in JSON output and considered by the
+deterministic relevance text path.
+
 ## Configure Scoring Weights
 
 Default scoring is deterministic. Override weights only for local experiments:
@@ -142,6 +162,9 @@ project-scout report \
   --out-json /tmp/project-scout-weighted.json \
   --out-md /tmp/project-scout-weighted.md
 ```
+
+Relevance matching supports ASCII tokens and basic CJK text overlap. This is a
+deterministic lexical signal, not semantic translation or LLM scoring.
 
 ## Search GitHub Without Login
 
@@ -185,7 +208,11 @@ document the failed path and blind spots instead of pretending that no useful
 prior art exists.
 
 Decision confidence is heuristic, not a probability, and is capped by coverage
-confidence.
+confidence and unresolved adoption evidence.
+
+Implementation-wise, candidate relevance still comes from deterministic scoring,
+while candidate disposition and report-level decision gates live in
+`project_scout.recommendation`.
 
 ## Run Tests
 

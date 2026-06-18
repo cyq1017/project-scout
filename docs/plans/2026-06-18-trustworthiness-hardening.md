@@ -24,14 +24,18 @@ coverage is partial, candidate evidence is weak, or live adapters fail.
   `Research More` instead of terminating the CLI.
 - Decision confidence is capped by coverage confidence.
 - Markdown report content is escaped before table/list rendering.
+- Discovery briefs are preserved in report JSON and normalized only internally
+  for scoring.
+- Coverage reports target-specific source requirements and known-candidate
+  misses.
+- Candidate metadata supports `kind` and source-specific `attributes`.
+- Relevance matching includes basic CJK lexical overlap.
+- Scored candidates include structured evidence records for license,
+  maintenance, primary-source URL, integration, and pricing/security.
+- Report-level adoption readiness and candidate disposition gates are split into
+  `project_scout.recommendation`.
 
 ## Later Slices
 
-- Preserve `DiscoveryBrief` fields through scoring and source policy.
-- Introduce a source requirement plan instead of inferring coverage from source
-  names alone.
-- Add explicit evidence records for license, maintenance, integration, pricing,
-  security, and primary-source verification.
-- Generalize repository-centric candidate metadata for products, papers, skills,
-  plugins, and MCP-style servers.
-- Add Unicode/CJK-aware relevance matching.
+- Move relevance scoring into its own module if it grows beyond the current
+  compact implementation.

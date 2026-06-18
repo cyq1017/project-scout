@@ -18,12 +18,16 @@ def _web_candidate_from_dict(data: dict[str, Any]) -> CandidateRepo:
     title = str(data.get("title") or data.get("name") or data["url"])
     summary = str(data.get("summary") or data.get("readme_summary") or data.get("description") or "")
     topics = data.get("topics") or ["web"]
+    kind = str(data.get("kind") or data.get("target_type") or "web")
+    attributes = data.get("attributes") if isinstance(data.get("attributes"), dict) else {}
     return CandidateRepo(
         name=title,
         url=str(data["url"]),
+        kind=kind,
         description=str(data.get("description") or summary),
         topics=[str(topic) for topic in topics] if isinstance(topics, list) else ["web"],
         license=str(data.get("license", "") or ""),
         language=str(data.get("language", "") or ""),
         readme_summary=summary,
+        attributes={str(key): str(value) for key, value in attributes.items()},
     )

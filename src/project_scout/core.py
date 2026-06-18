@@ -12,12 +12,14 @@ from project_scout.models import (
     CoverageSummary,
     DecisionSummary,
     DiscoveryBrief,
+    NormalizedBrief,
     ProjectBrief,
     ReportSummary,
     ScoredCandidate,
     SearchLogEntry,
     ScoutReport,
 )
+from project_scout.recommendation import candidate_disposition, decision_summary
 
 RECOMMENDATIONS = {
     "Adopt",
@@ -51,12 +53,12 @@ STOPWORDS = {
 }
 
 
-def load_brief(path: str | Path) -> ProjectBrief:
+def load_brief(path: str | Path) -> ProjectBrief | DiscoveryBrief:
     data = _read_json(path)
     if not isinstance(data, dict):
         raise ValueError("brief JSON must be an object")
     if "target_type" in data or "users_or_consumers" in data:
-        return DiscoveryBrief.from_dict(data).to_project_brief()
+        return DiscoveryBrief.from_dict(data)
     return ProjectBrief.from_dict(data)
 
 
@@ -74,7 +76,7 @@ def load_url_candidates(path: str | Path) -> list[CandidateRepo]:
         url = line.strip()
         if not url or url.startswith("#"):
             continue
-        candidates.append(CandidateRepo(name=_name_from_url(url), url=url))
+        candidates.append(CandidateRepo(name=_name_from_url(url), url=url, kind=_kind_from_url(url)))
     return candidates
 
 
@@ -86,17 +88,18 @@ def load_score_weights(path: str | Path) -> dict[str, float]:
 
 
 def build_report(
-    brief: ProjectBrief,
+    brief: ProjectBrief | DiscoveryBrief,
     candidates: Iterable[CandidateRepo],
     *,
     generated_at: str | None = None,
     search_log: Iterable[dict[str, object] | SearchLogEntry] | None = None,
     score_weights: dict[str, float] | None = None,
 ) -> ScoutReport:
+    normalized_brief = _normalize_brief(brief)
     weights = _score_weights(score_weights)
-    scored = [_score_candidate(brief, candidate, weights=weights) for candidate in candidates]
+    scored = [_score_candidate(normalized_brief, candidate, weights=weights) for candidate in candidates]
     scored.sort(key=lambda candidate: candidate.similarity_score, reverse=True)
-    matrix = [_matrix_row(brief, candidate) for candidate in scored]
+    matrix = [_matrix_row(normalized_brief, candidate) for candidate in scored]
     recommendations = [
         {
             "candidate": candidate.name,
@@ -108,10 +111,10 @@ def build_report(
     ]
     generated = generated_at or datetime.now(UTC).replace(microsecond=0).isoformat()
     log_entries = _search_log_entries(search_log)
-    coverage = _coverage_summary(log_entries)
-    decision = _decision_summary(scored, log_entries, coverage)
+    coverage = _coverage_summary(log_entries, normalized_brief, scored)
+    decision = decision_summary(scored, log_entries, coverage)
     risks = _risks(scored, generated_at=generated)
-    suggested_updates = _suggested_updates(brief, scored, decision)
+    suggested_updates = _suggested_updates(normalized_brief, scored, decision)
     top = decision.recommendation
     return ScoutReport(
         brief=brief,
@@ -125,6 +128,31 @@ def build_report(
         recommendations=recommendations,
         risks=risks,
         suggested_updates=suggested_updates,
+    )
+
+
+def _normalize_brief(brief: ProjectBrief | DiscoveryBrief) -> NormalizedBrief:
+    if isinstance(brief, DiscoveryBrief):
+        return NormalizedBrief(
+            name=brief.name,
+            goal=f"{brief.goal} Target type: {brief.target_type}. Intent: {brief.intent}.",
+            keywords=_dedupe([*brief.keywords, *brief.must_have, *brief.nice_to_have]),
+            target_users=brief.users_or_consumers,
+            tech_stack=_dedupe([*brief.ecosystems, *brief.must_have]),
+            exclusions=brief.exclusions,
+            target_type=brief.target_type,
+            intent=brief.intent,
+            must_have=brief.must_have,
+            nice_to_have=brief.nice_to_have,
+            known_candidates=brief.known_candidates,
+        )
+    return NormalizedBrief(
+        name=brief.name,
+        goal=brief.goal,
+        keywords=brief.keywords,
+        target_users=brief.target_users,
+        tech_stack=brief.tech_stack,
+        exclusions=brief.exclusions,
     )
 
 
@@ -151,79 +179,30 @@ def _search_log_entries(
     return entries
 
 
-def _decision_summary(
-    candidates: list[ScoredCandidate],
+def _coverage_summary(
     search_log: list[SearchLogEntry],
-    coverage: CoverageSummary,
-) -> DecisionSummary:
-    top = candidates[0] if candidates else None
-    if top is None:
-        return DecisionSummary(
-            recommendation="Research More",
-            confidence="Low",
-            rationale=["No candidates were available for comparison."],
-            confidence_reasons=[
-                "Candidate set is empty.",
-                "A partial report can document source attempts and blind spots, but cannot support an adoption decision.",
-            ],
-        )
-
-    confidence = "High" if top.similarity_score >= 0.72 else "Medium" if top.similarity_score >= 0.45 else "Low"
-    if any(entry.status not in {"ok", "empty"} for entry in search_log):
-        confidence = "Medium" if confidence == "High" else confidence
-    confidence = _cap_confidence(confidence, coverage.confidence)
-
-    recommendation = top.recommendation
-    rationale = [
-        f"{top.name} has the strongest current score ({top.similarity_score:.3f}).",
-        f"Recommendation is based on evidence: {', '.join(top.evidence) if top.evidence else 'limited metadata'}.",
-    ]
-    confidence_reasons = [
-        f"{len(candidates)} candidates compared.",
-        "Metadata is deterministic but may need manual source verification.",
-        f"Coverage confidence caps decision confidence at {coverage.confidence}.",
-    ]
-    if coverage.confidence == "Low":
-        recommendation = "Research More"
-        confidence = "Low"
-        rationale.append("Coverage is too low to support a build/adopt recommendation.")
-        confidence_reasons.append("One or more required source attempts failed or no reliable source completed.")
-    elif top.recommendation in {"Monitor", "Ignore"}:
-        recommendation = "Write New" if coverage.confidence == "High" else "Research More"
-        confidence = _cap_confidence("Medium", coverage.confidence)
-        if recommendation == "Write New":
-            rationale.append("No candidate has enough relevance to adopt, integrate, fork, or borrow from directly.")
-            confidence_reasons.append("Write New is a report-level decision, not a candidate disposition.")
-        else:
-            rationale.append("Candidate relevance is weak and coverage is not high enough to justify Write New.")
-            confidence_reasons.append("Weak matches require more source coverage before deciding to build.")
-    return DecisionSummary(
-        recommendation=recommendation,
-        confidence=confidence,
-        rationale=rationale,
-        confidence_reasons=confidence_reasons,
-    )
-
-
-def _cap_confidence(confidence: str, coverage_confidence: str) -> str:
-    levels = {"Low": 0, "Medium": 1, "High": 2}
-    reverse = {value: key for key, value in levels.items()}
-    return reverse[min(levels[confidence], levels.get(coverage_confidence, 0))]
-
-
-def _coverage_summary(search_log: list[SearchLogEntry]) -> CoverageSummary:
+    brief: NormalizedBrief,
+    candidates: list[ScoredCandidate],
+) -> CoverageSummary:
     sources = [entry.to_dict() for entry in search_log]
     statuses = {entry.status for entry in search_log}
     source_names = {entry.source for entry in search_log}
     ok_sources = {entry.source for entry in search_log if entry.status in {"ok", "empty"}}
+    source_requirements = _source_requirements(brief)
+    required_sources = {item["source"] for item in source_requirements if item["required"]}
+    satisfied_required_sources = required_sources & ok_sources
+    missing_required_sources = required_sources - ok_sources
+    known_candidate_misses = _missing_known_candidates(brief.known_candidates, candidates)
     if any(status in {"failed", "rate_limited"} for status in statuses):
         confidence = "Low"
     elif not ok_sources:
         confidence = "Low"
-    elif {"manual", "web", "github"}.issubset(ok_sources) or {"manual", "web", "skills"}.issubset(ok_sources):
+    elif not missing_required_sources and not known_candidate_misses:
         confidence = "High"
-    else:
+    elif satisfied_required_sources:
         confidence = "Medium"
+    else:
+        confidence = "Low"
 
     blind_spots = []
     for entry in search_log:
@@ -237,6 +216,10 @@ def _coverage_summary(search_log: list[SearchLogEntry]) -> CoverageSummary:
         blind_spots.append("GitHub repository search was not covered unless supplied manually.")
     if "skills" not in source_names:
         blind_spots.append("Skills registry was not covered unless supplied manually.")
+    for source in sorted(missing_required_sources):
+        blind_spots.append(f"Required source not satisfied: {source}.")
+    for known_candidate in known_candidate_misses:
+        blind_spots.append(f"Known candidate was not included in candidate set: {known_candidate}.")
     if not blind_spots:
         blind_spots.append("No major source-class blind spots recorded; still verify primary sources before adoption.")
 
@@ -245,11 +228,44 @@ def _coverage_summary(search_log: list[SearchLogEntry]) -> CoverageSummary:
         sources=sources,
         blind_spots=blind_spots,
         stop_reason="Compared available candidates after recorded source collection.",
+        source_requirements=source_requirements,
     )
 
 
+def _source_requirements(brief: NormalizedBrief) -> list[dict[str, object]]:
+    target_type = brief.target_type.lower()
+    required = ["manual", "github", "web"]
+    optional = ["skills"]
+    if target_type == "skill":
+        required = ["manual", "github", "skills"]
+        optional = ["web"]
+    elif target_type in {"product", "market_opportunity"}:
+        required = ["manual", "web"]
+        optional = ["github", "skills"]
+    elif target_type in {"paper", "research"}:
+        required = ["manual", "web"]
+        optional = ["github", "skills"]
+    rows = [{"source": source, "required": True} for source in required]
+    rows.extend({"source": source, "required": False} for source in optional)
+    return rows
+
+
+def _missing_known_candidates(
+    known_candidates: list[str],
+    candidates: list[ScoredCandidate],
+) -> list[str]:
+    candidate_text = " ".join(
+        f"{candidate.name} {candidate.url}".lower() for candidate in candidates
+    )
+    missing = []
+    for known_candidate in known_candidates:
+        if known_candidate.lower() not in candidate_text:
+            missing.append(known_candidate)
+    return missing
+
+
 def _score_candidate(
-    brief: ProjectBrief, candidate: CandidateRepo, *, weights: dict[str, float]
+    brief: NormalizedBrief, candidate: CandidateRepo, *, weights: dict[str, float]
 ) -> ScoredCandidate:
     keyword_hits = _phrase_hits(brief.keywords, _candidate_text(candidate))
     stack_hits = _phrase_hits(brief.tech_stack, _candidate_text(candidate))
@@ -275,13 +291,50 @@ def _score_candidate(
     evidence = _evidence(keyword_hits, stack_hits, user_hits, topic_hits, text_hits)
     avoid_reasons = [f"matches exclusion: {hit}" for hit in exclusion_hits]
     recommendation = _recommend(score, candidate, evidence, avoid_reasons)
+    evidence_records = _evidence_records(candidate)
     return ScoredCandidate.from_candidate(
         candidate,
         similarity_score=score,
         recommendation=recommendation,
         evidence=evidence,
+        evidence_records=evidence_records,
         avoid_reasons=avoid_reasons,
     )
+
+
+def _evidence_records(candidate: CandidateRepo) -> list[dict[str, str]]:
+    return [
+        {
+            "category": "license",
+            "status": "known" if candidate.license else "unknown",
+            "source": "candidate_metadata",
+            "detail": candidate.license or "missing license metadata",
+        },
+        {
+            "category": "maintenance",
+            "status": "known" if candidate.last_update else "unknown",
+            "source": "candidate_metadata",
+            "detail": candidate.last_update or "missing update metadata",
+        },
+        {
+            "category": "primary_source",
+            "status": "known" if candidate.url else "unknown",
+            "source": "candidate_metadata",
+            "detail": candidate.url or "missing canonical URL",
+        },
+        {
+            "category": "integration",
+            "status": "unknown",
+            "source": "manual_verification_required",
+            "detail": "integration cost and API compatibility are not automatically verified",
+        },
+        {
+            "category": "pricing_security",
+            "status": "unknown",
+            "source": "manual_verification_required",
+            "detail": "pricing, data handling, and security posture are not automatically verified",
+        },
+    ]
 
 
 def _recommend(
@@ -290,19 +343,12 @@ def _recommend(
     evidence: list[str],
     avoid_reasons: list[str],
 ) -> str:
-    if avoid_reasons and score < 0.55:
-        return "Avoid"
-    if score >= 0.82 and _permissive_license(candidate.license):
-        return "Adopt"
-    if score >= 0.70 and _permissive_license(candidate.license):
-        return "Fork"
-    if score >= 0.58 and _permissive_license(candidate.license):
-        return "Integrate"
-    if score >= 0.50:
-        return "Borrow"
-    if score >= 0.20 and evidence:
-        return "Monitor"
-    return "Ignore"
+    return candidate_disposition(
+        score,
+        permissive_license=_permissive_license(candidate.license),
+        has_evidence=bool(evidence),
+        has_low_score_avoid_reason=bool(avoid_reasons and score < 0.55),
+    )
 
 
 def _score_weights(overrides: dict[str, float] | None) -> dict[str, float]:
@@ -321,7 +367,7 @@ def _score_weights(overrides: dict[str, float] | None) -> dict[str, float]:
     return weights
 
 
-def _matrix_row(brief: ProjectBrief, candidate: ScoredCandidate) -> dict[str, object]:
+def _matrix_row(brief: NormalizedBrief, candidate: ScoredCandidate) -> dict[str, object]:
     text = _candidate_text(candidate)
     return {
         "candidate": candidate.name,
@@ -383,7 +429,7 @@ def _is_stale(last_update: str, generated_at: datetime | None) -> bool:
 
 
 def _suggested_updates(
-    brief: ProjectBrief,
+    brief: NormalizedBrief,
     candidates: list[ScoredCandidate],
     decision: DecisionSummary,
 ) -> list[str]:
@@ -422,6 +468,17 @@ def _read_json(path: str | Path) -> object:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def _dedupe(values: list[str]) -> list[str]:
+    result: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        normalized = value.lower()
+        if normalized not in seen:
+            result.append(value)
+            seen.add(normalized)
+    return result
+
+
 def _name_from_url(url: str) -> str:
     parsed = urlparse(url)
     parts = [part for part in parsed.path.split("/") if part]
@@ -437,12 +494,21 @@ def _candidate_text(candidate: CandidateRepo) -> str:
 def _text_fields(candidate: CandidateRepo) -> list[str]:
     return [
         candidate.name,
+        candidate.kind,
         candidate.description,
         candidate.language,
         candidate.license,
         candidate.readme_summary,
         *candidate.topics,
+        *candidate.attributes.values(),
     ]
+
+
+def _kind_from_url(url: str) -> str:
+    parsed = urlparse(url)
+    if parsed.netloc.endswith("github.com"):
+        return "repo"
+    return "web"
 
 
 def _phrase_hits(needles: list[str], haystack: str) -> list[str]:
@@ -466,12 +532,24 @@ def _ratio(hits: list[str], values: list[str]) -> float:
 def _tokens(values: Iterable[str]) -> set[str]:
     tokens: set[str] = set()
     for value in values:
-        tokens.update(_stem_token(token) for token in re.findall(r"[a-z0-9]+", value.lower()))
-    return {token for token in tokens if len(token) > 2 and token not in STOPWORDS}
+        for token in re.findall(r"[a-z0-9]+", value.lower()):
+            tokens.add(_stem_token(token))
+        for block in re.findall(r"[\u3400-\u9fff]+", value):
+            tokens.add(block)
+            tokens.update(block[index : index + 2] for index in range(len(block) - 1))
+    return {
+        token
+        for token in tokens
+        if (len(token) > 2 or _contains_cjk(token)) and token not in STOPWORDS
+    }
 
 
 def _normalize(value: str) -> str:
-    return " ".join(re.findall(r"[a-z0-9]+", value.lower()))
+    return " ".join(re.findall(r"[a-z0-9]+|[\u3400-\u9fff]+", value.lower()))
+
+
+def _contains_cjk(value: str) -> bool:
+    return bool(re.search(r"[\u3400-\u9fff]", value))
 
 
 def _permissive_license(license_name: str) -> bool:
