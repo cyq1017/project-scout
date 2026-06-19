@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Iterable
@@ -11,6 +12,7 @@ from project_scout.models import (
     CandidateRepo,
     CoverageSummary,
     DecisionSummary,
+    DifferentiationSummary,
     DiscoveryBrief,
     NormalizedBrief,
     ProjectBrief,
@@ -113,6 +115,7 @@ def build_report(
     log_entries = _search_log_entries(search_log)
     coverage = _coverage_summary(log_entries, normalized_brief, scored)
     decision = decision_summary(scored, log_entries, coverage)
+    differentiation = _differentiation_summary(normalized_brief, scored, decision)
     risks = _risks(scored, generated_at=generated)
     suggested_updates = _suggested_updates(normalized_brief, scored, decision)
     top = decision.recommendation
@@ -122,12 +125,146 @@ def build_report(
         summary=ReportSummary(candidate_count=len(scored), top_recommendation=top),
         decision=decision,
         coverage=coverage,
+        differentiation=differentiation,
         search_log=log_entries,
         candidates=scored,
         overlap_matrix=matrix,
         recommendations=recommendations,
         risks=risks,
         suggested_updates=suggested_updates,
+    )
+
+
+def _differentiation_summary(
+    brief: NormalizedBrief,
+    candidates: list[ScoredCandidate],
+    decision: DecisionSummary,
+) -> DifferentiationSummary:
+    commodity_features = _commodity_features(candidates)
+    return DifferentiationSummary(
+        similarity_clusters=_similarity_clusters(candidates),
+        commodity_features=commodity_features,
+        unique_combination=_unique_combination(brief, candidates),
+        defensible_positioning=_defensible_positioning(brief, candidates, decision),
+        claims_to_avoid=_claims_to_avoid(brief, commodity_features),
+        borrow_integrate_compete_guidance=_borrow_integrate_compete_guidance(candidates),
+        readme_positioning_draft=_readme_positioning_draft(brief),
+    )
+
+
+def _similarity_clusters(candidates: list[ScoredCandidate]) -> list[dict[str, object]]:
+    clusters: dict[str, list[ScoredCandidate]] = {}
+    for candidate in candidates:
+        label = str(candidate.attributes.get("layer") or "").strip()
+        if not label:
+            if candidate.similarity_score >= 0.58:
+                label = "High similarity"
+            elif candidate.similarity_score >= 0.34:
+                label = "Close adjacent"
+            elif candidate.similarity_score >= 0.20:
+                label = "Broad adjacent"
+            else:
+                label = "Low relevance"
+        clusters.setdefault(label, []).append(candidate)
+    rows = []
+    for label, grouped in clusters.items():
+        rows.append(
+            {
+                "label": label,
+                "candidates": [candidate.name for candidate in grouped[:6]],
+                "highest_score": max(candidate.similarity_score for candidate in grouped),
+            }
+        )
+    return rows
+
+
+def _commodity_features(candidates: list[ScoredCandidate]) -> list[str]:
+    counts: Counter[str] = Counter()
+    for candidate in candidates:
+        counts.update(feature for feature in candidate.evidence if _useful_positioning_feature(feature))
+    features = [
+        feature
+        for feature, _count in sorted(counts.items(), key=lambda item: (-item[1], item[0]))
+    ]
+    return features[:8]
+
+
+def _useful_positioning_feature(feature: str) -> bool:
+    return " " in feature or _contains_cjk(feature) or len(feature) > 3
+
+
+def _unique_combination(
+    brief: NormalizedBrief,
+    candidates: list[ScoredCandidate],
+) -> list[str]:
+    core_requirements = brief.must_have or [*brief.keywords[:4], *brief.tech_stack[:2]]
+    if not core_requirements:
+        return ["Unique combination is unknown until the brief records core requirements."]
+    joined = "; ".join(core_requirements[:5])
+    if not candidates:
+        return [f"No candidates were available to test the core combination: {joined}."]
+    top_score = candidates[0].similarity_score
+    if top_score < 0.58:
+        return [f"No recorded candidate combines all core requirements: {joined}."]
+    return [f"Differentiate through the combined workflow, not a single feature: {joined}."]
+
+
+def _defensible_positioning(
+    brief: NormalizedBrief,
+    candidates: list[ScoredCandidate],
+    decision: DecisionSummary,
+) -> list[str]:
+    rows = [
+        "Frame differentiation as a combination claim, not a uniqueness claim.",
+        (
+            f"Position {brief.name} around the {brief.target_type} workflow it enables; "
+            "compare directly against the closest recorded candidates."
+        ),
+    ]
+    if decision.recommendation == "Research More":
+        rows.append("Keep positioning provisional until required sources and primary evidence are reviewed.")
+    if candidates:
+        rows.append(f"Use {candidates[0].name} as the first comparison anchor.")
+    return rows
+
+
+def _claims_to_avoid(brief: NormalizedBrief, commodity_features: list[str]) -> list[str]:
+    claims = [f"Do not position around {item}." for item in brief.exclusions]
+    claims.extend(
+        f"Do not claim {feature} is unique without primary-source evidence."
+        for feature in _claimworthy_features(commodity_features)[:3]
+    )
+    if not claims:
+        claims.append("Do not claim exhaustive discovery from recorded sources alone.")
+    return claims
+
+
+def _claimworthy_features(features: list[str]) -> list[str]:
+    phrase_features = [feature for feature in features if " " in feature or _contains_cjk(feature)]
+    return phrase_features or features
+
+
+def _borrow_integrate_compete_guidance(candidates: list[ScoredCandidate]) -> list[str]:
+    if not candidates:
+        return ["Gather candidates before deciding what to borrow, integrate, or compete against."]
+    rows = []
+    for candidate in candidates[:5]:
+        evidence = ", ".join(candidate.evidence[:4]) if candidate.evidence else candidate.kind
+        rows.append(f"Borrow from {candidate.name}: inspect {evidence} before claiming differentiation.")
+    return rows
+
+
+def _readme_positioning_draft(brief: NormalizedBrief) -> str:
+    target_users = ", ".join(brief.target_users[:2]) if brief.target_users else "target users"
+    if "existing cli coding agents" in brief.goal.lower():
+        target_users = "existing CLI coding agents"
+    core_requirements = brief.must_have or brief.keywords[:3]
+    core = ", ".join(core_requirements[:3]) if core_requirements else "the recorded workflow"
+    exclusion = f" It is not {brief.exclusions[0]}." if brief.exclusions else ""
+    return (
+        f"{brief.name} is a {brief.target_type} for {target_users} that combines {core}. "
+        "It should be evaluated against recorded prior art and does not claim exhaustive discovery."
+        f"{exclusion}"
     )
 
 

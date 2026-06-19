@@ -34,6 +34,9 @@ coverage is partial, candidate evidence is weak, or live adapters fail.
   maintenance, primary-source URL, integration, and pricing/security.
 - Report-level adoption readiness and candidate disposition gates are split into
   `project_scout.recommendation`.
+- Reports include a deterministic differentiation map with commodity features,
+  unique combination, claims to avoid, comparison guidance, and a conservative
+  README positioning draft.
 
 ## Later Slices
 

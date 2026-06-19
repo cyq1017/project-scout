@@ -51,6 +51,7 @@
 - [x] Add Unicode/CJK-aware relevance matching.
 - [x] Add structured evidence records for license, maintenance, integration, pricing, and security.
 - [x] Split report-level adoption readiness gates out of core orchestration.
+- [x] Add deterministic differentiation map and README positioning draft.
 
 ## Non-Goals
 

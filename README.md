@@ -8,7 +8,7 @@ The current CLI MVP focuses on a narrow workflow:
 2. Import candidate repositories and skills from GitHub search, skills registry search, fixture data, or manual URL lists.
 3. Normalize candidate metadata while preserving candidate `kind` and source-specific attributes.
 4. Score overlap with deterministic rules.
-5. Write a Markdown prior-art map and a machine-readable JSON report with search log, coverage confidence, decision confidence, and blind spots.
+5. Write a Markdown prior-art map and a machine-readable JSON report with search log, coverage confidence, decision confidence, blind spots, and a differentiation map.
 
 It does not log in, store tokens, create issues or pull requests, claim
 exhaustive discovery, or make final decisions for the user.
@@ -109,6 +109,12 @@ Each scored candidate also includes structured `evidence_records` for license,
 maintenance, primary-source URL, integration, and pricing/security. Records can
 be `known` or `unknown`; unknown adoption evidence caps decision confidence and
 must be resolved by manual primary-source review before relying on the report.
+
+Reports include a deterministic differentiation map. It separates commodity
+features from the proposed unique combination, lists claims to avoid, groups
+similar candidates, gives borrow/integrate/compete guidance, and drafts a
+conservative README positioning paragraph. This is positioning support, not a
+claim that the idea is unique.
 
 ## Sample Reports
 
@@ -213,6 +219,10 @@ confidence and unresolved adoption evidence.
 Implementation-wise, candidate relevance still comes from deterministic scoring,
 while candidate disposition and report-level decision gates live in
 `project_scout.recommendation`.
+
+The differentiation map is also deterministic. It uses the brief, candidate
+evidence, exclusions, and candidate metadata; it does not call an LLM or infer
+unstated market facts.
 
 ## Run Tests
 

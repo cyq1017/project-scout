@@ -110,6 +110,8 @@ def render_markdown(report: ScoutReport) -> str:
     lines.extend(_recommendation_lines(report))
     lines.extend(["", "## Coverage Confidence And Blind Spots", ""])
     lines.extend(_coverage_lines(report))
+    lines.extend(["", "## Differentiation Map", ""])
+    lines.extend(_differentiation_lines(report))
     lines.extend(["", "## Differentiation Is Not Enough: Useful Positioning", ""])
     lines.extend(_positioning_lines(report))
     lines.extend(["", "## Risks And Unknowns", ""])
@@ -157,6 +159,30 @@ def _coverage_lines(report: ScoutReport) -> list[str]:
     ]
     lines.extend([f"- Blind spot: {_inline_text(item)}" for item in report.coverage.blind_spots])
     return lines
+
+
+def _differentiation_lines(report: ScoutReport) -> list[str]:
+    differentiation = report.differentiation
+    lines: list[str] = []
+    for cluster in differentiation.similarity_clusters:
+        candidates = ", ".join(str(item) for item in cluster["candidates"])
+        lines.append(
+            f"- Similarity cluster: {_inline_text(cluster['label'])}: {_inline_text(candidates)}."
+        )
+    for feature in differentiation.commodity_features:
+        lines.append(f"- Commodity feature: {_inline_text(feature)}")
+    for item in differentiation.unique_combination:
+        lines.append(f"- Unique combination: {_inline_text(item)}")
+    for item in differentiation.defensible_positioning:
+        lines.append(f"- Defensible positioning: {_inline_text(item)}")
+    for item in differentiation.claims_to_avoid:
+        lines.append(f"- Claim to avoid: {_inline_text(item)}")
+    for item in differentiation.borrow_integrate_compete_guidance:
+        lines.append(f"- Borrow / integrate / compete: {_inline_text(item)}")
+    lines.append(
+        f"- README positioning draft: {_inline_text(differentiation.readme_positioning_draft)}"
+    )
+    return lines or ["- Differentiation is unknown until comparable projects are reviewed."]
 
 
 def _positioning_lines(report: ScoutReport) -> list[str]:

@@ -138,6 +138,64 @@ def test_build_report_includes_decision_coverage_and_search_log():
     assert data["search_log"][0]["used_count"] == 3
     assert data["coverage"]["source_requirements"]
     assert data["candidates"][0]["evidence_records"]
+    assert data["differentiation"]["readme_positioning_draft"]
+
+
+def test_build_report_adds_differentiation_map():
+    brief = DiscoveryBrief(
+        name="AgentUX",
+        target_type="product",
+        intent="build",
+        goal=(
+            "Build a selection-aware terminal UX layer for existing CLI coding agents. "
+            "Users select terminal output and add it to Claude Code or Codex CLI."
+        ),
+        keywords=["terminal selection", "Claude Code", "Codex CLI", "branch conversation"],
+        users_or_consumers=["CLI coding agent users"],
+        ecosystems=["iTerm2", "terminal"],
+        must_have=[
+            "capture terminal output selection",
+            "inject into existing CLI coding agent session",
+            "branch discussion",
+        ],
+        nice_to_have=["iTerm2 Python API"],
+        exclusions=["generic AI terminal only"],
+        known_candidates=[],
+    )
+    candidates = [
+        CandidateRepo(
+            name="VS Code terminalSelection",
+            url="https://example.com/vscode-terminal-selection",
+            kind="ide_feature",
+            description="Adds selected terminal text to an AI chat context.",
+            topics=["terminal selection", "AI chat", "context"],
+            attributes={"layer": "B Close adjacent"},
+        ),
+        CandidateRepo(
+            name="Warp AI",
+            url="https://example.com/warp-ai",
+            kind="product",
+            description="AI terminal that explains command output.",
+            topics=["AI terminal", "terminal output"],
+            attributes={"layer": "C Broad adjacent"},
+        ),
+    ]
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-06-20T00:00:00+08:00",
+    )
+    data = report.to_dict()
+    differentiation = data["differentiation"]
+
+    assert "terminal selection" in differentiation["commodity_features"]
+    assert any("capture terminal output selection" in item for item in differentiation["unique_combination"])
+    assert any("combination claim" in item for item in differentiation["defensible_positioning"])
+    assert any("generic AI terminal only" in item for item in differentiation["claims_to_avoid"])
+    assert any("VS Code terminalSelection" in item for item in differentiation["borrow_integrate_compete_guidance"])
+    assert differentiation["similarity_clusters"][0]["label"] == "B Close adjacent"
+    assert "existing CLI coding agents" in differentiation["readme_positioning_draft"]
 
 
 def test_unknown_adoption_evidence_caps_decision_confidence():
@@ -497,6 +555,7 @@ def test_render_markdown_contains_required_sections_and_recommendation():
         "What To Avoid",
         "Recommendation And Confidence",
         "Coverage Confidence And Blind Spots",
+        "Differentiation Map",
         "Differentiation Is Not Enough: Useful Positioning",
         "Risks And Unknowns",
         "Suggested ADR / Backlog Updates",
@@ -504,6 +563,35 @@ def test_render_markdown_contains_required_sections_and_recommendation():
         assert f"## {heading}" in markdown
     assert "sample/prior-art-cli" in markdown
     assert "Recommendation" in markdown
+
+
+def test_render_markdown_includes_differentiation_map():
+    brief = ProjectBrief(
+        name="terminal-layer",
+        goal="Create a terminal selection layer for existing CLI coding agents.",
+        keywords=["terminal selection", "CLI coding agents"],
+        target_users=["developers"],
+        tech_stack=["iTerm2"],
+        exclusions=["generic AI terminal"],
+    )
+    candidates = [
+        CandidateRepo(
+            name="close-tool",
+            url="https://example.com/close-tool",
+            kind="plugin",
+            description="Terminal selection helper for AI chat.",
+            topics=["terminal selection", "AI chat"],
+            attributes={"layer": "B Close adjacent"},
+        )
+    ]
+    report = build_report(brief, candidates, generated_at="2026-06-20T00:00:00+08:00")
+
+    markdown = render_markdown(report)
+
+    assert "## Differentiation Map" in markdown
+    assert "- Commodity feature: terminal selection" in markdown
+    assert "- Claim to avoid: Do not position around generic AI terminal." in markdown
+    assert "- README positioning draft:" in markdown
 
 
 def test_render_markdown_escapes_table_and_list_content():

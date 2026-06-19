@@ -16,9 +16,10 @@ Required sections:
 4. What To Borrow
 5. What To Avoid
 6. Build / Adopt / Fork / Plugin Recommendation
-7. Differentiation Is Not Enough: Useful Positioning
-8. Risks And Unknowns
-9. Suggested ADR / Backlog Updates
+7. Differentiation Map
+8. Differentiation Is Not Enough: Useful Positioning
+9. Risks And Unknowns
+10. Suggested ADR / Backlog Updates
 
 ## JSON Report
 
@@ -38,6 +39,18 @@ Top-level fields:
     "candidate_count": 0,
     "top_recommendation": "Borrow"
   },
+  "decision": {},
+  "coverage": {},
+  "differentiation": {
+    "similarity_clusters": [],
+    "commodity_features": [],
+    "unique_combination": [],
+    "defensible_positioning": [],
+    "claims_to_avoid": [],
+    "borrow_integrate_compete_guidance": [],
+    "readme_positioning_draft": ""
+  },
+  "search_log": [],
   "candidates": [],
   "overlap_matrix": [],
   "recommendations": [],
@@ -46,4 +59,11 @@ Top-level fields:
 }
 ```
 
-Candidate entries include normalized repository metadata, scoring evidence, and a recommendation. Scores are deterministic floats from `0.0` to `1.0`.
+Candidate entries include normalized candidate metadata, scoring evidence,
+structured evidence records, and a recommendation. Scores are deterministic
+floats from `0.0` to `1.0`.
+
+The `differentiation` object is deterministic positioning support. It separates
+features already visible in candidates from the proposed unique combination,
+records claims to avoid, and drafts conservative README language. It is not a
+claim that the project is unique or that the recorded search was exhaustive.

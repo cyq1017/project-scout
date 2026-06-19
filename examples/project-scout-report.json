@@ -34,14 +34,16 @@
   },
   "decision": {
     "recommendation": "Fork",
-    "confidence": "High",
+    "confidence": "Medium",
     "rationale": [
       "sample/prior-art-cli has the strongest current score (0.760).",
       "Recommendation is based on evidence: competitive analysis, github search, prior art, cli, json, markdown, python, analysis, art, competitive, github, prior."
     ],
     "confidence_reasons": [
       "3 candidates compared.",
-      "Metadata is deterministic but may need manual source verification."
+      "Metadata is deterministic but may need manual source verification.",
+      "Coverage confidence caps decision confidence at Medium.",
+      "One or more adoption evidence records are still unknown."
     ]
   },
   "coverage": {
@@ -58,9 +60,81 @@
     ],
     "blind_spots": [
       "Web and community sources were not covered unless supplied manually.",
-      "Skills registry was not covered unless supplied manually."
+      "GitHub repository search was not covered unless supplied manually.",
+      "Skills registry was not covered unless supplied manually.",
+      "Required source not satisfied: github.",
+      "Required source not satisfied: web."
     ],
-    "stop_reason": "Compared available candidates after recorded source collection."
+    "stop_reason": "Compared available candidates after recorded source collection.",
+    "source_requirements": [
+      {
+        "source": "manual",
+        "required": true
+      },
+      {
+        "source": "github",
+        "required": true
+      },
+      {
+        "source": "web",
+        "required": true
+      },
+      {
+        "source": "skills",
+        "required": false
+      }
+    ]
+  },
+  "differentiation": {
+    "similarity_clusters": [
+      {
+        "label": "High similarity",
+        "candidates": [
+          "sample/prior-art-cli"
+        ],
+        "highest_score": 0.76
+      },
+      {
+        "label": "Low relevance",
+        "candidates": [
+          "ecosyste-ms/repos",
+          "octobox/octobox"
+        ],
+        "highest_score": 0.119
+      }
+    ],
+    "commodity_features": [
+      "github",
+      "analysis",
+      "competitive",
+      "competitive analysis",
+      "github api",
+      "github search",
+      "json",
+      "markdown"
+    ],
+    "unique_combination": [
+      "Differentiate through the combined workflow, not a single feature: prior art; competitive analysis; github search; roadmap; python."
+    ],
+    "defensible_positioning": [
+      "Frame differentiation as a combination claim, not a uniqueness claim.",
+      "Position project-scout around the project workflow it enables; compare directly against the closest recorded candidates.",
+      "Use sample/prior-art-cli as the first comparison anchor."
+    ],
+    "claims_to_avoid": [
+      "Do not position around crawler platform.",
+      "Do not position around stored tokens.",
+      "Do not position around autonomous agent.",
+      "Do not claim competitive analysis is unique without primary-source evidence.",
+      "Do not claim github api is unique without primary-source evidence.",
+      "Do not claim github search is unique without primary-source evidence."
+    ],
+    "borrow_integrate_compete_guidance": [
+      "Borrow from sample/prior-art-cli: inspect competitive analysis, github search, prior art, cli before claiming differentiation.",
+      "Borrow from ecosyste-ms/repos: inspect github api, github before claiming differentiation.",
+      "Borrow from octobox/octobox: inspect github before claiming differentiation."
+    ],
+    "readme_positioning_draft": "project-scout is a project for staff engineers, technical founders that combines prior art, competitive analysis, github search. It should be evaluated against recorded prior art and does not claim exhaustive discovery. It is not crawler platform."
   },
   "search_log": [
     {
@@ -76,6 +150,7 @@
     {
       "name": "sample/prior-art-cli",
       "url": "https://github.com/sample/prior-art-cli",
+      "kind": "repo",
       "stars": 128,
       "last_update": "2026-05-01T09:15:00Z",
       "description": "Python CLI that finds similar projects and writes prior-art Markdown reports.",
@@ -89,6 +164,7 @@
       "license": "MIT",
       "language": "Python",
       "readme_summary": "Takes a project brief, compares GitHub repositories, and exports JSON and Markdown.",
+      "attributes": {},
       "similarity_score": 0.76,
       "recommendation": "Fork",
       "evidence": [
@@ -105,11 +181,44 @@
         "github",
         "prior"
       ],
+      "evidence_records": [
+        {
+          "category": "license",
+          "status": "known",
+          "source": "candidate_metadata",
+          "detail": "MIT"
+        },
+        {
+          "category": "maintenance",
+          "status": "known",
+          "source": "candidate_metadata",
+          "detail": "2026-05-01T09:15:00Z"
+        },
+        {
+          "category": "primary_source",
+          "status": "known",
+          "source": "candidate_metadata",
+          "detail": "https://github.com/sample/prior-art-cli"
+        },
+        {
+          "category": "integration",
+          "status": "unknown",
+          "source": "manual_verification_required",
+          "detail": "integration cost and API compatibility are not automatically verified"
+        },
+        {
+          "category": "pricing_security",
+          "status": "unknown",
+          "source": "manual_verification_required",
+          "detail": "pricing, data handling, and security posture are not automatically verified"
+        }
+      ],
       "avoid_reasons": []
     },
     {
       "name": "ecosyste-ms/repos",
       "url": "https://github.com/ecosyste-ms/repos",
+      "kind": "repo",
       "stars": 2100,
       "last_update": "2026-04-12T10:30:00Z",
       "description": "Metadata, dependency and repository intelligence for open source ecosystems.",
@@ -122,17 +231,51 @@
       "license": "AGPL-3.0",
       "language": "Ruby",
       "readme_summary": "Indexes repository metadata and provides APIs for understanding open source ecosystems.",
+      "attributes": {},
       "similarity_score": 0.119,
       "recommendation": "Ignore",
       "evidence": [
         "github api",
         "github"
       ],
+      "evidence_records": [
+        {
+          "category": "license",
+          "status": "known",
+          "source": "candidate_metadata",
+          "detail": "AGPL-3.0"
+        },
+        {
+          "category": "maintenance",
+          "status": "known",
+          "source": "candidate_metadata",
+          "detail": "2026-04-12T10:30:00Z"
+        },
+        {
+          "category": "primary_source",
+          "status": "known",
+          "source": "candidate_metadata",
+          "detail": "https://github.com/ecosyste-ms/repos"
+        },
+        {
+          "category": "integration",
+          "status": "unknown",
+          "source": "manual_verification_required",
+          "detail": "integration cost and API compatibility are not automatically verified"
+        },
+        {
+          "category": "pricing_security",
+          "status": "unknown",
+          "source": "manual_verification_required",
+          "detail": "pricing, data handling, and security posture are not automatically verified"
+        }
+      ],
       "avoid_reasons": []
     },
     {
       "name": "octobox/octobox",
       "url": "https://github.com/octobox/octobox",
+      "kind": "repo",
       "stars": 4700,
       "last_update": "2025-12-01T08:00:00Z",
       "description": "Manage GitHub notifications efficiently.",
@@ -144,10 +287,43 @@
       "license": "AGPL-3.0",
       "language": "Ruby",
       "readme_summary": "A web app for triaging GitHub notifications and inbox workflows.",
+      "attributes": {},
       "similarity_score": 0.069,
       "recommendation": "Ignore",
       "evidence": [
         "github"
+      ],
+      "evidence_records": [
+        {
+          "category": "license",
+          "status": "known",
+          "source": "candidate_metadata",
+          "detail": "AGPL-3.0"
+        },
+        {
+          "category": "maintenance",
+          "status": "known",
+          "source": "candidate_metadata",
+          "detail": "2025-12-01T08:00:00Z"
+        },
+        {
+          "category": "primary_source",
+          "status": "known",
+          "source": "candidate_metadata",
+          "detail": "https://github.com/octobox/octobox"
+        },
+        {
+          "category": "integration",
+          "status": "unknown",
+          "source": "manual_verification_required",
+          "detail": "integration cost and API compatibility are not automatically verified"
+        },
+        {
+          "category": "pricing_security",
+          "status": "unknown",
+          "source": "manual_verification_required",
+          "detail": "pricing, data handling, and security posture are not automatically verified"
+        }
       ],
       "avoid_reasons": []
     }

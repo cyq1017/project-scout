@@ -217,12 +217,27 @@ class CoverageSummary:
 
 
 @dataclass(frozen=True)
+class DifferentiationSummary:
+    similarity_clusters: list[dict[str, Any]]
+    commodity_features: list[str]
+    unique_combination: list[str]
+    defensible_positioning: list[str]
+    claims_to_avoid: list[str]
+    borrow_integrate_compete_guidance: list[str]
+    readme_positioning_draft: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class ScoutReport:
     brief: ProjectBrief | DiscoveryBrief
     generated_at: str
     summary: ReportSummary
     decision: DecisionSummary
     coverage: CoverageSummary
+    differentiation: DifferentiationSummary
     search_log: list[SearchLogEntry]
     candidates: list[ScoredCandidate]
     overlap_matrix: list[dict[str, Any]]
@@ -237,6 +252,7 @@ class ScoutReport:
             "summary": self.summary.to_dict(),
             "decision": self.decision.to_dict(),
             "coverage": self.coverage.to_dict(),
+            "differentiation": self.differentiation.to_dict(),
             "search_log": [entry.to_dict() for entry in self.search_log],
             "candidates": [candidate.to_dict() for candidate in self.candidates],
             "overlap_matrix": self.overlap_matrix,

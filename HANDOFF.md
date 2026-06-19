@@ -110,6 +110,10 @@ Trustworthiness hardening status:
 - Candidate disposition and report-level decision gates live in
   `project_scout.recommendation`; keep scoring deterministic and separate from
   adoption readiness.
+- Reports include a deterministic `differentiation` map with similarity
+  clusters, commodity features, unique combination, defensible positioning,
+  claims to avoid, borrow/integrate/compete guidance, and a conservative README
+  positioning draft.
 
 The larger GPT Pro architecture review is local-only unless intentionally
 curated into repo docs. The current executable roadmap is
