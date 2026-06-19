@@ -52,6 +52,7 @@
 - [x] Add structured evidence records for license, maintenance, integration, pricing, and security.
 - [x] Split report-level adoption readiness gates out of core orchestration.
 - [x] Add deterministic differentiation map and README positioning draft.
+- [x] Add first-page positioning brief with closest alternatives and candidate roles.
 
 ## Non-Goals
 

@@ -141,15 +141,113 @@ def _differentiation_summary(
     decision: DecisionSummary,
 ) -> DifferentiationSummary:
     commodity_features = _commodity_features(candidates)
+    unique_combination = _unique_combination(brief, candidates)
+    candidate_roles = _candidate_roles(candidates)
     return DifferentiationSummary(
+        positioning_brief=_positioning_brief(brief, candidates, decision, unique_combination),
+        candidate_roles=candidate_roles,
         similarity_clusters=_similarity_clusters(candidates),
         commodity_features=commodity_features,
-        unique_combination=_unique_combination(brief, candidates),
+        unique_combination=unique_combination,
         defensible_positioning=_defensible_positioning(brief, candidates, decision),
         claims_to_avoid=_claims_to_avoid(brief, commodity_features),
-        borrow_integrate_compete_guidance=_borrow_integrate_compete_guidance(candidates),
+        borrow_integrate_compete_guidance=_borrow_integrate_compete_guidance(candidates, candidate_roles),
         readme_positioning_draft=_readme_positioning_draft(brief),
     )
+
+
+def _positioning_brief(
+    brief: NormalizedBrief,
+    candidates: list[ScoredCandidate],
+    decision: DecisionSummary,
+    unique_combination: list[str],
+) -> dict[str, object]:
+    closest = _closest_alternatives(candidates)
+    return {
+        "verdict": _positioning_verdict(candidates),
+        "closest_alternatives": closest,
+        "differentiation_claim": unique_combination[0],
+        "recommended_positioning": _readme_positioning_draft(brief),
+        "decision": decision.recommendation,
+        "next_validation_steps": _next_validation_steps(brief, candidates, decision),
+    }
+
+
+def _positioning_verdict(candidates: list[ScoredCandidate]) -> str:
+    if not candidates:
+        return "No candidates recorded"
+    top = candidates[0]
+    if top.similarity_score >= 0.82:
+        return "Direct match likely"
+    if top.similarity_score >= 0.58:
+        return "Strong adjacent match recorded"
+    return "No direct match recorded"
+
+
+def _closest_alternatives(candidates: list[ScoredCandidate]) -> list[dict[str, object]]:
+    return [
+        {
+            "name": candidate.name,
+            "url": candidate.url,
+            "kind": candidate.kind,
+            "score": candidate.similarity_score,
+            "role": _candidate_role(candidate),
+            "why_it_matters": _candidate_role_reason(candidate),
+        }
+        for candidate in candidates[:3]
+    ]
+
+
+def _candidate_roles(candidates: list[ScoredCandidate]) -> list[dict[str, object]]:
+    return [
+        {
+            "candidate": candidate.name,
+            "role": _candidate_role(candidate),
+            "reason": _candidate_role_reason(candidate),
+        }
+        for candidate in candidates[:8]
+    ]
+
+
+def _candidate_role(candidate: ScoredCandidate) -> str:
+    explicit = str(candidate.attributes.get("role") or "").strip()
+    if explicit:
+        return explicit
+    if candidate.similarity_score >= 0.82:
+        return "competitor"
+    if candidate.kind in {"api", "plugin", "jetbrains_plugin", "raycast_extension", "ide_feature", "macos_app"}:
+        return "integration target" if candidate.similarity_score >= 0.20 else "prior art"
+    if candidate.kind in {"product", "terminal_feature"} and candidate.similarity_score >= 0.58:
+        return "competitor"
+    return "prior art"
+
+
+def _candidate_role_reason(candidate: ScoredCandidate) -> str:
+    role = _candidate_role(candidate)
+    evidence = ", ".join(candidate.evidence[:3]) if candidate.evidence else candidate.kind
+    if role == "competitor":
+        return f"High similarity around {evidence}; compare positioning and adoption barriers directly."
+    if role == "integration target":
+        return f"Useful adjacent surface around {evidence}; inspect whether it can be integrated or borrowed from."
+    return f"Useful prior-art signal around {evidence}; cite it when narrowing claims."
+
+
+def _next_validation_steps(
+    brief: NormalizedBrief,
+    candidates: list[ScoredCandidate],
+    decision: DecisionSummary,
+) -> list[str]:
+    steps = [
+        "Verify source coverage against the required source profile before making a uniqueness claim.",
+        "Check primary docs for the closest alternatives before writing README positioning.",
+    ]
+    if candidates:
+        steps.append(f"Manually compare the workflow against {candidates[0].name}.")
+    if decision.recommendation == "Research More":
+        steps.append("Resolve blind spots before using Write New or direct adoption language.")
+    if brief.known_candidates:
+        steps.append("Confirm every known candidate appears in the candidate set or document why it was excluded.")
+    return steps
 
 
 def _similarity_clusters(candidates: list[ScoredCandidate]) -> list[dict[str, object]]:
@@ -244,13 +342,20 @@ def _claimworthy_features(features: list[str]) -> list[str]:
     return phrase_features or features
 
 
-def _borrow_integrate_compete_guidance(candidates: list[ScoredCandidate]) -> list[str]:
+def _borrow_integrate_compete_guidance(
+    candidates: list[ScoredCandidate],
+    candidate_roles: list[dict[str, object]],
+) -> list[str]:
     if not candidates:
         return ["Gather candidates before deciding what to borrow, integrate, or compete against."]
+    roles_by_name = {str(item["candidate"]): str(item["role"]) for item in candidate_roles}
     rows = []
     for candidate in candidates[:5]:
         evidence = ", ".join(candidate.evidence[:4]) if candidate.evidence else candidate.kind
-        rows.append(f"Borrow from {candidate.name}: inspect {evidence} before claiming differentiation.")
+        role = roles_by_name.get(candidate.name, "prior art")
+        rows.append(
+            f"Treat {candidate.name} as {role}: inspect {evidence} before claiming differentiation."
+        )
     return rows
 
 

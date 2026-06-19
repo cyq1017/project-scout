@@ -30,11 +30,19 @@ def render_markdown(report: ScoutReport) -> str:
             f"Coverage confidence: **{report.coverage.confidence}**."
         ),
         "",
-        "## Search Summary",
+        "## Positioning Brief",
         "",
-        "| Source | Query | Results | Used | Status | Notes |",
-        "| --- | --- | ---: | ---: | --- | --- |",
     ]
+    lines.extend(_positioning_brief_lines(report))
+    lines.extend(
+        [
+            "",
+            "## Search Summary",
+            "",
+            "| Source | Query | Results | Used | Status | Notes |",
+            "| --- | --- | ---: | ---: | --- | --- |",
+        ]
+    )
     for entry in report.search_log:
         lines.append(
             "| "
@@ -158,6 +166,30 @@ def _coverage_lines(report: ScoutReport) -> list[str]:
         f"- Stop reason: {_inline_text(report.coverage.stop_reason)}",
     ]
     lines.extend([f"- Blind spot: {_inline_text(item)}" for item in report.coverage.blind_spots])
+    return lines
+
+
+def _positioning_brief_lines(report: ScoutReport) -> list[str]:
+    brief = report.differentiation.positioning_brief
+    lines = [
+        f"- Verdict: **{_inline_text(brief['verdict'])}**.",
+        f"- Differentiation claim: {_inline_text(brief['differentiation_claim'])}",
+        f"- Recommended positioning: {_inline_text(brief['recommended_positioning'])}",
+    ]
+    for alternative in brief["closest_alternatives"]:
+        lines.append(
+            "- Closest alternative: "
+            f"{_inline_text(alternative['name'])} "
+            f"({_inline_text(alternative['kind'])}, score {float(alternative['score']):.3f}, "
+            f"{_inline_text(alternative['role'])})."
+        )
+    for role in report.differentiation.candidate_roles[:5]:
+        lines.append(
+            f"- Candidate role: {_inline_text(role['candidate'])} -> {_inline_text(role['role'])}: "
+            f"{_inline_text(role['reason'])}"
+        )
+    for step in brief["next_validation_steps"]:
+        lines.append(f"- Next validation: {_inline_text(step)}")
     return lines
 
 

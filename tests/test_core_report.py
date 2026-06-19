@@ -188,12 +188,21 @@ def test_build_report_adds_differentiation_map():
     )
     data = report.to_dict()
     differentiation = data["differentiation"]
+    brief_summary = differentiation["positioning_brief"]
 
+    assert brief_summary["verdict"] == "No direct match recorded"
+    assert brief_summary["closest_alternatives"][0]["name"] == "VS Code terminalSelection"
+    assert "capture terminal output selection" in brief_summary["differentiation_claim"]
+    assert any("source coverage" in item for item in brief_summary["next_validation_steps"])
     assert "terminal selection" in differentiation["commodity_features"]
     assert any("capture terminal output selection" in item for item in differentiation["unique_combination"])
     assert any("combination claim" in item for item in differentiation["defensible_positioning"])
     assert any("generic AI terminal only" in item for item in differentiation["claims_to_avoid"])
     assert any("VS Code terminalSelection" in item for item in differentiation["borrow_integrate_compete_guidance"])
+    assert {"candidate": "VS Code terminalSelection", "role": "integration target"} in [
+        {"candidate": item["candidate"], "role": item["role"]}
+        for item in differentiation["candidate_roles"]
+    ]
     assert differentiation["similarity_clusters"][0]["label"] == "B Close adjacent"
     assert "existing CLI coding agents" in differentiation["readme_positioning_draft"]
 
@@ -546,6 +555,7 @@ def test_render_markdown_contains_required_sections_and_recommendation():
 
     for heading in [
         "Executive Summary",
+        "Positioning Brief",
         "Search Summary",
         "Source Requirements",
         "Coverage Matrix",
@@ -588,6 +598,10 @@ def test_render_markdown_includes_differentiation_map():
 
     markdown = render_markdown(report)
 
+    assert "## Positioning Brief" in markdown
+    assert "- Verdict: **No direct match recorded**." in markdown
+    assert "- Closest alternative: close-tool" in markdown
+    assert "- Candidate role: close-tool -> integration target" in markdown
     assert "## Differentiation Map" in markdown
     assert "- Commodity feature: terminal selection" in markdown
     assert "- Claim to avoid: Do not position around generic AI terminal." in markdown

@@ -8,7 +8,7 @@ The current CLI MVP focuses on a narrow workflow:
 2. Import candidate repositories and skills from GitHub search, skills registry search, fixture data, or manual URL lists.
 3. Normalize candidate metadata while preserving candidate `kind` and source-specific attributes.
 4. Score overlap with deterministic rules.
-5. Write a Markdown prior-art map and a machine-readable JSON report with search log, coverage confidence, decision confidence, blind spots, and a differentiation map.
+5. Write a Markdown prior-art map and a machine-readable JSON report with a first-page positioning brief, search log, coverage confidence, decision confidence, blind spots, and a differentiation map.
 
 It does not log in, store tokens, create issues or pull requests, claim
 exhaustive discovery, or make final decisions for the user.
@@ -115,6 +115,11 @@ features from the proposed unique combination, lists claims to avoid, groups
 similar candidates, gives borrow/integrate/compete guidance, and drafts a
 conservative README positioning paragraph. This is positioning support, not a
 claim that the idea is unique.
+
+Markdown reports also include a first-page `Positioning Brief` so users do not
+have to interpret raw scoring tables first. It summarizes the verdict, closest
+alternatives, candidate roles, differentiation claim, recommended positioning,
+and next validation steps.
 
 ## Sample Reports
 

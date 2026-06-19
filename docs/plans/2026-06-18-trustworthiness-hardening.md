@@ -37,6 +37,9 @@ coverage is partial, candidate evidence is weak, or live adapters fail.
 - Reports include a deterministic differentiation map with commodity features,
   unique combination, claims to avoid, comparison guidance, and a conservative
   README positioning draft.
+- Reports include a first-page positioning brief with verdict, closest
+  alternatives, candidate roles, recommended positioning, and next validation
+  steps.
 
 ## Later Slices
 

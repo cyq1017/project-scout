@@ -218,6 +218,8 @@ class CoverageSummary:
 
 @dataclass(frozen=True)
 class DifferentiationSummary:
+    positioning_brief: dict[str, Any]
+    candidate_roles: list[dict[str, Any]]
     similarity_clusters: list[dict[str, Any]]
     commodity_features: list[str]
     unique_combination: list[str]

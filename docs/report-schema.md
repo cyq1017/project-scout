@@ -11,15 +11,20 @@ docs/research/YYYY-MM-prior-art-map.md
 Required sections:
 
 1. Executive Summary
-2. Similar Projects
-3. Overlap Matrix
-4. What To Borrow
-5. What To Avoid
-6. Build / Adopt / Fork / Plugin Recommendation
-7. Differentiation Map
-8. Differentiation Is Not Enough: Useful Positioning
-9. Risks And Unknowns
-10. Suggested ADR / Backlog Updates
+2. Positioning Brief
+3. Search Summary
+4. Source Requirements
+5. Coverage Matrix
+6. Similar Projects
+7. Overlap Matrix
+8. What To Borrow
+9. What To Avoid
+10. Build / Adopt / Fork / Plugin Recommendation
+11. Coverage Confidence And Blind Spots
+12. Differentiation Map
+13. Differentiation Is Not Enough: Useful Positioning
+14. Risks And Unknowns
+15. Suggested ADR / Backlog Updates
 
 ## JSON Report
 
@@ -42,6 +47,15 @@ Top-level fields:
   "decision": {},
   "coverage": {},
   "differentiation": {
+    "positioning_brief": {
+      "verdict": "No direct match recorded",
+      "closest_alternatives": [],
+      "differentiation_claim": "",
+      "recommended_positioning": "",
+      "decision": "Research More",
+      "next_validation_steps": []
+    },
+    "candidate_roles": [],
     "similarity_clusters": [],
     "commodity_features": [],
     "unique_combination": [],

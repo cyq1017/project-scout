@@ -114,6 +114,9 @@ Trustworthiness hardening status:
   clusters, commodity features, unique combination, defensible positioning,
   claims to avoid, borrow/integrate/compete guidance, and a conservative README
   positioning draft.
+- Markdown reports include a first-page `Positioning Brief` with verdict,
+  closest alternatives, candidate roles, recommended positioning, and next
+  validation steps.
 
 The larger GPT Pro architecture review is local-only unless intentionally
 curated into repo docs. The current executable roadmap is

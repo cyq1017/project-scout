@@ -6,6 +6,21 @@ Generated: 2026-05-24T00:00:00Z
 
 Reviewed 3 candidate projects. Top recommendation signal: **Fork**. Decision confidence: **Medium**. Coverage confidence: **Medium**.
 
+## Positioning Brief
+
+- Verdict: **Strong adjacent match recorded**.
+- Differentiation claim: Differentiate through the combined workflow, not a single feature: prior art; competitive analysis; github search; roadmap; python.
+- Recommended positioning: project-scout is a project for staff engineers, technical founders that combines prior art, competitive analysis, github search. It should be evaluated against recorded prior art and does not claim exhaustive discovery. It is not crawler platform.
+- Closest alternative: sample/prior-art-cli (repo, score 0.760, prior art).
+- Closest alternative: ecosyste-ms/repos (repo, score 0.119, prior art).
+- Closest alternative: octobox/octobox (repo, score 0.069, prior art).
+- Candidate role: sample/prior-art-cli -> prior art: Useful prior-art signal around competitive analysis, github search, prior art; cite it when narrowing claims.
+- Candidate role: ecosyste-ms/repos -> prior art: Useful prior-art signal around github api, github; cite it when narrowing claims.
+- Candidate role: octobox/octobox -> prior art: Useful prior-art signal around github; cite it when narrowing claims.
+- Next validation: Verify source coverage against the required source profile before making a uniqueness claim.
+- Next validation: Check primary docs for the closest alternatives before writing README positioning.
+- Next validation: Manually compare the workflow against sample/prior-art-cli.
+
 ## Search Summary
 
 | Source | Query | Results | Used | Status | Notes |
@@ -96,9 +111,9 @@ Reviewed 3 candidate projects. Top recommendation signal: **Fork**. Decision con
 - Claim to avoid: Do not claim competitive analysis is unique without primary-source evidence.
 - Claim to avoid: Do not claim github api is unique without primary-source evidence.
 - Claim to avoid: Do not claim github search is unique without primary-source evidence.
-- Borrow / integrate / compete: Borrow from sample/prior-art-cli: inspect competitive analysis, github search, prior art, cli before claiming differentiation.
-- Borrow / integrate / compete: Borrow from ecosyste-ms/repos: inspect github api, github before claiming differentiation.
-- Borrow / integrate / compete: Borrow from octobox/octobox: inspect github before claiming differentiation.
+- Borrow / integrate / compete: Treat sample/prior-art-cli as prior art: inspect competitive analysis, github search, prior art, cli before claiming differentiation.
+- Borrow / integrate / compete: Treat ecosyste-ms/repos as prior art: inspect github api, github before claiming differentiation.
+- Borrow / integrate / compete: Treat octobox/octobox as prior art: inspect github before claiming differentiation.
 - README positioning draft: project-scout is a project for staff engineers, technical founders that combines prior art, competitive analysis, github search. It should be evaluated against recorded prior art and does not claim exhaustive discovery. It is not crawler platform.
 
 ## Differentiation Is Not Enough: Useful Positioning
