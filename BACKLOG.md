@@ -4,6 +4,8 @@
 
 - [x] M1: Local prior-art gate. See `docs/milestones/m1-local-prior-art-gate.md`.
 - [ ] M2: Skill quality gate. See `docs/milestones/m2-skill-quality-gate.md` and `docs/plans/2026-06-20-prior-art-scout-m2-skill-quality-plan.md`.
+- [x] M2 local dogfood: AgentUX run recorded in `docs/case-studies/2026-06-agentux-skill-quality-dogfood.md`.
+- [ ] M2 fresh-agent review: run `docs/plans/2026-06-20-agentux-dogfood-prompt.md` in a separate agent/reviewer session.
 
 ## MVP
 

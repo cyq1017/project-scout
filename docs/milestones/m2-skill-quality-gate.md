@@ -1,6 +1,6 @@
 # Milestone 2: Skill Quality Gate
 
-Status: Planned, first slice in progress
+Status: Local dogfood complete, fresh-agent review pending
 Date: 2026-06-20
 
 ## Definition
@@ -59,6 +59,19 @@ docs/plans/2026-06-20-agentux-dogfood-prompt.md
 The forward-test should run in a fresh agent session where possible. Do not pass
 the expected answer. Review the produced artifacts against this milestone after
 the run.
+
+## Local Dogfood Result
+
+The first local dogfood run is recorded in:
+
+```text
+docs/case-studies/2026-06-agentux-skill-quality-dogfood.md
+```
+
+It produced `/tmp` draft artifacts, generated a `project-scout` report for
+AgentUX, and exposed one skill-protocol fix: curated web candidates should not
+silently stand in for manual known-candidate coverage when the source profile
+requires both source classes.
 
 ## Completion Boundary
 

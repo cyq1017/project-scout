@@ -53,3 +53,19 @@ def test_m2_dogfood_prompt_and_milestone_define_acceptance():
     assert "source log" in milestone_text
     assert "query matrix" in milestone_text
     assert "project-scout" in milestone_text
+
+
+def test_agentux_dogfood_case_study_records_source_profile_lesson():
+    case_study = DOCS / "case-studies" / "2026-06-agentux-skill-quality-dogfood.md"
+    source_routing = REFERENCES / "source-routing.md"
+
+    assert case_study.exists()
+
+    case_text = case_study.read_text(encoding="utf-8")
+    routing_text = source_routing.read_text(encoding="utf-8")
+
+    assert "AgentUX" in case_text
+    assert "curated web candidates" in case_text
+    assert "manual known-candidate file" in case_text
+    assert "curated web candidates" in routing_text
+    assert "manual known-candidate file" in routing_text

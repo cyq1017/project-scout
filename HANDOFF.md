@@ -27,6 +27,9 @@ Current milestone:
   `docs/plans/2026-06-20-prior-art-scout-m2-skill-quality-plan.md`.
 - The first M2 forward-test prompt is
   `docs/plans/2026-06-20-agentux-dogfood-prompt.md`.
+- Local AgentUX dogfood is recorded in
+  `docs/case-studies/2026-06-agentux-skill-quality-dogfood.md`; fresh-agent
+  review remains pending.
 
 ## Working Agreements
 

@@ -35,6 +35,15 @@ Start with combinations of:
 
 For Formal Gate, record every query in the structured search log.
 
+## Curated Candidate Inputs
+
+When an agent turns web search results into curated web candidates, pass those
+pages through the `web` source path. If the target profile also requires manual
+coverage, include a small manual known-candidate file for user-provided or
+manually confirmed candidates. This keeps `project-scout` coverage aligned with
+the source profile instead of making curated web candidates stand in for every
+source class.
+
 ## Adjacent Skill Use
 
 - Use `find-skills` or skills registry commands for skill ecosystem discovery.
