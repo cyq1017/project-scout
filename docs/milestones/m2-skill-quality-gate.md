@@ -60,6 +60,16 @@ The forward-test should run in a fresh agent session where possible. Do not pass
 the expected answer. Review the produced artifacts against this milestone after
 the run.
 
+After artifacts are written under `/tmp`, run:
+
+```bash
+.venv/bin/python scripts/check-agentux-dogfood-artifacts.py --dir /tmp
+```
+
+The checker is a bundle-shape gate only. It confirms the fresh-agent run
+produced the expected local files and engine-backed fields, but it does not
+prove candidate accuracy or source completeness.
+
 ## Local Dogfood Result
 
 The first local dogfood run is recorded in:

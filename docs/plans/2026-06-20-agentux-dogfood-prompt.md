@@ -60,6 +60,15 @@ tokens.
 
 ## Evaluation Notes
 
+After the fresh-agent run, validate the local artifact bundle from this repo:
+
+```bash
+.venv/bin/python scripts/check-agentux-dogfood-artifacts.py --dir /tmp
+```
+
+This checker confirms the expected files and report fields exist. It does not
+replace review of source quality, candidate accuracy, or unsupported claims.
+
 After the fresh-agent run, inspect whether the agent:
 
 - applied multiple query families instead of one generic search;

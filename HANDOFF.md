@@ -30,6 +30,9 @@ Current milestone:
 - Local AgentUX dogfood is recorded in
   `docs/case-studies/2026-06-agentux-skill-quality-dogfood.md`; fresh-agent
   review remains pending.
+- After a fresh-agent run writes `/tmp/agentux-*`, validate the bundle shape
+  with `.venv/bin/python scripts/check-agentux-dogfood-artifacts.py --dir /tmp`;
+  this is not a substitute for reviewing source quality or unsupported claims.
 
 ## Working Agreements
 
