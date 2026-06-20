@@ -23,8 +23,8 @@ sources to be visible in the source log, coverage matrix, or blind spots.
   positioning claims to avoid, counterarguments, and next validation steps.
 - Cross-agent stability is guided by capability names, tool-neutral fallback
   rules, and `project-scout` engine use when available.
-- A fresh-agent AgentUX dogfood prompt exists and writes draft artifacts to
-  `/tmp`.
+- A fresh-agent AgentUX dogfood prompt exists and writes draft artifacts to a
+  fresh output directory under `/tmp`.
 - The dogfood run produces or explains the absence of:
   - source log;
   - query matrix use;
@@ -60,15 +60,21 @@ The forward-test should run in a fresh agent session where possible. Do not pass
 the expected answer. Review the produced artifacts against this milestone after
 the run.
 
-After artifacts are written under `/tmp`, run:
+After artifacts are written under the fresh output directory, run:
 
 ```bash
-.venv/bin/python scripts/check-agentux-dogfood-artifacts.py --dir /tmp
+.venv/bin/python scripts/check-agentux-dogfood-artifacts.py --dir /tmp/agentux-fresh-<agent>-<timestamp>
 ```
 
 The checker is a bundle-shape gate only. It confirms the fresh-agent run
 produced the expected local files and engine-backed fields, but it does not
 prove candidate accuracy or source completeness.
+
+Current fresh-agent attempt log:
+
+```text
+docs/research/2026-06-20-agentux-fresh-agent-review-attempt.md
+```
 
 ## Local Dogfood Result
 

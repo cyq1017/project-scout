@@ -35,14 +35,16 @@ available in this agent runtime. Use `project-scout` CLI/library if available;
 if it is not available, record that as a process gap rather than hand-writing
 engine-owned fields as final.
 
-Write draft artifacts under /tmp:
+Create a fresh output directory under `/tmp`, for example
+`/tmp/agentux-fresh-<agent>-<timestamp>`, and write draft artifacts there.
+Do not read or reuse existing `/tmp/agentux-*` files from earlier runs.
 
-- /tmp/agentux-brief.json
-- /tmp/agentux-candidates.json
-- /tmp/agentux-prior-art-map.md
-- /tmp/agentux-report.json
-- /tmp/agentux-source-log.md
-- /tmp/agentux-chat-summary.md
+- <fresh-output-directory>/agentux-brief.json
+- <fresh-output-directory>/agentux-candidates.json
+- <fresh-output-directory>/agentux-prior-art-map.md
+- <fresh-output-directory>/agentux-report.json
+- <fresh-output-directory>/agentux-source-log.md
+- <fresh-output-directory>/agentux-chat-summary.md
 
 The chat summary should include:
 
@@ -60,10 +62,11 @@ tokens.
 
 ## Evaluation Notes
 
-After the fresh-agent run, validate the local artifact bundle from this repo:
+After the fresh-agent run, validate the local artifact bundle from this repo,
+replacing the example path with the fresh output directory used by the run:
 
 ```bash
-.venv/bin/python scripts/check-agentux-dogfood-artifacts.py --dir /tmp
+.venv/bin/python scripts/check-agentux-dogfood-artifacts.py --dir /tmp/agentux-fresh-<agent>-<timestamp>
 ```
 
 This checker confirms the expected files and report fields exist. It does not

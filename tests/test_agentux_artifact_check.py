@@ -161,3 +161,15 @@ def test_agentux_artifact_checker_is_documented_for_forward_test_review():
     for path in required_docs:
         assert path.exists()
         assert "check-agentux-dogfood-artifacts.py" in path.read_text(encoding="utf-8")
+
+
+def test_agentux_forward_test_requires_fresh_output_directory():
+    prompt = ROOT / "docs" / "plans" / "2026-06-20-agentux-dogfood-prompt.md"
+    milestone = ROOT / "docs" / "milestones" / "m2-skill-quality-gate.md"
+
+    prompt_text = prompt.read_text(encoding="utf-8")
+    milestone_text = milestone.read_text(encoding="utf-8")
+
+    assert "fresh output directory" in prompt_text
+    assert "Do not read or reuse existing `/tmp/agentux-*`" in prompt_text
+    assert "fresh output directory" in milestone_text
