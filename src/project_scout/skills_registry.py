@@ -44,6 +44,10 @@ def search_skills_registry(query: str, *, timeout: int = 30) -> list[CandidateRe
         )
     except subprocess.TimeoutExpired as exc:
         raise RuntimeError(f"skills search timed out after {exc.timeout} seconds") from exc
+    except FileNotFoundError as exc:
+        raise RuntimeError("skills registry command unavailable: npx") from exc
+    except OSError as exc:
+        raise RuntimeError(f"skills registry command failed to start: {exc}") from exc
     if result.returncode != 0:
         raise RuntimeError((result.stderr or result.stdout).strip() or "skills search failed")
     return parse_skills_find_output(result.stdout)

@@ -118,8 +118,9 @@ def test_cli_records_skills_registry_candidates(tmp_path, monkeypatch):
     from project_scout import cli
     from project_scout.models import CandidateRepo
 
-    def fake_search(query):
+    def fake_search(query, *, timeout=None):
         assert query == "prior art skill"
+        assert timeout == 30
         return [
             CandidateRepo(
                 name="skills.volces.com@github-research",
@@ -222,8 +223,10 @@ def test_cli_merges_multiple_github_queries_by_url(tmp_path, monkeypatch):
 
     calls = []
 
-    def fake_search(query, *, limit):
+    def fake_search(query, *, limit, timeout=None, include_readme=True):
         calls.append((query, limit))
+        assert timeout == 20
+        assert include_readme is True
         return [
             CandidateRepo(
                 name=f"{query}-shared",
@@ -271,11 +274,88 @@ def test_cli_merges_multiple_github_queries_by_url(tmp_path, monkeypatch):
     assert {entry["query"] for entry in github_entries} == {"prior art cli", "project discovery"}
 
 
+def test_cli_passes_github_timeout_and_readme_policy(tmp_path, monkeypatch):
+    from project_scout import cli
+    from project_scout.models import CandidateRepo
+
+    calls = []
+
+    def fake_search(query, *, limit, timeout=None, include_readme=True):
+        calls.append((query, limit, timeout, include_readme))
+        return [
+            CandidateRepo(
+                name="example/live",
+                url="https://github.com/example/live",
+                description="Live source candidate.",
+            )
+        ]
+
+    monkeypatch.setattr(cli, "search_github_repositories", fake_search)
+    out_json = tmp_path / "report.json"
+    out_md = tmp_path / "report.md"
+
+    result = cli.main(
+        [
+            "report",
+            "--brief",
+            str(FIXTURES / "brief.json"),
+            "--github-query",
+            "prior art cli",
+            "--github-limit",
+            "3",
+            "--github-timeout",
+            "4",
+            "--no-github-readme",
+            "--out-json",
+            str(out_json),
+            "--out-md",
+            str(out_md),
+            "--generated-at",
+            "2026-06-04T00:00:00+00:00",
+        ]
+    )
+
+    assert result == 0
+    assert calls == [("prior art cli", 3, 4, False)]
+
+
+def test_cli_records_empty_github_search_as_empty_source(tmp_path, monkeypatch):
+    from project_scout import cli
+
+    def fake_search(query, *, limit, timeout=None, include_readme=True):
+        return []
+
+    monkeypatch.setattr(cli, "search_github_repositories", fake_search)
+    out_json = tmp_path / "report.json"
+    out_md = tmp_path / "report.md"
+
+    result = cli.main(
+        [
+            "report",
+            "--brief",
+            str(FIXTURES / "brief.json"),
+            "--github-query",
+            "prior art cli",
+            "--out-json",
+            str(out_json),
+            "--out-md",
+            str(out_md),
+            "--generated-at",
+            "2026-06-04T00:00:00+00:00",
+        ]
+    )
+
+    data = json.loads(out_json.read_text())
+    assert result == 0
+    assert data["search_log"][0]["status"] == "empty"
+    assert data["search_log"][0]["result_count"] == 0
+
+
 def test_cli_records_github_failure_and_writes_partial_report(tmp_path, monkeypatch):
     from project_scout import cli
 
-    def fake_search(query, *, limit):
-        raise ValueError(f"boom: {query}:{limit}")
+    def fake_search(query, *, limit, timeout=None, include_readme=True):
+        raise ValueError(f"boom: {query}:{limit}:{timeout}:{include_readme}")
 
     monkeypatch.setattr(cli, "search_github_repositories", fake_search)
     out_json = tmp_path / "report.json"
@@ -290,6 +370,8 @@ def test_cli_records_github_failure_and_writes_partial_report(tmp_path, monkeypa
             "prior art cli",
             "--github-limit",
             "2",
+            "--github-timeout",
+            "3",
             "--out-json",
             str(out_json),
             "--out-md",
@@ -306,7 +388,46 @@ def test_cli_records_github_failure_and_writes_partial_report(tmp_path, monkeypa
     assert data["coverage"]["confidence"] == "Low"
     assert data["search_log"][0]["source"] == "github"
     assert data["search_log"][0]["status"] == "failed"
-    assert "boom: prior art cli:2" in data["search_log"][0]["error"]
+    assert "boom: prior art cli:2:3:True" in data["search_log"][0]["error"]
+
+
+def test_cli_passes_skills_timeout_and_records_failure(tmp_path, monkeypatch):
+    from project_scout import cli
+
+    calls = []
+
+    def fake_search(query, *, timeout=None):
+        calls.append((query, timeout))
+        raise RuntimeError("skills registry unavailable")
+
+    monkeypatch.setattr(cli, "search_skills_registry", fake_search)
+    out_json = tmp_path / "report.json"
+    out_md = tmp_path / "report.md"
+
+    result = cli.main(
+        [
+            "report",
+            "--brief",
+            str(FIXTURES / "discovery_brief.json"),
+            "--skills-query",
+            "prior art skill",
+            "--skills-timeout",
+            "5",
+            "--out-json",
+            str(out_json),
+            "--out-md",
+            str(out_md),
+            "--generated-at",
+            "2026-06-04T00:00:00+00:00",
+        ]
+    )
+
+    data = json.loads(out_json.read_text())
+    assert result == 0
+    assert calls == [("prior art skill", 5)]
+    assert data["search_log"][0]["source"] == "skills"
+    assert data["search_log"][0]["status"] == "failed"
+    assert data["search_log"][0]["error"] == "skills registry unavailable"
 
 
 def test_cli_writes_partial_report_without_candidates(tmp_path):

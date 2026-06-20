@@ -31,6 +31,12 @@ orchestration, positioning discussion, and cross-agent stability while keeping
 See [M2 Skill Quality Gate](docs/milestones/m2-skill-quality-gate.md) and the
 [M2 implementation plan](docs/plans/2026-06-20-prior-art-scout-m2-skill-quality-plan.md).
 
+Milestone 3 is the source reliability gate: keep live GitHub and skills
+registry adapters bounded, explicit, and auditable so adapter failures produce
+partial `Research More` reports instead of crashes, hangs, or hidden gaps.
+
+See [M3 Source Reliability Gate](docs/milestones/m3-source-reliability-gate.md).
+
 ## Install For Development
 
 ```bash
@@ -206,14 +212,20 @@ project-scout report \
   --brief tests/fixtures/brief.json \
   --github-query "prior art github search cli python" \
   --github-query "project discovery markdown report" \
-  --github-limit 10
+  --github-limit 10 \
+  --github-timeout 10 \
+  --no-github-readme
 ```
 
 GitHub search uses the unauthenticated REST API and does not store tokens. It may hit public rate limits.
 For each GitHub search result, `project-scout` makes a best-effort unauthenticated README request and stores a short deterministic plaintext summary when available.
+`--github-timeout` bounds each GitHub API request. Pass `--no-github-readme`
+when you want the most reliable source-collection path or want to avoid the
+extra best-effort README requests.
 Pass `--github-query` more than once to run multiple bounded searches; candidates are merged by URL.
 If GitHub search fails, the CLI records a failed source entry and still writes a
-partial `Research More` report when possible.
+partial `Research More` report when possible. If a query completes with no
+results, the source status is recorded as `empty` rather than `ok`.
 
 ## Search Skills Registry
 
@@ -221,12 +233,17 @@ partial `Research More` report when possible.
 project-scout report \
   --brief tests/fixtures/discovery_brief.json \
   --skills-query "prior art skill" \
+  --skills-timeout 10 \
   --candidates tests/fixtures/github_repos.json \
   --out-json examples/prior-art-scout-report.json \
   --out-md docs/research/2026-05-prior-art-scout-map.md
 ```
 
-Skills registry search shells out to `npx skills find`. If the registry command fails, the formal-gate search log records the failure rather than hiding it.
+Skills registry search shells out to `npx --yes skills find`; it is explicit
+live adapter behavior, not an offline fixture path. `--skills-timeout` bounds
+the command. If `npx` is missing, the command times out, or the registry command
+returns a non-zero exit, the formal-gate search log records a failed source
+entry and the report can still be written as partial `Research More`.
 
 ## Recommendation Semantics
 

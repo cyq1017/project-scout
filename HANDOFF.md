@@ -41,6 +41,11 @@ Current milestone:
   `docs/research/2026-06-20-agentux-codex-fresh-agent-review.md`; M2 is
   accepted with follow-up gaps for GitHub adapter DNS, skills-registry timeout,
   AgentUX community search, and Warp hands-on behavior verification.
+- M3 source reliability gate is documented in
+  `docs/milestones/m3-source-reliability-gate.md`; it bounds GitHub and skills
+  registry live adapters, records empty/failed source statuses, and leaves
+  AgentUX community search plus Warp behavior verification as product-research
+  follow-ups.
 
 ## Working Agreements
 
@@ -113,7 +118,36 @@ Known macOS/iCloud editable-install issue:
 - If hidden/dataless flags keep recurring in other generated files, move the
   checkout outside an iCloud-synced folder.
 
-Live GitHub search uses unauthenticated requests for both repository search and best-effort README summaries. Rate-limit or README failures leave `readme_summary` empty rather than failing the whole report.
+Live GitHub search uses unauthenticated requests for repository search and,
+unless disabled, best-effort README summaries. Use `--github-timeout <seconds>`
+to bound each GitHub API request, and use `--no-github-readme` when reliability
+matters more than README summary enrichment. Rate-limit or README failures leave
+`readme_summary` empty rather than failing the whole report. Search failures are
+recorded as `failed`; zero-result GitHub searches are recorded as `empty`.
+
+Skills registry search shells out to `npx --yes skills find`. Use
+`--skills-timeout <seconds>` to bound the command. Missing `npx`, timeouts, and
+non-zero exits are converted to failed source entries so a partial `Research
+More` report can still be written when other inputs are valid.
+
+M3 live GitHub smoke on 2026-06-20:
+
+```bash
+.venv/bin/project-scout report \
+  --brief tests/fixtures/brief.json \
+  --github-query "project discovery markdown report" \
+  --github-limit 2 \
+  --github-timeout 5 \
+  --no-github-readme \
+  --out-json /tmp/project-scout-m3-github.json \
+  --out-md /tmp/project-scout-m3-github.md \
+  --generated-at 2026-06-20T00:00:00+00:00
+```
+
+The command wrote both outputs and recorded the GitHub source as `ok` with one
+used candidate in this runtime. Treat prior DNS failure as environment-specific
+unless it recurs; the CLI now records such failures as partial-report source
+failures.
 
 Trustworthiness hardening status:
 
@@ -152,6 +186,9 @@ Trustworthiness hardening status:
 The larger GPT Pro architecture review is local-only unless intentionally
 curated into repo docs. The current executable roadmap is
 `docs/plans/2026-06-18-trustworthiness-hardening.md`.
+The untracked `docs/plans/project-scout-adjustment-plan.md` is a local GPT Pro
+planning artifact; do not stage it unless the user explicitly asks to formalize
+that draft.
 
 Experience library entry points:
 

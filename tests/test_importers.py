@@ -216,3 +216,14 @@ def test_search_skills_registry_converts_timeout_to_runtime_error():
             assert "timed out" in str(exc)
         else:
             raise AssertionError("expected RuntimeError")
+
+
+def test_search_skills_registry_converts_missing_npx_to_runtime_error():
+    with patch("project_scout.skills_registry.subprocess.run", side_effect=FileNotFoundError("npx")):
+        try:
+            search_skills_registry("prior art", timeout=1)
+        except RuntimeError as exc:
+            assert "skills registry command unavailable" in str(exc)
+            assert "npx" in str(exc)
+        else:
+            raise AssertionError("expected RuntimeError")

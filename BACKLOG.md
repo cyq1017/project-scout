@@ -6,6 +6,7 @@
 - [x] M2: Skill quality gate. See `docs/milestones/m2-skill-quality-gate.md` and `docs/plans/2026-06-20-prior-art-scout-m2-skill-quality-plan.md`.
 - [x] M2 local dogfood: AgentUX run recorded in `docs/case-studies/2026-06-agentux-skill-quality-dogfood.md`.
 - [x] M2 fresh-agent review: Codex fresh-agent run recorded in `docs/research/2026-06-20-agentux-codex-fresh-agent-review.md`.
+- [x] M3: Source reliability gate. See `docs/milestones/m3-source-reliability-gate.md`.
 
 ## MVP
 
@@ -61,8 +62,9 @@
 - [x] Add deterministic differentiation map and README positioning draft.
 - [x] Add first-page positioning brief with closest alternatives and candidate roles.
 - [x] Add first-page decision dashboard with go/review/hold, review queue, and open questions.
-- [ ] Investigate GitHub adapter DNS failures in Codex CLI shell runtime.
-- [ ] Harden or document skills-registry timeout behavior for fresh-agent runs.
+- [x] Add bounded GitHub and skills registry adapter controls with fixture coverage.
+- [x] Harden or document skills-registry timeout behavior for fresh-agent runs.
+- [x] Investigate GitHub adapter DNS failures in Codex CLI shell runtime; bounded live smoke did not reproduce, and failures now write partial reports.
 - [ ] Run a focused GitHub/community follow-up for AgentUX small-plugin prior art.
 - [ ] Manually verify Warp blocks/context/forking behavior against AgentUX Add/Branch claims.
 

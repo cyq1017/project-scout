@@ -38,8 +38,8 @@ Start with the lowest-permission route that can answer the question.
 
 | Failure | Fallback |
 | --- | --- |
-| GitHub API rate limited | Use manual candidates, `gh search repos`, or web search; record rate limit |
-| Skills registry unavailable | Search GitHub/web for `skill`, `SKILL.md`, and registry names |
+| GitHub API rate limited, timed out, or DNS failed | Use manual candidates, `gh search repos`, or web search; record the failure |
+| Skills registry unavailable, timed out, or missing `npx` | Search GitHub/web for `skill`, `SKILL.md`, and registry names; record the failure |
 | Static URL reader fails | Try browser inspection or mark dynamic/login/blocked |
 | Browser/CDP unavailable | Mark as unavailable and continue with lower-permission sources |
 | Community platform blocked | Record blind spot instead of implying coverage |
@@ -56,6 +56,26 @@ For Formal Gate, record:
 - used count
 - status
 - notes or errors
+
+When using `project-scout` live adapters, prefer bounded commands:
+
+```bash
+project-scout report \
+  --brief brief.json \
+  --github-query "query terms" \
+  --github-timeout 10 \
+  --no-github-readme
+```
+
+```bash
+project-scout report \
+  --brief brief.json \
+  --skills-query "query terms" \
+  --skills-timeout 10
+```
+
+Use `empty` for zero-result queries, `failed` for unavailable adapters, and
+keep the resulting blind spots in the final discussion.
 
 Quick Scan may summarize this in chat, but should still state uncertainty.
 

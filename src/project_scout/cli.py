@@ -62,7 +62,24 @@ def _parser() -> argparse.ArgumentParser:
         help="Unauthenticated GitHub repository search query. May be passed more than once.",
     )
     report.add_argument("--github-limit", type=int, default=10, help="Maximum GitHub results.")
+    report.add_argument(
+        "--github-timeout",
+        type=_positive_int,
+        default=20,
+        help="Per-request GitHub API timeout in seconds.",
+    )
+    report.add_argument(
+        "--no-github-readme",
+        action="store_true",
+        help="Skip best-effort README fetches after GitHub repository search.",
+    )
     report.add_argument("--skills-query", help="Search installed skills registry via `npx skills find`.")
+    report.add_argument(
+        "--skills-timeout",
+        type=_positive_int,
+        default=30,
+        help="Skills registry command timeout in seconds.",
+    )
     report.add_argument(
         "--summary-overrides",
         action="append",
@@ -126,26 +143,33 @@ def _report(args: argparse.Namespace) -> int:
         search_log.append(_search_log_entry("web", web_path, len(loaded), len(loaded), "ok"))
     for github_query in args.github_query:
         try:
-            loaded = search_github_repositories(github_query, limit=max(1, args.github_limit))
+            loaded = search_github_repositories(
+                github_query,
+                limit=max(1, args.github_limit),
+                timeout=args.github_timeout,
+                include_readme=not args.no_github_readme,
+            )
         except (HTTPError, URLError, TimeoutError, ValueError) as exc:
             search_log.append(_search_log_entry("github", github_query, 0, 0, "failed", str(exc)))
         else:
             new_candidates = _new_candidates(candidates, loaded)
             candidates.extend(new_candidates)
+            status = "ok" if loaded else "empty"
             search_log.append(
-                _search_log_entry("github", github_query, len(loaded), len(new_candidates), "ok")
+                _search_log_entry("github", github_query, len(loaded), len(new_candidates), status)
             )
     if args.skills_query:
         try:
-            loaded = search_skills_registry(args.skills_query)
+            loaded = search_skills_registry(args.skills_query, timeout=args.skills_timeout)
         except RuntimeError as exc:
             search_log.append(
                 _search_log_entry("skills", args.skills_query, 0, 0, "failed", str(exc))
             )
         else:
             candidates.extend(loaded)
+            status = "ok" if loaded else "empty"
             search_log.append(
-                _search_log_entry("skills", args.skills_query, len(loaded), len(loaded), "ok")
+                _search_log_entry("skills", args.skills_query, len(loaded), len(loaded), status)
             )
     for summary_path in args.summary_overrides:
         overrides = load_summary_overrides(summary_path)
@@ -173,6 +197,13 @@ def _report(args: argparse.Namespace) -> int:
 def _default_markdown_path() -> str:
     month = datetime.now(UTC).strftime("%Y-%m")
     return f"docs/research/{month}-prior-art-map.md"
+
+
+def _positive_int(value: str) -> int:
+    parsed = int(value)
+    if parsed < 1:
+        raise argparse.ArgumentTypeError("must be a positive integer")
+    return parsed
 
 
 def _new_candidates(
