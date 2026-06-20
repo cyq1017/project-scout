@@ -80,6 +80,7 @@ def test_prior_art_scout_links_m4_due_diligence_references():
         "references/candidate-evidence.md",
         "references/anti-rationalizations.md",
         "references/skill-pack-routing.md",
+        "references/response-contract.md",
     ]:
         assert reference in skill
         assert (SKILL_DIR / reference).exists()
@@ -94,6 +95,34 @@ def test_prior_art_scout_links_m4_due_diligence_references():
 
     assert "project-scout` CLI/library" in skill
     assert "deterministic" in skill
+
+
+def test_prior_art_scout_response_contract_defines_final_answer_shapes():
+    contract = (REFERENCES / "response-contract.md").read_text(encoding="utf-8")
+
+    for phrase in [
+        "Quick Scan",
+        "Verdict",
+        "Closest candidates",
+        "Why similar / different",
+        "Uncertainty",
+        "Next source",
+        "Do not write files by default",
+    ]:
+        assert phrase in contract
+
+    for phrase in [
+        "Formal Gate",
+        "Artifact path",
+        "Recommendation",
+        "Decision confidence",
+        "Coverage confidence",
+        "Go / Review / Hold",
+        "Blind spots",
+        "Next validation",
+        "Do not treat the final chat reply as a substitute",
+    ]:
+        assert phrase in contract
 
 
 def test_prior_art_scout_m4_references_define_due_diligence_boundaries():

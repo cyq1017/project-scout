@@ -64,6 +64,7 @@ Read only the references needed for the current mode:
 - Candidate evidence categories: `references/candidate-evidence.md`.
 - Recommendation semantics: `references/recommendation-rubric.md`.
 - Markdown and JSON output contract: `references/report-contract.md`.
+- Final chat response shape: `references/response-contract.md`.
 - Positioning and differentiation: `references/positioning-discussion.md`.
 - False-confidence blockers: `references/anti-rationalizations.md`.
 - Cross-agent execution: `references/cross-agent-protocol.md`.
