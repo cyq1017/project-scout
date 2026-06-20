@@ -4,6 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_DIR = ROOT / "skills" / "prior-art-scout"
 SKILL_MD = SKILL_DIR / "SKILL.md"
+OPENAI_YAML = SKILL_DIR / "agents" / "openai.yaml"
 REFERENCES = SKILL_DIR / "references"
 DOCS = ROOT / "docs"
 
@@ -143,3 +144,12 @@ def test_prior_art_scout_keeps_external_targets_out_of_scope():
         assert phrase in safety
 
     assert "do not treat external follow-ups as unfinished project-scout backlog" in safety
+
+
+def test_prior_art_scout_openai_metadata_matches_evidence_gate_boundary():
+    metadata = OPENAI_YAML.read_text(encoding="utf-8").lower()
+
+    assert "$prior-art-scout" in metadata
+    assert "evidence-gated" in metadata
+    assert "local-first" in metadata
+    assert "external repo" in metadata

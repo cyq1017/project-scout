@@ -1,7 +1,7 @@
 interface:
   display_name: "Prior Art Scout"
-  short_description: "Run technical due diligence before build-vs-adopt decisions"
-  default_prompt: "Use $prior-art-scout to run pre-build or pre-adopt technical due diligence before I decide whether to build, adopt, integrate, fork, extend, borrow from, or write new."
+  short_description: "Evidence-gated build-vs-adopt due diligence"
+  default_prompt: "Use $prior-art-scout to run local-first, evidence-gated build-vs-adopt due diligence; record external repo follow-ups without operating them."
 
 policy:
   allow_implicit_invocation: true
