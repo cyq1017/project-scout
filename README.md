@@ -24,6 +24,13 @@ actions.
 
 See [Milestone 1: Local Prior-Art Gate](docs/milestones/m1-local-prior-art-gate.md).
 
+Milestone 2 is the skill quality gate: improve `prior-art-scout` search
+orchestration, positioning discussion, and cross-agent stability while keeping
+`project-scout` as the deterministic local engine.
+
+See [M2 Skill Quality Gate](docs/milestones/m2-skill-quality-gate.md) and the
+[M2 implementation plan](docs/plans/2026-06-20-prior-art-scout-m2-skill-quality-plan.md).
+
 ## Install For Development
 
 ```bash

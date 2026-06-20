@@ -41,12 +41,13 @@ Do not write files by default in Quick Scan.
 1. Create a Discovery Brief. See `references/discovery-brief.md`.
 2. Include known candidates first, then search for additional candidates.
 3. Route sources by target type. See `references/source-routing.md`.
-4. Apply coverage protocol. See `references/coverage-protocol.md`.
-5. Normalize candidates into comparable metadata.
-6. Run `project-scout` CLI/library when available for deterministic scoring and report generation.
-7. Add recommendation, confidence, risks, unknowns, search summary, and blind spots.
-8. Write Markdown and JSON outputs. See `references/report-contract.md`.
-9. Summarize the result in chat with links to generated files.
+4. Build query sets from `references/query-matrix.md`.
+5. Apply coverage protocol. See `references/coverage-protocol.md`.
+6. Normalize candidates into comparable metadata.
+7. Run `project-scout` CLI/library when available for deterministic scoring and report generation.
+8. If the engine is unavailable, write provisional Markdown and JSON outputs using `references/report-contract.md`.
+9. Discuss positioning and improvement options with `references/positioning-discussion.md`.
+10. Summarize the result in chat with links to generated files.
 
 Do not push, publish, create issues or PRs, or modify ADR/backlog files unless the user explicitly requests that action.
 
@@ -115,6 +116,10 @@ Use adjacent skills as adapters, not replacements:
 - Use verification-before-completion before claiming checks pass.
 
 This skill owns the discovery protocol and report contract. Other skills provide source access, implementation help, review, or packaging.
+
+For cross-agent execution, use capability names and degradation rules from
+`references/cross-agent-protocol.md`. Do not depend on one agent product's
+private tool names when a capability-level instruction is enough.
 
 ## Output Style
 

@@ -22,6 +22,11 @@ Current milestone:
   sample reports, report schema, and skill contract all match.
 - M2 should dogfood one real-world formal gate report before adding broad new
   adapters or platform behavior.
+- M2 skill quality gate is documented in
+  `docs/milestones/m2-skill-quality-gate.md`; execution plan is
+  `docs/plans/2026-06-20-prior-art-scout-m2-skill-quality-plan.md`.
+- The first M2 forward-test prompt is
+  `docs/plans/2026-06-20-agentux-dogfood-prompt.md`.
 
 ## Working Agreements
 

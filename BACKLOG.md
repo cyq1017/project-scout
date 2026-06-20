@@ -3,7 +3,7 @@
 ## Milestones
 
 - [x] M1: Local prior-art gate. See `docs/milestones/m1-local-prior-art-gate.md`.
-- [ ] M2: Real-world formal gate dogfood report with structured source coverage and gap fixes.
+- [ ] M2: Skill quality gate. See `docs/milestones/m2-skill-quality-gate.md` and `docs/plans/2026-06-20-prior-art-scout-m2-skill-quality-plan.md`.
 
 ## MVP
 
