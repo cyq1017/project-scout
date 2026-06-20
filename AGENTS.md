@@ -4,6 +4,19 @@
 
 This is an independent CLI/library project. It is not part of Conductor Core. Future integrations may wrap it as a Codex/Claude skill or call it from Conductor as a plugin/gate.
 
+## Dogfood / External Target Boundary
+
+AgentUX, `terminal_text_selection`, and other researched projects are test
+targets or prior-art subjects for project-scout. Do not implement, verify,
+refactor, or operate those external repositories from this project-scout
+workspace.
+
+If a project-scout report discovers an external repo that needs follow-up,
+record it as an external follow-up and stop. Continue that work only in the
+external project's own thread/workspace.
+
+Do not treat external follow-ups as unfinished project-scout backlog.
+
 ## Safety
 
 - Do not push, publish, release, or open pull requests unless the user explicitly asks in the current task.
