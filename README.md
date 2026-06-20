@@ -51,6 +51,12 @@ when to keep one skill versus split future subskills.
 See [M4 Skill-Pack Due-Diligence Gate](docs/milestones/m4-skill-pack-due-diligence-gate.md)
 and the [M4 implementation plan](docs/plans/2026-06-20-prior-art-scout-m4-skill-pack-plan.md).
 
+Milestone 5 is the release-hardening gate: make the local CLI/library safe to
+install, verify, and hand to another user without leaking local machine paths or
+rendering unsafe report links.
+
+See [M5 Release Hardening](docs/milestones/m5-release-hardening.md).
+
 ## Install For Development
 
 ```bash
@@ -79,6 +85,10 @@ with `PROJECT_SCOUT_VENV_PARENT=/path/to/parent` if needed.
 `scripts/smoke.sh` verifies both the installed console script and the
 source-tree fallback. It writes only to `/tmp`.
 
+`scripts/wheel-smoke.sh` builds a wheel, installs it into a temporary venv,
+changes out of the repository, and verifies the installed `project-scout`
+console script. It also writes only to `/tmp`.
+
 ## Run With Fixtures
 
 After `scripts/smoke.sh` passes, use the console script:
@@ -97,6 +107,12 @@ source-tree module entrypoint. The smoke script writes only to `/tmp`:
 
 ```bash
 scripts/smoke.sh
+```
+
+For release-style verification from an installed wheel:
+
+```bash
+scripts/wheel-smoke.sh
 ```
 
 Equivalent direct command:

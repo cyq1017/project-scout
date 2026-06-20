@@ -92,6 +92,6 @@ Do not edit the installed copy directly. Make changes in `skills/prior-art-scout
 Validation commands:
 
 ```bash
-.venv/bin/python /Users/caoyuqi/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/prior-art-scout
+.venv/bin/python ${HOME}/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/prior-art-scout
 .venv/bin/python -m pytest
 ```

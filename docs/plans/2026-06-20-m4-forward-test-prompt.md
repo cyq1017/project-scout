@@ -5,7 +5,7 @@ expected findings or previous AgentUX conclusions.
 
 ```text
 Use the prior-art-scout skill at:
-/Users/caoyuqi/Documents/New project/project-scout/skills/prior-art-scout
+<repo-root>/skills/prior-art-scout
 
 Run a Formal Gate technical due-diligence review for this target:
 
@@ -45,7 +45,7 @@ Required artifacts:
 - positioning discussion;
 - evidence-gap checklist;
 - self-review against:
-  /Users/caoyuqi/Documents/New project/project-scout/docs/milestones/m4-skill-pack-due-diligence-gate.md
+  <repo-root>/docs/milestones/m4-skill-pack-due-diligence-gate.md
 
 If a source adapter fails or a tool is unavailable, record the failure and
 continue with fallback sources. If project-scout cannot run, write a provisional

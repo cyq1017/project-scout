@@ -8,7 +8,7 @@ candidates, source gaps, and positioning implications from the skill and public
 sources.
 
 ```text
-Use prior-art-scout at /Users/caoyuqi/Documents/New project/project-scout/skills/prior-art-scout to run a Formal Gate.
+Use prior-art-scout at <repo-root>/skills/prior-art-scout to run a Formal Gate.
 
 Target:
 AgentUX is a selection-aware terminal UX layer for CLI coding agents. First

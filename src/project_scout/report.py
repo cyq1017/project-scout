@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
+from urllib.parse import quote, urlparse
 
 from project_scout.models import ScoutReport
 
@@ -248,7 +250,7 @@ def _positioning_lines(report: ScoutReport) -> list[str]:
 
 
 def _inline_text(value: object) -> str:
-    return " ".join(str(value).split())
+    return " ".join(_redact_local_paths(str(value)).split())
 
 
 def _table_cell(value: object) -> str:
@@ -261,4 +263,19 @@ def _link_text(value: object) -> str:
 
 def _link_url(value: object) -> str:
     text = _inline_text(value)
-    return text.replace(" ", "%20").replace("(", "%28").replace(")", "%29")
+    parsed = urlparse(text)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        return "about:blank"
+    return quote(text, safe=":/?#[]@!$&'*+,;=%")
+
+
+_LOCAL_PATH_RE = re.compile(r"(?P<path>/(?:Users|Volumes|private|var|tmp)/[^\n\r|)\]]+)")
+
+
+def _redact_local_paths(text: str) -> str:
+    def replace(match: re.Match[str]) -> str:
+        path = match.group("path").rstrip(".,;:")
+        suffix = match.group("path")[len(path) :]
+        return f"[local-path]/{Path(path).name}{suffix}"
+
+    return _LOCAL_PATH_RE.sub(replace, text)

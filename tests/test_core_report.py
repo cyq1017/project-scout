@@ -759,6 +759,62 @@ def test_render_markdown_places_decision_dashboard_near_the_top():
     assert "- Review queue: Required source not satisfied: web." in markdown
 
 
+def test_render_markdown_redacts_local_paths_from_source_errors():
+    brief = load_brief(FIXTURES / "brief.json")
+    candidates = load_candidates(FIXTURES / "github_repos.json")
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-05-24T00:00:00Z",
+        search_log=[
+            {
+                "source": "manual",
+                "query": "fixture",
+                "result_count": 3,
+                "used_count": 3,
+                "status": "failed",
+                "error": "failed reading /Users/caoyuqi/Documents/private/report.json",
+            }
+        ],
+    )
+
+    markdown = render_markdown(report)
+
+    assert "/Users/caoyuqi/Documents/private/report.json" not in markdown
+    assert "[local-path]/report.json" in markdown
+
+
+def test_render_markdown_replaces_unsafe_candidate_link_urls():
+    brief = ProjectBrief(
+        name="unsafe-link-review",
+        goal="Render a report with untrusted candidate metadata.",
+        keywords=["terminal"],
+        target_users=["developers"],
+        tech_stack=["python"],
+        exclusions=[],
+    )
+    candidates = [
+        CandidateRepo(
+            name="unsafe-link",
+            url="javascript:alert(1)",
+            description="Terminal helper for developers.",
+            topics=["terminal"],
+            language="Python",
+        )
+    ]
+
+    markdown = render_markdown(
+        build_report(
+            brief,
+            candidates,
+            generated_at="2026-06-04T00:00:00+00:00",
+        )
+    )
+
+    assert "javascript:alert" not in markdown
+    assert "[unsafe-link](about:blank)" in markdown
+
+
 def test_render_markdown_includes_differentiation_map():
     brief = ProjectBrief(
         name="terminal-layer",

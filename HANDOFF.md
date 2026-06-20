@@ -168,6 +168,8 @@ Trustworthiness hardening status:
   reports with `Research More` and recorded blind spots.
 - Decision confidence is heuristic and is capped by coverage confidence.
 - Markdown reports escape table and list content before rendering.
+- Markdown reports redact local absolute paths and replace unsafe candidate URL
+  schemes with `about:blank`.
 - Discovery briefs remain intact in report JSON; scoring uses an internal
   normalized view rather than destructively converting the brief at load time.
 - Coverage now records target-specific source requirements and known-candidate

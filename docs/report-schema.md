@@ -99,3 +99,10 @@ The `decision_dashboard` object is a deterministic first-page action layer. It
 turns decision confidence, coverage, blind spots, and unknown evidence records
 into `go`, `review`, or `hold`, plus a primary action, review queue, and open
 questions. It is not an automatic approval or roadmap mutation.
+
+## Markdown Safety
+
+Markdown report rendering treats candidate and source metadata as untrusted
+input. Table/list content is escaped, local absolute paths are redacted to
+`[local-path]/name`, and candidate links only render clickable `http` or
+`https` URLs. Unsafe or malformed candidate URLs render as `about:blank`.

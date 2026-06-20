@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: ["3.10", "3.13"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
       - name: Check out repository
@@ -32,13 +32,4 @@ jobs:
         run: .venv/bin/python -m pytest
 
       - name: Verify wheel console script
-        run: |
-          .venv/bin/python -m pip wheel . -w /tmp/project-scout-wheelhouse
-          python -m venv /tmp/project-scout-wheel-venv
-          /tmp/project-scout-wheel-venv/bin/python -m pip install /tmp/project-scout-wheelhouse/project_scout-*.whl
-          /tmp/project-scout-wheel-venv/bin/project-scout report \
-            --brief tests/fixtures/brief.json \
-            --candidates tests/fixtures/github_repos.json \
-            --out-json /tmp/project-scout-wheel.json \
-            --out-md /tmp/project-scout-wheel.md \
-            --generated-at 2026-06-04T00:00:00+00:00
+        run: scripts/wheel-smoke.sh

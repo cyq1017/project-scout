@@ -129,7 +129,7 @@ user sessions.
 More importantly, the machine already contains an external AgentUX prototype:
 
 ```text
-/Users/caoyuqi/Documents/terminal_text_selection
+<external-agentux-repo>
 ~/Library/Application Support/iTerm2/Scripts/AutoLaunch/agentux_iterm2.py
 ```
 

@@ -8,6 +8,7 @@
 - [x] M2 fresh-agent review: Codex fresh-agent run recorded in `docs/research/2026-06-20-agentux-codex-fresh-agent-review.md`.
 - [x] M3: Source reliability gate. See `docs/milestones/m3-source-reliability-gate.md`.
 - [x] M4: Prior-art technical due-diligence skill pack. See `docs/milestones/m4-skill-pack-due-diligence-gate.md` and plan `docs/plans/2026-06-20-prior-art-scout-m4-skill-pack-plan.md`.
+- [ ] M5: Release hardening. See `docs/milestones/m5-release-hardening.md`.
 
 ## MVP
 
@@ -73,10 +74,15 @@
 - [x] Run a bounded iTerm2 Add-mechanics feasibility check for AgentUX selection capture, cwd/git metadata, and safe prompt injection; see `docs/research/2026-06-20-agentux-focused-follow-up.md`.
 - [x] Run a focused GitHub/community follow-up for AgentUX small-plugin prior art; see `docs/research/2026-06-20-agentux-focused-follow-up.md`.
 - [x] Verify Warp primary docs for blocks/context/forking behavior against AgentUX Add/Branch claims.
+- [x] Redact local absolute paths and replace unsafe candidate link URLs in Markdown reports.
+- [x] Expand release verification to Python 3.11 and 3.12 in CI.
+- [x] Add a documented wheel-install smoke command for local release checks.
+- [x] Add public release-readiness guard for personal absolute paths.
+- [ ] Add public release-readiness examples without raw dumps or private artifacts.
 
 ## External Follow-Ups
 
-- [ ] Review and verify the external AgentUX repo at `/Users/caoyuqi/Documents/terminal_text_selection` if AgentUX implementation work becomes active; do not fold that implementation into project-scout.
+- [ ] Review and verify the external AgentUX repo if AgentUX implementation work becomes active; do not fold that implementation into project-scout.
 
 ## Non-Goals
 
