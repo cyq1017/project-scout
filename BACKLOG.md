@@ -8,7 +8,7 @@
 - [x] M2 fresh-agent review: Codex fresh-agent run recorded in `docs/research/2026-06-20-agentux-codex-fresh-agent-review.md`.
 - [x] M3: Source reliability gate. See `docs/milestones/m3-source-reliability-gate.md`.
 - [x] M4: Prior-art technical due-diligence skill pack. See `docs/milestones/m4-skill-pack-due-diligence-gate.md` and plan `docs/plans/2026-06-20-prior-art-scout-m4-skill-pack-plan.md`.
-- [ ] M5: Release hardening. See `docs/milestones/m5-release-hardening.md`.
+- [x] M5: Release hardening. See `docs/milestones/m5-release-hardening.md`.
 
 ## MVP
 
@@ -78,7 +78,7 @@
 - [x] Expand release verification to Python 3.11 and 3.12 in CI.
 - [x] Add a documented wheel-install smoke command for local release checks.
 - [x] Add public release-readiness guard for personal absolute paths.
-- [ ] Add public release-readiness examples without raw dumps or private artifacts.
+- [x] Add public release-readiness examples without raw dumps or private artifacts.
 
 ## External Follow-Ups
 

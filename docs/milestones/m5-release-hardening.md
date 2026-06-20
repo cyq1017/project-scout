@@ -1,7 +1,7 @@
 # Milestone 5: Release Hardening
 
-Status: In Progress
-Date: 2026-06-20
+Status: Complete
+Date: 2026-06-21
 
 ## Definition
 
@@ -33,10 +33,11 @@ storage, hosted services, or automatic final decisions.
 - CI matrix covers Python 3.10, 3.11, 3.12, and 3.13 on Linux and macOS.
 - `scripts/wheel-smoke.sh` verifies wheel-installed console-script behavior
   from outside the repository.
+- Public examples were audited with release-readiness tests for personal paths,
+  secret-shaped values, raw dump filenames, and raw/private JSON fields.
 
 ## Remaining Work
 
-- Audit curated public examples for personal paths and private artifacts.
 - Re-run full local verification after each release-hardening slice.
 
 ## Verification
