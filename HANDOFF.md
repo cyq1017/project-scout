@@ -46,6 +46,13 @@ Current milestone:
   registry live adapters, records empty/failed source statuses, and leaves
   AgentUX community search plus Warp behavior verification as product-research
   follow-ups.
+- M4 skill-pack due-diligence gate is documented in
+  `docs/milestones/m4-skill-pack-due-diligence-gate.md`; it rewrites
+  `prior-art-scout` as an agent-skills-style technical due-diligence workflow,
+  adds candidate-evidence and anti-rationalization references, and keeps
+  subskills as a future split only after forward-test evidence.
+- The M4 forward-test prompt is
+  `docs/plans/2026-06-20-m4-forward-test-prompt.md`.
 
 ## Working Agreements
 
@@ -55,6 +62,9 @@ Current milestone:
 - Prefer fixture tests over live network tests.
 - Keep reusable experience in repo-level `docs/`; promote only execution-time
   guidance into `skills/*/references/`.
+- Keep `prior-art-scout` as one public trigger skill until forward-tests show a
+  real trigger or context-loading problem. Use references as internal phase
+  modules first.
 
 ## Verification
 
@@ -189,6 +199,22 @@ curated into repo docs. The current executable roadmap is
 The untracked `docs/plans/project-scout-adjustment-plan.md` is a local GPT Pro
 planning artifact; do not stage it unless the user explicitly asks to formalize
 that draft.
+
+M4 skill-pack status:
+
+- `skills/prior-art-scout/SKILL.md` is the concise workflow router.
+- `references/due-diligence-gate.md` defines technical due-diligence boundaries
+  and exit criteria.
+- `references/candidate-evidence.md` defines evidence categories, status, and
+  source quality.
+- `references/anti-rationalizations.md` blocks common false-confidence
+  shortcuts.
+- `references/skill-pack-routing.md` explains why M4 does not immediately split
+  into separate subskills.
+- Future candidate subskills are `source-coverage-scout`,
+  `candidate-evidence-review`, `positioning-differentiator`, and
+  `build-vs-adopt-gate`, but they should not be created until forward-tests or
+  repeated standalone use justify them.
 
 Experience library entry points:
 

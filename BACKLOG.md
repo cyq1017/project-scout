@@ -7,7 +7,7 @@
 - [x] M2 local dogfood: AgentUX run recorded in `docs/case-studies/2026-06-agentux-skill-quality-dogfood.md`.
 - [x] M2 fresh-agent review: Codex fresh-agent run recorded in `docs/research/2026-06-20-agentux-codex-fresh-agent-review.md`.
 - [x] M3: Source reliability gate. See `docs/milestones/m3-source-reliability-gate.md`.
-- [ ] M4: Prior-art technical due-diligence skill pack. Plan: `docs/plans/2026-06-20-prior-art-scout-m4-skill-pack-plan.md`.
+- [x] M4: Prior-art technical due-diligence skill pack. See `docs/milestones/m4-skill-pack-due-diligence-gate.md` and plan `docs/plans/2026-06-20-prior-art-scout-m4-skill-pack-plan.md`.
 
 ## MVP
 
@@ -66,8 +66,8 @@
 - [x] Add bounded GitHub and skills registry adapter controls with fixture coverage.
 - [x] Harden or document skills-registry timeout behavior for fresh-agent runs.
 - [x] Investigate GitHub adapter DNS failures in Codex CLI shell runtime; bounded live smoke did not reproduce, and failures now write partial reports.
-- [ ] Rework `prior-art-scout` into an agent-skills-style executable workflow.
-- [ ] Add due-diligence, candidate-evidence, anti-rationalization, and skill-pack-routing references.
+- [x] Rework `prior-art-scout` into an agent-skills-style executable workflow.
+- [x] Add due-diligence, candidate-evidence, anti-rationalization, and skill-pack-routing references.
 - [ ] Forward-test M4 with a fresh-agent prior-art task before splitting subskills.
 - [ ] Run a focused GitHub/community follow-up for AgentUX small-plugin prior art.
 - [ ] Manually verify Warp blocks/context/forking behavior against AgentUX Add/Branch claims.

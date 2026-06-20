@@ -36,6 +36,34 @@ Use other skills as composable capabilities:
 
 Do not merge all behavior into `prior-art-scout`. It should orchestrate discovery and reporting, while adjacent skills provide source access, creation, review, and verification.
 
+## Skill Pack Strategy
+
+`prior-art-scout` should remain the single public trigger skill until
+forward-tests prove that separate triggers improve execution. Treat its
+`references/` files as internal phase modules:
+
+- source coverage and query planning;
+- candidate evidence review;
+- positioning and differentiation;
+- build-vs-adopt decision gating;
+- cross-agent execution;
+- anti-rationalization and safety checks.
+
+Do not split subskills only because the reference set is large. Split only when
+a phase has a clear standalone trigger, needs its own scripts or assets, or two
+forward-tests show agents skip the phase inside the parent skill. See
+`skills/prior-art-scout/references/skill-pack-routing.md`.
+
+Potential future subskills are:
+
+- `source-coverage-scout`;
+- `candidate-evidence-review`;
+- `positioning-differentiator`;
+- `build-vs-adopt-gate`.
+
+Any future subskill that influences recommendations must state whether it uses
+an existing `project-scout` report or is provisional.
+
 ## Community Packaging
 
 For GitHub promotion, the repository should include:
