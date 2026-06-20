@@ -1,0 +1,90 @@
+{
+  "name": "agentux_terminal_selection",
+  "brief": {
+    "name": "AgentUX",
+    "target_type": "product",
+    "intent": "build",
+    "goal": "Build a selection-aware terminal UX layer for existing CLI coding agents.",
+    "keywords": [
+      "terminal selection",
+      "Claude Code",
+      "Codex CLI",
+      "branch conversation"
+    ],
+    "users_or_consumers": [
+      "CLI coding agent users"
+    ],
+    "ecosystems": [
+      "iTerm2",
+      "terminal"
+    ],
+    "must_have": [
+      "capture terminal output selection",
+      "inject into existing CLI coding agent session",
+      "branch discussion"
+    ],
+    "nice_to_have": [
+      "iTerm2 Python API"
+    ],
+    "exclusions": [
+      "generic AI terminal only"
+    ],
+    "known_candidates": []
+  },
+  "candidates": [
+    {
+      "name": "iTerm2 selected output Add to Chat",
+      "url": "https://example.com/iterm2-selected-output-add-to-chat",
+      "kind": "terminal_feature",
+      "description": "Selected terminal output can be added to an AI chat from iTerm2.",
+      "topics": [
+        "terminal selection",
+        "AI chat"
+      ],
+      "attributes": {
+        "layer": "A Strongest close adjacent"
+      }
+    },
+    {
+      "name": "Warp AI",
+      "url": "https://example.com/warp-ai",
+      "kind": "product",
+      "description": "AI terminal that explains command output and keeps terminal blocks as context.",
+      "topics": [
+        "AI terminal",
+        "terminal output"
+      ],
+      "attributes": {
+        "layer": "C Broad adjacent"
+      }
+    }
+  ],
+  "search_log": [
+    {
+      "source": "manual",
+      "query": "known close-adjacent candidates",
+      "result_count": 2,
+      "used_count": 2,
+      "status": "ok"
+    },
+    {
+      "source": "web",
+      "query": "iTerm2 selection AI add to chat",
+      "result_count": 2,
+      "used_count": 2,
+      "status": "ok"
+    }
+  ],
+  "expected": {
+    "decision": "Write New",
+    "coverage_confidence": "High",
+    "go_no_go": "review",
+    "closest_alternative": "iTerm2 selected output Add to Chat",
+    "claims_to_avoid_contains": [
+      "generic AI terminal only"
+    ],
+    "markdown_contains": [
+      "No recorded candidate combines all core requirements"
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "name": "direct_adoption_candidate",
+  "brief": {
+    "name": "prior-art-report-cli",
+    "goal": "Adopt or reuse a Python CLI that generates prior-art reports before build-vs-adopt decisions.",
+    "keywords": [
+      "prior art",
+      "report",
+      "build adopt"
+    ],
+    "target_users": [
+      "developers"
+    ],
+    "tech_stack": [
+      "python",
+      "cli"
+    ],
+    "exclusions": []
+  },
+  "candidates": [
+    {
+      "name": "sample/prior-art-cli",
+      "url": "https://example.com/sample/prior-art-cli",
+      "kind": "repo",
+      "stars": 120,
+      "last_update": "2026-05-01T00:00:00Z",
+      "description": "Python CLI for prior art report generation and build adopt review for developers.",
+      "topics": [
+        "prior-art",
+        "report",
+        "cli"
+      ],
+      "license": "MIT",
+      "language": "Python"
+    },
+    {
+      "name": "generic/project-notes",
+      "url": "https://example.com/generic/project-notes",
+      "kind": "repo",
+      "description": "Project notes and task lists.",
+      "topics": [
+        "notes"
+      ],
+      "license": "MIT",
+      "language": "Python"
+    }
+  ],
+  "search_log": [
+    {
+      "source": "manual",
+      "query": "known prior art report cli",
+      "result_count": 2,
+      "used_count": 2,
+      "status": "ok"
+    },
+    {
+      "source": "github",
+      "query": "prior art report cli python",
+      "result_count": 2,
+      "used_count": 2,
+      "status": "ok"
+    },
+    {
+      "source": "web",
+      "query": "prior art report cli",
+      "result_count": 2,
+      "used_count": 2,
+      "status": "ok"
+    }
+  ],
+  "expected": {
+    "decision": "Adopt",
+    "coverage_confidence": "High",
+    "go_no_go": "review",
+    "closest_alternative": "sample/prior-art-cli",
+    "markdown_contains": [
+      "Recommendation: **Adopt**"
+    ]
+  }
+}

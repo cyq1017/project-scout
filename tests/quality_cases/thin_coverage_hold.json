@@ -1,0 +1,69 @@
+{
+  "name": "thin_coverage_hold",
+  "brief": {
+    "name": "skill-discovery-helper",
+    "target_type": "skill",
+    "intent": "build",
+    "goal": "Build a skill that helps agents discover reusable skills before implementing.",
+    "keywords": [
+      "skill discovery",
+      "agent skill",
+      "reuse"
+    ],
+    "users_or_consumers": [
+      "coding agents"
+    ],
+    "ecosystems": [
+      "Codex",
+      "Claude"
+    ],
+    "must_have": [
+      "find similar skills",
+      "compare reusable workflow coverage"
+    ],
+    "nice_to_have": [],
+    "exclusions": [],
+    "known_candidates": [
+      "https://example.com/known/skill-finder"
+    ]
+  },
+  "candidates": [
+    {
+      "name": "generic/agent-links",
+      "url": "https://example.com/generic/agent-links",
+      "kind": "repo",
+      "description": "A list of useful agent links.",
+      "topics": [
+        "agents"
+      ],
+      "language": "Markdown"
+    }
+  ],
+  "search_log": [
+    {
+      "source": "manual",
+      "query": "partial notes",
+      "result_count": 1,
+      "used_count": 1,
+      "status": "ok"
+    },
+    {
+      "source": "github",
+      "query": "skill discovery agent skill",
+      "result_count": 0,
+      "used_count": 0,
+      "status": "failed",
+      "error": "rate limit"
+    }
+  ],
+  "expected": {
+    "decision": "Research More",
+    "coverage_confidence": "Low",
+    "go_no_go": "hold",
+    "closest_alternative": "generic/agent-links",
+    "markdown_contains": [
+      "Coverage is too low to support a build/adopt recommendation",
+      "Known candidate was not included"
+    ]
+  }
+}

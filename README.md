@@ -57,6 +57,12 @@ rendering unsafe report links.
 
 See [M5 Release Hardening](docs/milestones/m5-release-hardening.md).
 
+Milestone 6 is the research-quality harness: use fixture benchmark cases to
+check that prior-art reports make calibrated decisions across strong adjacent,
+direct-adoption, and low-coverage scenarios.
+
+See [M6 Research Quality Harness](docs/milestones/m6-research-quality-harness.md).
+
 ## Install For Development
 
 ```bash
