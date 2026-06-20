@@ -15,6 +15,15 @@ exhaustive discovery, or make final decisions for the user.
 
 The broader skill direction is `prior-art-scout`: a pre-build / pre-adopt discovery gate that can quick-scan or formally compare projects, skills, plugins, tools, MCP servers, products, papers, and internal assets.
 
+## Current Milestone
+
+Milestone 1 is the local prior-art gate: a reliable local CLI/library plus skill
+source that turns a brief and bounded candidate set into an auditable
+Markdown/JSON report with coverage, confidence, positioning, and next-review
+actions.
+
+See [Milestone 1: Local Prior-Art Gate](docs/milestones/m1-local-prior-art-gate.md).
+
 ## Install For Development
 
 ```bash

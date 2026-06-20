@@ -1,5 +1,10 @@
 # BACKLOG
 
+## Milestones
+
+- [x] M1: Local prior-art gate. See `docs/milestones/m1-local-prior-art-gate.md`.
+- [ ] M2: Real-world formal gate dogfood report with structured source coverage and gap fixes.
+
 ## MVP
 
 - [x] Initialize standalone Python CLI/library project.

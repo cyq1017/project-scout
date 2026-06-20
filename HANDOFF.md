@@ -14,6 +14,15 @@ https://github.com/cyq1017/project-scout
 Do not push, publish releases, or open PRs unless the user explicitly asks in
 the current task.
 
+Current milestone:
+
+- M1 local prior-art gate is documented in
+  `docs/milestones/m1-local-prior-art-gate.md`.
+- Treat M1 as achieved when bootstrap, pytest, smoke, wheel install smoke,
+  sample reports, report schema, and skill contract all match.
+- M2 should dogfood one real-world formal gate report before adding broad new
+  adapters or platform behavior.
+
 ## Working Agreements
 
 - Keep implementation small and test-driven.
