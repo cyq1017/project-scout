@@ -128,3 +128,18 @@ def test_prior_art_scout_blocks_false_confidence_rationalizations():
         "failed adapter can be ignored",
     ]:
         assert shortcut in text
+
+
+def test_prior_art_scout_keeps_external_targets_out_of_scope():
+    skill = SKILL_MD.read_text(encoding="utf-8").lower()
+    safety = (REFERENCES / "safety.md").read_text(encoding="utf-8").lower()
+
+    for phrase in [
+        "external target boundary",
+        "do not operate external repositories",
+        "external follow-up",
+    ]:
+        assert phrase in skill
+        assert phrase in safety
+
+    assert "do not treat external follow-ups as unfinished project-scout backlog" in safety

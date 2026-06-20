@@ -24,6 +24,18 @@ make irreversible decisions for the user.
 7. Interpret the report into build-vs-adopt guidance, positioning, and next checks.
 8. Verify artifacts, confidence, blind spots, and exit criteria before claiming completion.
 
+## External Target Boundary
+
+Research targets, dogfood subjects, competitors, discovered repos, and external
+follow-up items are evidence sources for this skill. Do not operate external repositories
+from a project-scout run: do not implement, verify, refactor, test, configure,
+or mutate those projects unless the user explicitly switches to that project's
+own workspace/thread.
+
+If a report discovers an external repo that needs follow-up, record it as an
+external follow-up and stop at the project-scout boundary. Do not treat external
+follow-ups as unfinished project-scout backlog.
+
 ## Mode Routing
 
 Use **Quick Scan** when the user asks for a fast look, such as "is there
@@ -118,6 +130,7 @@ Stop and downgrade confidence when any of these occur:
 - Candidate-level `Write New` appears.
 - Coverage is `Low` but the discussion uses strong adoption or uniqueness language.
 - The output mutates roadmaps, ADRs, issues, PRs, or backlog without explicit user request.
+- The run starts operating a researched external repo instead of recording it as evidence or an external follow-up.
 
 ## Verification
 
