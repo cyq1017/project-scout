@@ -69,3 +69,62 @@ def test_agentux_dogfood_case_study_records_source_profile_lesson():
     assert "manual known-candidate file" in case_text
     assert "curated web candidates" in routing_text
     assert "manual known-candidate file" in routing_text
+
+
+def test_prior_art_scout_links_m4_due_diligence_references():
+    skill = SKILL_MD.read_text(encoding="utf-8")
+
+    for reference in [
+        "references/due-diligence-gate.md",
+        "references/candidate-evidence.md",
+        "references/anti-rationalizations.md",
+        "references/skill-pack-routing.md",
+    ]:
+        assert reference in skill
+        assert (SKILL_DIR / reference).exists()
+
+    for section in [
+        "## Core Process",
+        "## Red Flags",
+        "## Verification",
+        "## Exit Criteria",
+    ]:
+        assert section in skill
+
+    assert "project-scout` CLI/library" in skill
+    assert "deterministic" in skill
+
+
+def test_prior_art_scout_m4_references_define_due_diligence_boundaries():
+    for filename in [
+        "due-diligence-gate.md",
+        "candidate-evidence.md",
+        "anti-rationalizations.md",
+        "skill-pack-routing.md",
+    ]:
+        reference = REFERENCES / filename
+        assert reference.exists()
+        text = reference.read_text(encoding="utf-8").lower()
+        assert "project-scout" in text
+        assert "automatic final decision" not in text
+        assert "legal due diligence" not in text
+        assert "financial due diligence" not in text
+
+    due_diligence = (REFERENCES / "due-diligence-gate.md").read_text(encoding="utf-8")
+    assert "No exhaustive-search claim is made" in due_diligence
+    assert "Formal Gate" in due_diligence
+    assert "Quick Scan" in due_diligence
+
+
+def test_prior_art_scout_blocks_false_confidence_rationalizations():
+    text = (REFERENCES / "anti-rationalizations.md").read_text(encoding="utf-8").lower()
+
+    for shortcut in [
+        "no results means no competitors",
+        "stars prove adoption",
+        "llm summary replaces primary source",
+        "coverage low but recommendation high",
+        "write new from one weak candidate",
+        "failed adapter can be ignored",
+    ]:
+        assert shortcut in text

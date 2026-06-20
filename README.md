@@ -1,6 +1,8 @@
 # project-scout
 
-`project-scout` is a local-first CLI, Python library, and skill source repository for prior-art discovery before starting a project, writing a skill/plugin, adopting a tool, reworking a major feature, or changing a roadmap.
+`project-scout` is a local-first CLI, Python library, and skill source
+repository for prior-art and technical due-diligence gates before
+build-vs-adopt decisions.
 
 The current CLI MVP focuses on a narrow workflow:
 
@@ -11,9 +13,13 @@ The current CLI MVP focuses on a narrow workflow:
 5. Write a Markdown prior-art map and a machine-readable JSON report with a first-page positioning brief, decision dashboard, search log, coverage confidence, decision confidence, blind spots, and a differentiation map.
 
 It does not log in, store tokens, create issues or pull requests, claim
-exhaustive discovery, or make final decisions for the user.
+exhaustive discovery, or make final decisions for the user. Technical due
+diligence here means evidence-backed technical review; it is not legal,
+financial, acquisition, compliance, or exhaustive market diligence.
 
-The broader skill direction is `prior-art-scout`: a pre-build / pre-adopt discovery gate that can quick-scan or formally compare projects, skills, plugins, tools, MCP servers, products, papers, and internal assets.
+The broader skill direction is `prior-art-scout`: a pre-build / pre-adopt
+technical due-diligence gate that can quick-scan or formally compare projects,
+skills, plugins, tools, MCP servers, products, papers, and internal assets.
 
 ## Current Milestone
 
@@ -36,6 +42,14 @@ registry adapters bounded, explicit, and auditable so adapter failures produce
 partial `Research More` reports instead of crashes, hangs, or hidden gaps.
 
 See [M3 Source Reliability Gate](docs/milestones/m3-source-reliability-gate.md).
+
+Milestone 4 is the skill-pack due-diligence gate: rework `prior-art-scout` into
+an agent-skills-style executable workflow with progressive references,
+anti-rationalization checks, candidate evidence review, and explicit rules for
+when to keep one skill versus split future subskills.
+
+See [M4 Skill-Pack Due-Diligence Gate](docs/milestones/m4-skill-pack-due-diligence-gate.md)
+and the [M4 implementation plan](docs/plans/2026-06-20-prior-art-scout-m4-skill-pack-plan.md).
 
 ## Install For Development
 
@@ -289,7 +303,7 @@ The GitHub Actions CI gate runs `scripts/bootstrap-dev.sh` and then
 
 This repository also maintains skill source under `skills/`.
 
-- [skills/prior-art-scout/SKILL.md](skills/prior-art-scout/SKILL.md): reusable discovery skill.
+- [skills/prior-art-scout/SKILL.md](skills/prior-art-scout/SKILL.md): reusable technical due-diligence skill.
 - [docs/skill-repository-strategy.md](docs/skill-repository-strategy.md): how this repo uses skills and adjacent skill orchestration.
 - [docs/plans/2026-05-26-prior-art-scout-skill-design.md](docs/plans/2026-05-26-prior-art-scout-skill-design.md): current design plan.
 - [docs/patterns/skill-experience-library.md](docs/patterns/skill-experience-library.md): how reusable skill/project lessons are captured without bloating installable skills.
@@ -300,7 +314,14 @@ The skill is intended to answer questions such as:
 Before I build this, what already exists?
 Should I adopt, integrate, fork, extend, borrow from, or write something new?
 Are there similar skills/plugins/tools already available?
+What source coverage, evidence gaps, and blind spots should block a stronger decision?
 ```
+
+`prior-art-scout` is intentionally one public trigger skill in M4. Its
+`references/` files act as internal phase modules for source coverage,
+candidate evidence, positioning, build-vs-adopt decisions, and
+anti-rationalization checks. Future subskills should be split only after
+forward-tests show a real trigger or context-loading problem.
 
 For daily use, install or copy the skill folder into the user-level Codex skills directory. Keep this repository as the source of truth for development and public distribution.
 
