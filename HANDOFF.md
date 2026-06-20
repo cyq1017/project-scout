@@ -28,8 +28,7 @@ Current milestone:
 - The first M2 forward-test prompt is
   `docs/plans/2026-06-20-agentux-dogfood-prompt.md`.
 - Local AgentUX dogfood is recorded in
-  `docs/case-studies/2026-06-agentux-skill-quality-dogfood.md`; fresh-agent
-  review remains pending.
+  `docs/case-studies/2026-06-agentux-skill-quality-dogfood.md`.
 - Fresh-agent runs should use a new `/tmp/agentux-fresh-<agent>-<timestamp>`
   directory and avoid reading old `/tmp/agentux-*` artifacts. Validate the
   bundle shape with `.venv/bin/python scripts/check-agentux-dogfood-artifacts.py
@@ -37,7 +36,11 @@ Current milestone:
   source quality or unsupported claims.
 - A constrained Claude CLI attempt is recorded in
   `docs/research/2026-06-20-agentux-fresh-agent-review-attempt.md`; it did not
-  produce clean-dir artifacts, so fresh-agent review remains pending.
+  produce clean-dir artifacts.
+- A successful Codex CLI fresh-agent run is recorded in
+  `docs/research/2026-06-20-agentux-codex-fresh-agent-review.md`; M2 is
+  accepted with follow-up gaps for GitHub adapter DNS, skills-registry timeout,
+  AgentUX community search, and Warp hands-on behavior verification.
 
 ## Working Agreements
 

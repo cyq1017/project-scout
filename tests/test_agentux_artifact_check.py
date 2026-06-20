@@ -173,3 +173,22 @@ def test_agentux_forward_test_requires_fresh_output_directory():
     assert "fresh output directory" in prompt_text
     assert "Do not read or reuse existing `/tmp/agentux-*`" in prompt_text
     assert "fresh output directory" in milestone_text
+
+
+def test_m2_records_clean_codex_fresh_agent_review_result():
+    result = ROOT / "docs" / "research" / "2026-06-20-agentux-codex-fresh-agent-review.md"
+    milestone = ROOT / "docs" / "milestones" / "m2-skill-quality-gate.md"
+    backlog = ROOT / "BACKLOG.md"
+
+    assert result.exists()
+    result_text = result.read_text(encoding="utf-8")
+    milestone_text = milestone.read_text(encoding="utf-8")
+    backlog_text = backlog.read_text(encoding="utf-8")
+
+    assert "/tmp/agentux-fresh-codex.0a91v5" in result_text
+    assert "Warp Agent Platform" in result_text
+    assert "GitHub adapter failed DNS resolution" in result_text
+    assert "skills registry search timed out" in result_text
+    assert "M2 accepted" in result_text
+    assert "Fresh-agent review complete" in milestone_text
+    assert "- [x] M2 fresh-agent review" in backlog_text

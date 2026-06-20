@@ -1,6 +1,6 @@
 # Milestone 2: Skill Quality Gate
 
-Status: Local dogfood complete, fresh-agent review pending
+Status: Complete; Fresh-agent review complete
 Date: 2026-06-20
 
 ## Definition
@@ -70,11 +70,17 @@ The checker is a bundle-shape gate only. It confirms the fresh-agent run
 produced the expected local files and engine-backed fields, but it does not
 prove candidate accuracy or source completeness.
 
-Current fresh-agent attempt log:
+Fresh-agent review records:
 
 ```text
 docs/research/2026-06-20-agentux-fresh-agent-review-attempt.md
+docs/research/2026-06-20-agentux-codex-fresh-agent-review.md
 ```
+
+The first constrained Claude CLI attempt did not produce clean-dir artifacts.
+The subsequent Codex CLI fresh-agent run produced a clean artifact bundle in
+`/tmp/agentux-fresh-codex.0a91v5`, passed the artifact checker, and recorded
+remaining GitHub, skills-registry, and community-source gaps as follow-up work.
 
 ## Local Dogfood Result
 
@@ -93,3 +99,7 @@ requires both source classes.
 
 M2 is complete when the AgentUX dogfood run reveals no blocking skill-protocol
 gaps, or when every remaining gap is recorded as a narrower follow-up task.
+
+Completion judgment: M2 accepted. The fresh-agent run did not reveal a blocking
+skill-protocol gap. Remaining gaps are source/runtime follow-ups, not blockers
+for the skill-quality milestone.
