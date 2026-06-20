@@ -1,0 +1,67 @@
+{
+  "name": "false_positive_write_new_prevention",
+  "brief": {
+    "name": "universal-ai-terminal-context-layer",
+    "target_type": "product",
+    "intent": "build",
+    "goal": "Evaluate whether to build a universal AI terminal context layer.",
+    "keywords": [
+      "AI terminal",
+      "context layer",
+      "terminal assistant"
+    ],
+    "users_or_consumers": [
+      "developers"
+    ],
+    "ecosystems": [
+      "terminal"
+    ],
+    "must_have": [
+      "terminal context layer",
+      "AI assistant"
+    ],
+    "nice_to_have": [],
+    "exclusions": [],
+    "known_candidates": [
+      "https://example.com/known/terminal-context-layer"
+    ]
+  },
+  "candidates": [
+    {
+      "name": "generic/shell-helper",
+      "url": "https://example.com/generic/shell-helper",
+      "kind": "repo",
+      "description": "Shell helper scripts for developers.",
+      "topics": [
+        "shell"
+      ],
+      "language": "Python"
+    }
+  ],
+  "search_log": [
+    {
+      "source": "manual",
+      "query": "partial candidate note",
+      "result_count": 1,
+      "used_count": 1,
+      "status": "ok"
+    },
+    {
+      "source": "web",
+      "query": "AI terminal context layer",
+      "result_count": 1,
+      "used_count": 1,
+      "status": "ok"
+    }
+  ],
+  "expected": {
+    "decision": "Research More",
+    "coverage_confidence": "Medium",
+    "go_no_go": "hold",
+    "closest_alternative": "generic/shell-helper",
+    "markdown_contains": [
+      "Known candidate was not included",
+      "Candidate relevance is weak and coverage is not high enough to justify Write New"
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "name": "package_plugin_integration",
+  "brief": {
+    "name": "editor-terminal-selection-plugin",
+    "target_type": "product",
+    "intent": "adopt",
+    "goal": "Evaluate whether to integrate an editor plugin that sends selected terminal text into an AI coding assistant.",
+    "keywords": [
+      "terminal selection",
+      "AI coding assistant",
+      "editor plugin"
+    ],
+    "users_or_consumers": [
+      "developers"
+    ],
+    "ecosystems": [
+      "VS Code",
+      "JetBrains",
+      "terminal"
+    ],
+    "must_have": [
+      "send selected terminal text",
+      "AI chat context",
+      "editor plugin integration"
+    ],
+    "nice_to_have": [],
+    "exclusions": [
+      "standalone chat wrapper"
+    ],
+    "known_candidates": []
+  },
+  "candidates": [
+    {
+      "name": "Terminal Selection AI Bridge",
+      "url": "https://example.com/terminal-selection-ai-bridge",
+      "kind": "vscode_extension",
+      "stars": 75,
+      "last_update": "2026-04-15T00:00:00Z",
+      "description": "VS Code editor plugin integration that sends selected terminal text into AI chat context for developers.",
+      "topics": [
+        "terminal-selection",
+        "ai-chat",
+        "vscode-extension"
+      ],
+      "license": "MIT",
+      "language": "TypeScript",
+      "attributes": {
+        "role": "integration target",
+        "layer": "B Close adjacent"
+      }
+    },
+    {
+      "name": "Standalone Chat Wrapper",
+      "url": "https://example.com/standalone-chat-wrapper",
+      "kind": "product",
+      "description": "Standalone chat wrapper with no terminal selection workflow.",
+      "topics": [
+        "chat"
+      ],
+      "license": "MIT"
+    }
+  ],
+  "search_log": [
+    {
+      "source": "manual",
+      "query": "known editor terminal selection plugins",
+      "result_count": 2,
+      "used_count": 2,
+      "status": "ok"
+    },
+    {
+      "source": "web",
+      "query": "terminal selection AI editor plugin",
+      "result_count": 2,
+      "used_count": 2,
+      "status": "ok"
+    }
+  ],
+  "expected": {
+    "decision": "Adopt",
+    "coverage_confidence": "High",
+    "go_no_go": "review",
+    "closest_alternative": "Terminal Selection AI Bridge",
+    "claims_to_avoid_contains": [
+      "standalone chat wrapper"
+    ],
+    "markdown_contains": [
+      "Treat Terminal Selection AI Bridge as integration target"
+    ]
+  }
+}

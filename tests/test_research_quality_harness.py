@@ -11,6 +11,9 @@ QUALITY_CASES = ROOT / "tests" / "quality_cases"
 REQUIRED_CASES = {
     "agentux_terminal_selection",
     "direct_adoption_candidate",
+    "false_positive_write_new_prevention",
+    "package_plugin_integration",
+    "paper_research_target",
     "thin_coverage_hold",
 }
 
@@ -59,12 +62,16 @@ def test_m6_milestone_documents_quality_harness():
     )
     backlog = (ROOT / "BACKLOG.md").read_text(encoding="utf-8")
 
-    assert "Status: In Progress" in milestone
+    assert "Status: Complete" in milestone
+    assert "## Benchmark Summary" in milestone
     assert "tests/quality_cases" in milestone
     assert "agentux_terminal_selection" in milestone
     assert "direct_adoption_candidate" in milestone
+    assert "false_positive_write_new_prevention" in milestone
+    assert "package_plugin_integration" in milestone
+    assert "paper_research_target" in milestone
     assert "thin_coverage_hold" in milestone
-    assert "- [ ] M6: Research quality harness." in backlog
+    assert "- [x] M6: Research quality harness." in backlog
 
 
 def _load_quality_cases() -> dict[str, dict]:

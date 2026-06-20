@@ -9,7 +9,7 @@
 - [x] M3: Source reliability gate. See `docs/milestones/m3-source-reliability-gate.md`.
 - [x] M4: Prior-art technical due-diligence skill pack. See `docs/milestones/m4-skill-pack-due-diligence-gate.md` and plan `docs/plans/2026-06-20-prior-art-scout-m4-skill-pack-plan.md`.
 - [x] M5: Release hardening. See `docs/milestones/m5-release-hardening.md`.
-- [ ] M6: Research quality harness. See `docs/milestones/m6-research-quality-harness.md`.
+- [x] M6: Research quality harness. See `docs/milestones/m6-research-quality-harness.md`.
 
 ## MVP
 
@@ -81,7 +81,7 @@
 - [x] Add public release-readiness guard for personal absolute paths.
 - [x] Add public release-readiness examples without raw dumps or private artifacts.
 - [x] Add initial research-quality benchmark harness with AgentUX, direct-adoption, and thin-coverage cases.
-- [ ] Add more benchmark cases for package/plugin adoption, paper/research targets, and false-positive Write New prevention.
+- [x] Add more benchmark cases for package/plugin adoption, paper/research targets, and false-positive Write New prevention.
 
 ## External Follow-Ups
 

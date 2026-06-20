@@ -1,0 +1,87 @@
+{
+  "name": "paper_research_target",
+  "brief": {
+    "name": "retrieval-evaluation-method",
+    "target_type": "paper",
+    "intent": "research",
+    "goal": "Evaluate prior research before writing a retrieval evaluation method for agent memory systems.",
+    "keywords": [
+      "retrieval evaluation",
+      "agent memory",
+      "benchmark"
+    ],
+    "users_or_consumers": [
+      "researchers"
+    ],
+    "ecosystems": [
+      "papers",
+      "benchmarks"
+    ],
+    "must_have": [
+      "retrieval evaluation benchmark",
+      "agent memory systems"
+    ],
+    "nice_to_have": [
+      "open dataset"
+    ],
+    "exclusions": [
+      "leaderboard only"
+    ],
+    "known_candidates": []
+  },
+  "candidates": [
+    {
+      "name": "MemoryBench: Retrieval Evaluation for Agent Memory",
+      "url": "https://example.com/papers/memorybench",
+      "kind": "paper",
+      "description": "Paper proposing a retrieval evaluation benchmark and open dataset for agent memory systems.",
+      "topics": [
+        "retrieval-evaluation",
+        "agent-memory",
+        "benchmark"
+      ],
+      "license": "CC-BY-4.0",
+      "language": "PDF",
+      "attributes": {
+        "layer": "A Direct match"
+      }
+    },
+    {
+      "name": "LeaderboardHub",
+      "url": "https://example.com/leaderboardhub",
+      "kind": "product",
+      "description": "Leaderboard only for model scores.",
+      "topics": [
+        "leaderboard"
+      ]
+    }
+  ],
+  "search_log": [
+    {
+      "source": "manual",
+      "query": "known retrieval evaluation papers",
+      "result_count": 2,
+      "used_count": 2,
+      "status": "ok"
+    },
+    {
+      "source": "web",
+      "query": "retrieval evaluation benchmark agent memory paper",
+      "result_count": 2,
+      "used_count": 2,
+      "status": "ok"
+    }
+  ],
+  "expected": {
+    "decision": "Borrow",
+    "coverage_confidence": "High",
+    "go_no_go": "review",
+    "closest_alternative": "MemoryBench: Retrieval Evaluation for Agent Memory",
+    "claims_to_avoid_contains": [
+      "leaderboard only"
+    ],
+    "markdown_contains": [
+      "Use MemoryBench: Retrieval Evaluation for Agent Memory as the first comparison anchor"
+    ]
+  }
+}
