@@ -81,6 +81,7 @@ def test_prior_art_scout_links_m4_due_diligence_references():
         "references/anti-rationalizations.md",
         "references/skill-pack-routing.md",
         "references/response-contract.md",
+        "references/prompt-packs.md",
     ]:
         assert reference in skill
         assert (SKILL_DIR / reference).exists()
@@ -123,6 +124,22 @@ def test_prior_art_scout_response_contract_defines_final_answer_shapes():
         "Do not treat the final chat reply as a substitute",
     ]:
         assert phrase in contract
+
+
+def test_prior_art_scout_prompt_packs_cover_common_agent_handoffs():
+    prompt_packs = (REFERENCES / "prompt-packs.md").read_text(encoding="utf-8")
+
+    for phrase in [
+        "Quick Scan Prompt",
+        "Formal Gate Prompt",
+        "Reviewer Prompt",
+        "Use prior-art-scout",
+        "Do not claim exhaustive discovery",
+        "Return artifact paths",
+        "Review the report artifacts",
+        "Do not operate external repositories",
+    ]:
+        assert phrase in prompt_packs
 
 
 def test_prior_art_scout_m4_references_define_due_diligence_boundaries():
@@ -182,3 +199,17 @@ def test_prior_art_scout_openai_metadata_matches_evidence_gate_boundary():
     assert "evidence-gated" in metadata
     assert "local-first" in metadata
     assert "external repo" in metadata
+
+
+def test_m7_skill_experience_gate_documents_prompt_pack_contract():
+    milestone = (DOCS / "milestones" / "m7-skill-experience-gate.md").read_text(
+        encoding="utf-8"
+    )
+    backlog = (ROOT / "BACKLOG.md").read_text(encoding="utf-8")
+
+    assert "Status: Complete" in milestone
+    assert "references/prompt-packs.md" in milestone
+    assert "references/response-contract.md" in milestone
+    assert "tests/quality_cases" in milestone
+    assert "quick_validate.py" in milestone
+    assert "- [x] M7: Skill experience gate." in backlog

@@ -65,6 +65,7 @@ Read only the references needed for the current mode:
 - Recommendation semantics: `references/recommendation-rubric.md`.
 - Markdown and JSON output contract: `references/report-contract.md`.
 - Final chat response shape: `references/response-contract.md`.
+- Reusable prompt handoffs: `references/prompt-packs.md`.
 - Positioning and differentiation: `references/positioning-discussion.md`.
 - False-confidence blockers: `references/anti-rationalizations.md`.
 - Cross-agent execution: `references/cross-agent-protocol.md`.

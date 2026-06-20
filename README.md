@@ -63,6 +63,12 @@ direct-adoption, and low-coverage scenarios.
 
 See [M6 Research Quality Harness](docs/milestones/m6-research-quality-harness.md).
 
+Milestone 7 is the skill-experience gate: make `prior-art-scout` easier for
+agents to invoke, hand off, review, and repeat consistently through reusable
+prompt packs and response contracts.
+
+See [M7 Skill Experience Gate](docs/milestones/m7-skill-experience-gate.md).
+
 ## Install For Development
 
 ```bash
