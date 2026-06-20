@@ -232,7 +232,10 @@ def _differentiation_lines(report: ScoutReport) -> list[str]:
 
 
 def _positioning_lines(report: ScoutReport) -> list[str]:
-    top_candidates = [candidate.name for candidate in report.candidates[:3]]
+    top_candidates = [
+        str(candidate["name"])
+        for candidate in report.differentiation.positioning_brief.get("closest_alternatives", [])
+    ]
     if not top_candidates:
         return ["- Positioning is unknown until comparable projects are reviewed."]
     return [

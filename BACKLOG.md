@@ -68,7 +68,9 @@
 - [x] Investigate GitHub adapter DNS failures in Codex CLI shell runtime; bounded live smoke did not reproduce, and failures now write partial reports.
 - [x] Rework `prior-art-scout` into an agent-skills-style executable workflow.
 - [x] Add due-diligence, candidate-evidence, anti-rationalization, and skill-pack-routing references.
-- [ ] Forward-test M4 with a fresh-agent prior-art task before splitting subskills.
+- [x] Forward-test M4 with a fresh-agent prior-art task before splitting subskills.
+- [x] Prioritize explicit close/direct comparison anchors over broad lexical matches in positioning output.
+- [ ] Run a disposable iTerm2 Add-mechanics spike for AgentUX selection capture, cwd/git metadata, and safe prompt injection.
 - [ ] Run a focused GitHub/community follow-up for AgentUX small-plugin prior art.
 - [ ] Manually verify Warp blocks/context/forking behavior against AgentUX Add/Branch claims.
 

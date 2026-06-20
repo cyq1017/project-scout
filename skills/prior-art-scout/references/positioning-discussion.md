@@ -17,6 +17,11 @@ Read these report fields before giving advice:
 - `differentiation.candidate_roles`
 - top candidate evidence and unknown evidence records
 
+Use `differentiation.positioning_brief.closest_alternatives` as the primary
+comparison-anchor list. Do not rely only on `candidates[0]`: the raw candidate
+table is score-sorted, while the positioning layer may correctly promote a
+lower-scoring direct or close-adjacent precedent over a broad lexical match.
+
 ## Discussion Outputs
 
 Return concise sections when the user asks whether to continue, reposition, or

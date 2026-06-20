@@ -89,6 +89,11 @@ The `differentiation` object is deterministic positioning support. It separates
 features already visible in candidates from the proposed unique combination,
 records claims to avoid, and drafts conservative README language. It is not a
 claim that the project is unique or that the recorded search was exhaustive.
+`positioning_brief.closest_alternatives` is a comparison-anchor list, not a
+duplicate of the score-sorted candidate table. It prioritizes explicit
+`attributes.layer` values such as direct or close-adjacent matches before broad
+adjacent lexical matches, then falls back to score. Use it for positioning and
+next-validation discussion.
 
 The `decision_dashboard` object is a deterministic first-page action layer. It
 turns decision confidence, coverage, blind spots, and unknown evidence records

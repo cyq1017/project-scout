@@ -275,7 +275,7 @@ def _closest_alternatives(candidates: list[ScoredCandidate]) -> list[dict[str, o
             "role": _candidate_role(candidate),
             "why_it_matters": _candidate_role_reason(candidate),
         }
-        for candidate in candidates[:3]
+        for candidate in _comparison_candidates(candidates)[:3]
     ]
 
 
@@ -286,7 +286,7 @@ def _candidate_roles(candidates: list[ScoredCandidate]) -> list[dict[str, object
             "role": _candidate_role(candidate),
             "reason": _candidate_role_reason(candidate),
         }
-        for candidate in candidates[:8]
+        for candidate in _comparison_candidates(candidates)[:8]
     ]
 
 
@@ -323,7 +323,9 @@ def _next_validation_steps(
         "Check primary docs for the closest alternatives before writing README positioning.",
     ]
     if candidates:
-        steps.append(f"Manually compare the workflow against {candidates[0].name}.")
+        steps.append(
+            f"Manually compare the workflow against {_comparison_candidates(candidates)[0].name}."
+        )
     if decision.recommendation == "Research More":
         steps.append("Resolve blind spots before using Write New or direct adoption language.")
     if brief.known_candidates:
@@ -403,7 +405,9 @@ def _defensible_positioning(
     if decision.recommendation == "Research More":
         rows.append("Keep positioning provisional until required sources and primary evidence are reviewed.")
     if candidates:
-        rows.append(f"Use {candidates[0].name} as the first comparison anchor.")
+        rows.append(
+            f"Use {_comparison_candidates(candidates)[0].name} as the first comparison anchor."
+        )
     return rows
 
 
@@ -431,13 +435,57 @@ def _borrow_integrate_compete_guidance(
         return ["Gather candidates before deciding what to borrow, integrate, or compete against."]
     roles_by_name = {str(item["candidate"]): str(item["role"]) for item in candidate_roles}
     rows = []
-    for candidate in candidates[:5]:
+    for candidate in _comparison_candidates(candidates)[:5]:
         evidence = ", ".join(candidate.evidence[:4]) if candidate.evidence else candidate.kind
         role = roles_by_name.get(candidate.name, "prior art")
         rows.append(
             f"Treat {candidate.name} as {role}: inspect {evidence} before claiming differentiation."
         )
     return rows
+
+
+def _comparison_candidates(candidates: list[ScoredCandidate]) -> list[ScoredCandidate]:
+    return sorted(
+        candidates,
+        key=lambda candidate: (
+            _comparison_priority(candidate),
+            -candidate.similarity_score,
+            candidate.name.lower(),
+        ),
+    )
+
+
+def _comparison_priority(candidate: ScoredCandidate) -> float:
+    explicit = candidate.attributes.get("comparison_priority")
+    if isinstance(explicit, int | float):
+        return float(explicit)
+    if isinstance(explicit, str) and explicit.strip():
+        try:
+            return float(explicit)
+        except ValueError:
+            pass
+
+    layer = str(candidate.attributes.get("layer") or "").strip().lower()
+    layer_code = re.match(r"^\(?([abcd])[\).:\-\s]", layer)
+    layer_code_value = layer_code[1] if layer_code else ""
+    if "direct match" in layer or "strongest close" in layer or layer_code_value == "a":
+        return 0
+    if "close adjacent" in layer or layer_code_value == "b":
+        return 1
+    if "broad adjacent" in layer or layer_code_value == "c":
+        return 2
+    if "false friend" in layer or layer_code_value == "d":
+        return 5
+    if "low relevance" in layer:
+        return 6
+
+    if candidate.similarity_score >= 0.82:
+        return 0
+    if candidate.similarity_score >= 0.58:
+        return 1
+    if candidate.similarity_score >= 0.20:
+        return 3
+    return 6
 
 
 def _readme_positioning_draft(brief: NormalizedBrief) -> str:

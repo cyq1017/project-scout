@@ -74,6 +74,24 @@ verify automatically.
 Do not let README summaries, search snippets, LLM summaries, stars, or install
 counts replace primary-source review.
 
+## Similarity Layer Metadata
+
+When a formal-gate run has enough evidence to classify candidate shape, set
+candidate `attributes.layer` with the user's requested similarity tier:
+
+```text
+A Direct match | A Strongest close adjacent | B Close adjacent | C Broad adjacent | D False friend | Low relevance
+```
+
+Use `attributes.comparison_priority` only when the written evidence justifies a
+manual override. Lower numbers appear earlier as positioning comparison anchors.
+
+`project-scout` keeps the candidate table sorted by deterministic score, but
+positioning fields such as `closest_alternatives`, candidate roles, comparison
+guidance, and next validation steps prioritize explicit close/direct layers over
+broad lexical matches. This prevents high keyword overlap from hiding a more
+important UX or integration precedent.
+
 ## Output Pattern
 
 For top candidates, summarize evidence gaps compactly:

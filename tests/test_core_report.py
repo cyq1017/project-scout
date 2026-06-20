@@ -207,6 +207,118 @@ def test_build_report_adds_differentiation_map():
     assert "existing CLI coding agents" in differentiation["readme_positioning_draft"]
 
 
+def test_positioning_anchors_prioritize_explicit_close_prior_art_over_lexical_score():
+    brief = DiscoveryBrief(
+        name="AgentUX",
+        target_type="product",
+        intent="build",
+        goal=(
+            "Build a selection-aware terminal UX layer for existing CLI coding agents. "
+            "Users select terminal output and add it to Claude Code or Codex CLI."
+        ),
+        keywords=[
+            "terminal selection",
+            "Claude Code",
+            "Codex CLI",
+            "branch conversation",
+        ],
+        users_or_consumers=["CLI coding agent users"],
+        ecosystems=["iTerm2", "terminal"],
+        must_have=[
+            "capture terminal output selection",
+            "inject into existing CLI coding agent session",
+            "branch discussion",
+        ],
+        nice_to_have=[],
+        exclusions=["generic AI terminal only"],
+        known_candidates=[],
+    )
+    candidates = [
+        CandidateRepo(
+            name="Broad lexical bridge",
+            url="https://example.com/broad-lexical-bridge",
+            kind="tmux_bridge",
+            description=(
+                "Claude Code Codex CLI branch conversation terminal bridge for "
+                "CLI coding agent users."
+            ),
+            topics=["claude-code", "codex-cli", "terminal"],
+            attributes={"layer": "C Broad adjacent"},
+        ),
+        CandidateRepo(
+            name="iTerm2 selected output Add to Chat",
+            url="https://example.com/iterm2-selected-output-add-to-chat",
+            kind="terminal_feature",
+            description="Selected terminal output can be added to an AI chat from iTerm2.",
+            topics=["terminal selection", "AI chat"],
+            attributes={"layer": "A Strongest close adjacent"},
+        ),
+    ]
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-06-20T00:00:00+08:00",
+    )
+    positioning = report.to_dict()["differentiation"]["positioning_brief"]
+    markdown = render_markdown(report)
+
+    assert report.candidates[0].name == "Broad lexical bridge"
+    assert positioning["closest_alternatives"][0]["name"] == "iTerm2 selected output Add to Chat"
+    assert any(
+        step == "Manually compare the workflow against iTerm2 selected output Add to Chat."
+        for step in positioning["next_validation_steps"]
+    )
+    assert "Use iTerm2 selected output Add to Chat as the first comparison anchor." in markdown
+    assert (
+        "- Compare explicitly against: iTerm2 selected output Add to Chat, Broad lexical bridge."
+        in markdown
+    )
+
+
+def test_positioning_anchors_allow_explicit_comparison_priority_override():
+    brief = ProjectBrief(
+        name="terminal-layer",
+        goal="Compare terminal selection prior art before building.",
+        keywords=["terminal selection", "add to chat"],
+        target_users=["developers"],
+        tech_stack=["terminal"],
+        exclusions=[],
+    )
+    candidates = [
+        CandidateRepo(
+            name="higher-score-close-adjacent",
+            url="https://example.com/higher-score-close-adjacent",
+            kind="terminal_feature",
+            description="Terminal selection add to chat for developers.",
+            topics=["terminal-selection", "add-to-chat"],
+            attributes={"layer": "A Strongest close adjacent"},
+        ),
+        CandidateRepo(
+            name="manual-anchor",
+            url="https://example.com/manual-anchor",
+            kind="terminal_feature",
+            description="Terminal selection.",
+            attributes={
+                "layer": "A Strongest close adjacent",
+                "comparison_priority": "-1",
+            },
+        ),
+    ]
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-06-20T00:00:00+08:00",
+    )
+
+    closest = report.to_dict()["differentiation"]["positioning_brief"][
+        "closest_alternatives"
+    ]
+    assert report.candidates[0].name == "higher-score-close-adjacent"
+    assert closest[0]["name"] == "manual-anchor"
+
+
 def test_build_report_adds_actionable_decision_dashboard():
     brief = load_brief(FIXTURES / "brief.json")
     candidates = load_candidates(FIXTURES / "github_repos.json")
