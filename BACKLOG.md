@@ -35,7 +35,7 @@
 - [x] Harden dev bootstrap and smoke scripts.
 - [x] Document Python 3.14/macOS editable install issue.
 - [x] Add pytest coverage for the installed console script.
-- [ ] Consider moving the checkout outside iCloud if hidden/dataless venv flags recur.
+- [x] Consider moving the checkout outside iCloud if hidden/dataless venv flags recur; current `.venv` points to `~/.cache/project-scout/venv` on Python 3.13, so no checkout move is needed now.
 - [x] Move tracked root `project-scout-report.json` into `examples/`.
 - [x] Add reusable brief templates for common scout tasks.
 - [x] Add multi-query GitHub scan.
@@ -70,9 +70,13 @@
 - [x] Add due-diligence, candidate-evidence, anti-rationalization, and skill-pack-routing references.
 - [x] Forward-test M4 with a fresh-agent prior-art task before splitting subskills.
 - [x] Prioritize explicit close/direct comparison anchors over broad lexical matches in positioning output.
-- [ ] Run a disposable iTerm2 Add-mechanics spike for AgentUX selection capture, cwd/git metadata, and safe prompt injection.
-- [ ] Run a focused GitHub/community follow-up for AgentUX small-plugin prior art.
-- [ ] Manually verify Warp blocks/context/forking behavior against AgentUX Add/Branch claims.
+- [x] Run a bounded iTerm2 Add-mechanics feasibility check for AgentUX selection capture, cwd/git metadata, and safe prompt injection; see `docs/research/2026-06-20-agentux-focused-follow-up.md`.
+- [x] Run a focused GitHub/community follow-up for AgentUX small-plugin prior art; see `docs/research/2026-06-20-agentux-focused-follow-up.md`.
+- [x] Verify Warp primary docs for blocks/context/forking behavior against AgentUX Add/Branch claims.
+
+## External Follow-Ups
+
+- [ ] Review and verify the external AgentUX repo at `/Users/caoyuqi/Documents/terminal_text_selection` if AgentUX implementation work becomes active; do not fold that implementation into project-scout.
 
 ## Non-Goals
 
