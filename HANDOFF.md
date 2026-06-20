@@ -117,6 +117,9 @@ Trustworthiness hardening status:
 - Markdown reports include a first-page `Positioning Brief` with verdict,
   closest alternatives, candidate roles, recommended positioning, and next
   validation steps.
+- Reports include a first-page `Decision Dashboard` with `go`/`review`/`hold`,
+  primary action, review queue, and open questions. This is a deterministic
+  human-review checklist, not an automatic approval or roadmap mutation.
 
 The larger GPT Pro architecture review is local-only unless intentionally
 curated into repo docs. The current executable roadmap is

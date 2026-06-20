@@ -181,6 +181,18 @@ class DecisionSummary:
 
 
 @dataclass(frozen=True)
+class DecisionDashboard:
+    status: str
+    go_no_go: str
+    primary_action: str
+    review_queue: list[str] = field(default_factory=list)
+    open_questions: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class SearchLogEntry:
     source: str
     query: str
@@ -238,6 +250,7 @@ class ScoutReport:
     generated_at: str
     summary: ReportSummary
     decision: DecisionSummary
+    decision_dashboard: DecisionDashboard
     coverage: CoverageSummary
     differentiation: DifferentiationSummary
     search_log: list[SearchLogEntry]
@@ -253,6 +266,7 @@ class ScoutReport:
             "generated_at": self.generated_at,
             "summary": self.summary.to_dict(),
             "decision": self.decision.to_dict(),
+            "decision_dashboard": self.decision_dashboard.to_dict(),
             "coverage": self.coverage.to_dict(),
             "differentiation": self.differentiation.to_dict(),
             "search_log": [entry.to_dict() for entry in self.search_log],

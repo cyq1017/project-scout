@@ -40,6 +40,9 @@ coverage is partial, candidate evidence is weak, or live adapters fail.
 - Reports include a first-page positioning brief with verdict, closest
   alternatives, candidate roles, recommended positioning, and next validation
   steps.
+- Reports include a first-page decision dashboard with go/review/hold, primary
+  action, review queue, and open questions derived from coverage and evidence
+  gaps.
 
 ## Later Slices
 

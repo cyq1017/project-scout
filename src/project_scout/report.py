@@ -34,6 +34,8 @@ def render_markdown(report: ScoutReport) -> str:
         "",
     ]
     lines.extend(_positioning_brief_lines(report))
+    lines.extend(["", "## Decision Dashboard", ""])
+    lines.extend(_decision_dashboard_lines(report))
     lines.extend(
         [
             "",
@@ -190,6 +192,18 @@ def _positioning_brief_lines(report: ScoutReport) -> list[str]:
         )
     for step in brief["next_validation_steps"]:
         lines.append(f"- Next validation: {_inline_text(step)}")
+    return lines
+
+
+def _decision_dashboard_lines(report: ScoutReport) -> list[str]:
+    dashboard = report.decision_dashboard
+    lines = [
+        f"- Go / Hold / Review: **{_inline_text(dashboard.go_no_go)}**.",
+        f"- Status: {_inline_text(dashboard.status)}",
+        f"- Primary action: {_inline_text(dashboard.primary_action)}",
+    ]
+    lines.extend([f"- Review queue: {_inline_text(item)}" for item in dashboard.review_queue])
+    lines.extend([f"- Open question: {_inline_text(item)}" for item in dashboard.open_questions])
     return lines
 
 

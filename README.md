@@ -8,7 +8,7 @@ The current CLI MVP focuses on a narrow workflow:
 2. Import candidate repositories and skills from GitHub search, skills registry search, fixture data, or manual URL lists.
 3. Normalize candidate metadata while preserving candidate `kind` and source-specific attributes.
 4. Score overlap with deterministic rules.
-5. Write a Markdown prior-art map and a machine-readable JSON report with a first-page positioning brief, search log, coverage confidence, decision confidence, blind spots, and a differentiation map.
+5. Write a Markdown prior-art map and a machine-readable JSON report with a first-page positioning brief, decision dashboard, search log, coverage confidence, decision confidence, blind spots, and a differentiation map.
 
 It does not log in, store tokens, create issues or pull requests, claim
 exhaustive discovery, or make final decisions for the user.
@@ -121,6 +121,12 @@ have to interpret raw scoring tables first. It summarizes the verdict, closest
 alternatives, candidate roles, differentiation claim, recommended positioning,
 and next validation steps.
 
+The first page also includes a deterministic `Decision Dashboard`. It converts
+coverage, decision confidence, blind spots, and unresolved evidence records into
+`go`, `review`, or `hold`, plus a primary action, review queue, and open
+questions. This is an action checklist for human review, not an automatic
+approval.
+
 ## Sample Reports
 
 - [project-scout fixture JSON report](examples/project-scout-report.json): machine-readable fixture report for the built-in project-scout brief.
@@ -220,6 +226,10 @@ prior art exists.
 
 Decision confidence is heuristic, not a probability, and is capped by coverage
 confidence and unresolved adoption evidence.
+
+The decision dashboard is derived from the same deterministic signals. Low
+coverage or `Research More` yields `hold`; high-confidence/high-coverage reports
+may yield `go`; the common unresolved-evidence path yields `review`.
 
 Implementation-wise, candidate relevance still comes from deterministic scoring,
 while candidate disposition and report-level decision gates live in

@@ -12,19 +12,20 @@ Required sections:
 
 1. Executive Summary
 2. Positioning Brief
-3. Search Summary
-4. Source Requirements
-5. Coverage Matrix
-6. Similar Projects
-7. Overlap Matrix
-8. What To Borrow
-9. What To Avoid
-10. Build / Adopt / Fork / Plugin Recommendation
-11. Coverage Confidence And Blind Spots
-12. Differentiation Map
-13. Differentiation Is Not Enough: Useful Positioning
-14. Risks And Unknowns
-15. Suggested ADR / Backlog Updates
+3. Decision Dashboard
+4. Search Summary
+5. Source Requirements
+6. Coverage Matrix
+7. Similar Projects
+8. Overlap Matrix
+9. What To Borrow
+10. What To Avoid
+11. Recommendation And Confidence
+12. Coverage Confidence And Blind Spots
+13. Differentiation Map
+14. Differentiation Is Not Enough: Useful Positioning
+15. Risks And Unknowns
+16. Suggested ADR / Backlog Updates
 
 ## JSON Report
 
@@ -45,6 +46,13 @@ Top-level fields:
     "top_recommendation": "Borrow"
   },
   "decision": {},
+  "decision_dashboard": {
+    "status": "ready_for_manual_review",
+    "go_no_go": "review",
+    "primary_action": "",
+    "review_queue": [],
+    "open_questions": []
+  },
   "coverage": {},
   "differentiation": {
     "positioning_brief": {
@@ -81,3 +89,8 @@ The `differentiation` object is deterministic positioning support. It separates
 features already visible in candidates from the proposed unique combination,
 records claims to avoid, and drafts conservative README language. It is not a
 claim that the project is unique or that the recorded search was exhaustive.
+
+The `decision_dashboard` object is a deterministic first-page action layer. It
+turns decision confidence, coverage, blind spots, and unknown evidence records
+into `go`, `review`, or `hold`, plus a primary action, review queue, and open
+questions. It is not an automatic approval or roadmap mutation.

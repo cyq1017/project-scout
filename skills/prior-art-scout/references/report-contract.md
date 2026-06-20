@@ -7,17 +7,21 @@ Formal Gate must write a human Markdown report and a machine JSON report.
 Required:
 
 1. Executive Summary
-2. Search Summary
-3. Coverage Matrix
-4. Similar Candidates
-5. Overlap Matrix
-6. What To Adopt / Integrate / Borrow
-7. What To Avoid
-8. Recommendation And Confidence
-9. Coverage Confidence And Blind Spots
-10. Useful Positioning
-11. Risks And Unknowns
-12. Suggested ADR / Backlog / Skill Updates
+2. Positioning Brief
+3. Decision Dashboard
+4. Search Summary
+5. Source Requirements
+6. Coverage Matrix
+7. Similar Projects
+8. Overlap Matrix
+9. What To Borrow
+10. What To Avoid
+11. Recommendation And Confidence
+12. Coverage Confidence And Blind Spots
+13. Differentiation Map
+14. Differentiation Is Not Enough: Useful Positioning
+15. Risks And Unknowns
+16. Suggested ADR / Backlog Updates
 
 ## JSON Fields
 
@@ -34,6 +38,13 @@ Recommended top-level shape:
     "confidence": "Medium",
     "rationale": [],
     "confidence_reasons": []
+  },
+  "decision_dashboard": {
+    "status": "ready_for_manual_review",
+    "go_no_go": "review",
+    "primary_action": "",
+    "review_queue": [],
+    "open_questions": []
   },
   "coverage": {
     "confidence": "Medium",

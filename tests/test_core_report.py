@@ -207,6 +207,42 @@ def test_build_report_adds_differentiation_map():
     assert "existing CLI coding agents" in differentiation["readme_positioning_draft"]
 
 
+def test_build_report_adds_actionable_decision_dashboard():
+    brief = load_brief(FIXTURES / "brief.json")
+    candidates = load_candidates(FIXTURES / "github_repos.json")
+
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-05-24T00:00:00Z",
+        search_log=[
+            {
+                "source": "manual",
+                "query": "fixture",
+                "result_count": 3,
+                "used_count": 3,
+                "status": "ok",
+                "error": None,
+            },
+            {
+                "source": "github",
+                "query": "prior art cli",
+                "result_count": 3,
+                "used_count": 3,
+                "status": "ok",
+                "error": None,
+            },
+        ],
+    )
+    dashboard = report.to_dict()["decision_dashboard"]
+
+    assert dashboard["go_no_go"] == "review"
+    assert dashboard["status"] == "ready_for_manual_review"
+    assert "Review" in dashboard["primary_action"]
+    assert any("Required source not satisfied: web" in item for item in dashboard["review_queue"])
+    assert any("integration cost" in item for item in dashboard["open_questions"])
+
+
 def test_unknown_adoption_evidence_caps_decision_confidence():
     brief = ProjectBrief(
         name="adoption-review",
@@ -556,6 +592,7 @@ def test_render_markdown_contains_required_sections_and_recommendation():
     for heading in [
         "Executive Summary",
         "Positioning Brief",
+        "Decision Dashboard",
         "Search Summary",
         "Source Requirements",
         "Coverage Matrix",
@@ -573,6 +610,41 @@ def test_render_markdown_contains_required_sections_and_recommendation():
         assert f"## {heading}" in markdown
     assert "sample/prior-art-cli" in markdown
     assert "Recommendation" in markdown
+
+
+def test_render_markdown_places_decision_dashboard_near_the_top():
+    brief = load_brief(FIXTURES / "brief.json")
+    candidates = load_candidates(FIXTURES / "github_repos.json")
+    report = build_report(
+        brief,
+        candidates,
+        generated_at="2026-05-24T00:00:00Z",
+        search_log=[
+            {
+                "source": "manual",
+                "query": "fixture",
+                "result_count": 3,
+                "used_count": 3,
+                "status": "ok",
+                "error": None,
+            },
+            {
+                "source": "github",
+                "query": "prior art cli",
+                "result_count": 3,
+                "used_count": 3,
+                "status": "ok",
+                "error": None,
+            },
+        ],
+    )
+
+    markdown = render_markdown(report)
+
+    assert markdown.index("## Positioning Brief") < markdown.index("## Decision Dashboard")
+    assert markdown.index("## Decision Dashboard") < markdown.index("## Search Summary")
+    assert "- Go / Hold / Review: **review**." in markdown
+    assert "- Review queue: Required source not satisfied: web." in markdown
 
 
 def test_render_markdown_includes_differentiation_map():

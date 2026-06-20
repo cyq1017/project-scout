@@ -21,6 +21,23 @@ Reviewed 3 candidate projects. Top recommendation signal: **Fork**. Decision con
 - Next validation: Check primary docs for the closest alternatives before writing README positioning.
 - Next validation: Manually compare the workflow against sample/prior-art-cli.
 
+## Decision Dashboard
+
+- Go / Hold / Review: **review**.
+- Status: ready_for_manual_review
+- Primary action: Review sample/prior-art-cli before acting on the Fork recommendation.
+- Review queue: Web and community sources were not covered unless supplied manually.
+- Review queue: GitHub repository search was not covered unless supplied manually.
+- Review queue: Skills registry was not covered unless supplied manually.
+- Review queue: Required source not satisfied: github.
+- Review queue: Required source not satisfied: web.
+- Review queue: Check primary docs and README evidence for sample/prior-art-cli.
+- Review queue: Verify integration for sample/prior-art-cli: integration cost and API compatibility are not automatically verified.
+- Review queue: Verify pricing security for sample/prior-art-cli: pricing, data handling, and security posture are not automatically verified.
+- Open question: What is the integration cost and API compatibility for sample/prior-art-cli?
+- Open question: Are pricing, data handling, and security constraints acceptable for sample/prior-art-cli?
+- Open question: Which required source gaps must be closed before stronger positioning claims?
+
 ## Search Summary
 
 | Source | Query | Results | Used | Status | Notes |

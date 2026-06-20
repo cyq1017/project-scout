@@ -46,6 +46,26 @@
       "One or more adoption evidence records are still unknown."
     ]
   },
+  "decision_dashboard": {
+    "status": "ready_for_manual_review",
+    "go_no_go": "review",
+    "primary_action": "Review sample/prior-art-cli before acting on the Fork recommendation.",
+    "review_queue": [
+      "Web and community sources were not covered unless supplied manually.",
+      "GitHub repository search was not covered unless supplied manually.",
+      "Skills registry was not covered unless supplied manually.",
+      "Required source not satisfied: github.",
+      "Required source not satisfied: web.",
+      "Check primary docs and README evidence for sample/prior-art-cli.",
+      "Verify integration for sample/prior-art-cli: integration cost and API compatibility are not automatically verified.",
+      "Verify pricing security for sample/prior-art-cli: pricing, data handling, and security posture are not automatically verified."
+    ],
+    "open_questions": [
+      "What is the integration cost and API compatibility for sample/prior-art-cli?",
+      "Are pricing, data handling, and security constraints acceptable for sample/prior-art-cli?",
+      "Which required source gaps must be closed before stronger positioning claims?"
+    ]
+  },
   "coverage": {
     "confidence": "Medium",
     "sources": [

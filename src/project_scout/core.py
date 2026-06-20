@@ -11,6 +11,7 @@ from urllib.parse import urlparse
 from project_scout.models import (
     CandidateRepo,
     CoverageSummary,
+    DecisionDashboard,
     DecisionSummary,
     DifferentiationSummary,
     DiscoveryBrief,
@@ -116,6 +117,7 @@ def build_report(
     coverage = _coverage_summary(log_entries, normalized_brief, scored)
     decision = decision_summary(scored, log_entries, coverage)
     differentiation = _differentiation_summary(normalized_brief, scored, decision)
+    decision_dashboard = _decision_dashboard(normalized_brief, scored, decision, coverage)
     risks = _risks(scored, generated_at=generated)
     suggested_updates = _suggested_updates(normalized_brief, scored, decision)
     top = decision.recommendation
@@ -124,6 +126,7 @@ def build_report(
         generated_at=generated,
         summary=ReportSummary(candidate_count=len(scored), top_recommendation=top),
         decision=decision,
+        decision_dashboard=decision_dashboard,
         coverage=coverage,
         differentiation=differentiation,
         search_log=log_entries,
@@ -133,6 +136,84 @@ def build_report(
         risks=risks,
         suggested_updates=suggested_updates,
     )
+
+
+def _decision_dashboard(
+    brief: NormalizedBrief,
+    candidates: list[ScoredCandidate],
+    decision: DecisionSummary,
+    coverage: CoverageSummary,
+) -> DecisionDashboard:
+    go_no_go = _dashboard_go_no_go(decision, coverage)
+    status = _dashboard_status(go_no_go)
+    top = candidates[0] if candidates else None
+    return DecisionDashboard(
+        status=status,
+        go_no_go=go_no_go,
+        primary_action=_primary_action(brief, top, decision, go_no_go),
+        review_queue=_review_queue(coverage, top),
+        open_questions=_open_questions(top, coverage),
+    )
+
+
+def _dashboard_go_no_go(decision: DecisionSummary, coverage: CoverageSummary) -> str:
+    if decision.recommendation == "Research More" or coverage.confidence == "Low":
+        return "hold"
+    if decision.confidence == "High" and coverage.confidence == "High":
+        return "go"
+    return "review"
+
+
+def _dashboard_status(go_no_go: str) -> str:
+    if go_no_go == "hold":
+        return "needs_more_research"
+    if go_no_go == "go":
+        return "ready_for_action"
+    return "ready_for_manual_review"
+
+
+def _primary_action(
+    brief: NormalizedBrief,
+    top: ScoredCandidate | None,
+    decision: DecisionSummary,
+    go_no_go: str,
+) -> str:
+    if go_no_go == "hold":
+        return "Resolve source coverage and candidate gaps before making a build/adopt decision."
+    if decision.recommendation == "Write New":
+        return f"Review the build wedge for {brief.name} against the closest alternatives before roadmap commitment."
+    if top is None:
+        return "Review source coverage before acting on the report."
+    return f"Review {top.name} before acting on the {decision.recommendation} recommendation."
+
+
+def _review_queue(coverage: CoverageSummary, top: ScoredCandidate | None) -> list[str]:
+    queue = [item for item in coverage.blind_spots if item]
+    if top is not None:
+        queue.append(f"Check primary docs and README evidence for {top.name}.")
+        for record in top.evidence_records:
+            if record["status"] == "unknown":
+                queue.append(f"Verify {record['category'].replace('_', ' ')} for {top.name}: {record['detail']}.")
+    return _dedupe(queue)[:8]
+
+
+def _open_questions(top: ScoredCandidate | None, coverage: CoverageSummary) -> list[str]:
+    questions: list[str] = []
+    if top is None:
+        questions.append("Which candidate sources should be added before this report is decision-ready?")
+    else:
+        unknown_categories = {record["category"] for record in top.evidence_records if record["status"] == "unknown"}
+        if "integration" in unknown_categories:
+            questions.append(f"What is the integration cost and API compatibility for {top.name}?")
+        if "pricing_security" in unknown_categories:
+            questions.append(f"Are pricing, data handling, and security constraints acceptable for {top.name}?")
+        if "license" in unknown_categories:
+            questions.append(f"What license constraints apply to {top.name}?")
+        if "maintenance" in unknown_categories:
+            questions.append(f"Is {top.name} actively maintained enough for the intended use?")
+    if coverage.confidence != "High":
+        questions.append("Which required source gaps must be closed before stronger positioning claims?")
+    return _dedupe(questions)[:6]
 
 
 def _differentiation_summary(

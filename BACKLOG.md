@@ -53,6 +53,7 @@
 - [x] Split report-level adoption readiness gates out of core orchestration.
 - [x] Add deterministic differentiation map and README positioning draft.
 - [x] Add first-page positioning brief with closest alternatives and candidate roles.
+- [x] Add first-page decision dashboard with go/review/hold, review queue, and open questions.
 
 ## Non-Goals
 

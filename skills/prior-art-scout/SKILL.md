@@ -59,6 +59,7 @@ Always separate:
 - decision recommendation
 - decision confidence
 - coverage confidence
+- go/review/hold dashboard status
 
 ## Evidence Rules
 
@@ -123,6 +124,7 @@ For Formal Gate, lead with generated artifact links, then summarize:
 
 - top recommendation
 - confidence
+- go/review/hold dashboard status and primary action
 - top 3-5 candidates
 - major borrow/adopt/integrate signals
 - major avoid or unknown signals
